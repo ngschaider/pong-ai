@@ -1,0 +1,34 @@
+{
+  "name": "pong-ai",
+  "version": "1.0.0",
+  "description": "A NES emulator written in TypeScript",
+  "main": "index.js",
+  "scripts": {
+    "build": "webpack --mode=production --node-env=production",
+    "build:dev": "webpack --mode=development",
+    "build:prod": "webpack --mode=production --node-env=production",
+    "watch": "webpack --watch",
+    "serve": "webpack serve",
+    "typecheck": "tsc --noEmit"
+  },
+  "author": "Niklas Gschaider <niklas.gschaider@gschaider-systems.at>",
+  "license": "All rights reserved.",
+  "devDependencies": {
+    "@types/p5": "^1.4.2",
+    "@webpack-cli/generators": "^2.4.2",
+    "css-loader": "^6.7.1",
+    "html-webpack-plugin": "^5.5.0",
+    "jest": "^28.1.0",
+    "prettier": "^2.6.2",
+    "style-loader": "^3.3.1",
+    "ts-jest": "^28.0.2",
+    "ts-loader": "^9.3.0",
+    "typescript": "^4.6.3",
+    "webpack": "^5.72.1",
+    "webpack-cli": "^4.9.2",
+    "webpack-dev-server": "^4.9.0"
+  },
+  "dependencies": {
+    "p5": "^1.4.1"
+  }
+}
