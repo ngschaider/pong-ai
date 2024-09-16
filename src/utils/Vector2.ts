@@ -39,7 +39,7 @@ class Vector2 {
     }
 
     get magnitude() {
-        return Math.sqrt(this.x**2 + this.y**2);
+        return Math.abs(Math.sqrt(this.x**2 + this.y**2));
     }
 
     get angle() {
@@ -48,6 +48,10 @@ class Vector2 {
 
     add(v: Vector2): Vector2 {
         return new Vector2(this.x + v.x, this.y + v.y);
+    }
+
+    sub(v: Vector2): Vector2 {
+        return new Vector2(this.x - v.x, this.y - v.y);
     }
 
     mul(v: Vector2): Vector2 {

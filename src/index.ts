@@ -13,11 +13,8 @@ const engine = new Engine();
 engine.createGameObject(TopBar);
 
 const root = engine.createGameObject(GameObject);
+root.name = "Root"
 root.transform.position = new Vector2(window.innerWidth/2, window.innerHeight/2);
-
-// const rect = engine.createGameObject(RectangleObject);
-// rect.transform.position = new Vector2(500, 500);
-// rect.transform.scale = new Vector2(2, 2);
 
 const player1 = engine.createGameObject(Player, root.transform);
 player1.transform.position = new Vector2(-450, 0);
