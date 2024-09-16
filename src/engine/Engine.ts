@@ -3,34 +3,25 @@ import Graphics from "../graphics/Graphics";
 import InputManager from "../input/InputManager";
 import GameObject from "./GameObject";
 
+type GameObjectConstructor<T extends GameObject> = new (engine: Engine) => T;
+
 class Engine {
 
     graphics: Graphics = new Graphics();
 
-    children: GameObject[] = [];
+    gameObjects: GameObject[] = [];
 
     inputManager = new InputManager();
 
-    name: string = "Engine";
-    
-    addChild(obj: GameObject) {
-        if(this.children.includes(obj)) {
-            throw new Error("Tried to add already-present child.");
-        }
-
-        this.children.push(obj);
-    }
-
-    removeChild(obj: GameObject) {
-        if(!this.children.includes(obj)) {
-            throw new Error("Tried to remove non-present child.");
-        }
-
-        this.children = this.children.filter(o => o !== obj);
+    createGameObject<T extends GameObject>(objType: GameObjectConstructor<T>): T {
+        const gameObject = new objType(this);
+        gameObject.onCreate();
+        this.gameObjects.push(gameObject);
+        return gameObject;
     }
 
     update() {
-        for(const child of this.children) {
+        for(const child of this.gameObjects) {
             child.update();
         }
     }
@@ -38,10 +29,10 @@ class Engine {
     draw() {
         this.graphics.background(Color.Gray);
 
-        for(const child of this.children) {
-            child.tf.beforeDraw(this.graphics);
+        for(const child of this.gameObjects) {
+            child.transform.beforeDraw(this.graphics);
             child.draw(this.graphics);
-            child.tf.afterDraw(this.graphics);
+            child.transform.afterDraw(this.graphics);
         }
     }
 

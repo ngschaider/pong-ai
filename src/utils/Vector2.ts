@@ -2,7 +2,6 @@ class Vector2 {
 
     static Zero = new Vector2(0, 0);
     static One = new Vector2(1, 1);
-
     static Right = new Vector2(1, 0);
     static Down = new Vector2(0, -1);
     static Up = new Vector2(0, 1);
@@ -18,12 +17,25 @@ class Vector2 {
         return new Vector2(x, y);
     }
 
-    x: number;
-    y: number;
+    private _x: number;
+    private set x(value: number) {
+        this._x = value;
+    }
+    public get x() {
+        return this._x;
+    }
+
+    private _y: number;
+    private set y(value: number) {
+        this._y = value;
+    }
+    public get y() {
+        return this._y;
+    }
 
     constructor(x: number, y: number) {
-        this.x = x;
-        this.y = y;
+        this._x = x;
+        this._y = y;
     }
 
     get magnitude() {
@@ -47,6 +59,16 @@ class Vector2 {
             return new Vector2(this.x * v, this.y * v);
         } else if(v instanceof Vector2) {
             return new Vector2(this.x * v.x, this.y * v.y);
+        } else {
+            throw new Error("Invalid type encountered: " + typeof v);
+        }
+    }
+
+    scalarDiv(v: Vector2|number): Vector2 {
+        if(typeof v === "number") {
+            return new Vector2(this.x / v, this.y / v);
+        } else if(v instanceof Vector2) {
+            return new Vector2(this.x / v.x, this.y / v.y);
         } else {
             throw new Error("Invalid type encountered: " + typeof v);
         }

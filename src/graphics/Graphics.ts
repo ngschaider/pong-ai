@@ -26,7 +26,7 @@ class Graphics {
     private resize() {
         this.el.width = window.innerWidth
         this.el.height = window.innerHeight - 4;
-        this.translate(this.size.scalarMul(0.5));
+        this.translate(this.size.scalarDiv(2));
     }
 
     get size(): Vector2 {

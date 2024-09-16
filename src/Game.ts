@@ -4,21 +4,21 @@ import StringBuilder from "./utils/StringBuilder";
 import Engine from "./engine/Engine";
 import ManualPlayer from "./game/ManualPlayer";
 import Player from "./game/Player";
+import Vector2 from "./utils/Vector2";
 
 class Game {
 
     engine: Engine = new Engine();
 
     constructor() {
-        const player1 = new ManualPlayer(-450);
-        this.engine.addChild(player1);
-        
-        // const player2 = new Player(0.45);
-        // this.engine.addChild(player2);
+        const player1 = this.engine.createGameObject(ManualPlayer);
+        player1.transform.position = new Vector2(-450, 0);
 
-        const ball = new Ball();
-        this.engine.addChild(ball);
-        
+        const player2 = this.engine.createGameObject(Player);
+        player2.transform.position = new Vector2(450, 0);
+
+        this.engine.createGameObject(Ball);
+                
         // const pong = new Pong(player1, player2, ball);
         // engine.addChild(pong);
     }
@@ -33,27 +33,8 @@ class Game {
         
         const tick = () => {
             this.engine.update();
-        
-            console.log(this.treeAsString());
         };
         setInterval(tick, 10/1000);
-        
-    }
-
-    treeAsString(): string {
-        const helper = (objOrEngine: GameObject|Engine) => {
-            stringBuilder.AddLine(objOrEngine.name);
-            stringBuilder.Indent();
-            for(const child of objOrEngine.children) {
-                helper(child);
-            }
-            stringBuilder.Unindent();
-        }
-        
-        const stringBuilder = new StringBuilder();
-        helper(this.engine);
-    
-        return stringBuilder.Build();
     }
 
 }

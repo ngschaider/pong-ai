@@ -1,26 +1,38 @@
 import Component from "./Component";
 import Graphics from "../graphics/Graphics";
 import Transform from "./Transform";
+import Engine from "./Engine";
+
+type ComponentConstructor<T> = new (obj: GameObject) => T
 
 class GameObject {
 
+    engine: Engine;
     name: string = "Unnamed GameObject";
-    tf: Transform;
+    transform: Transform;
 
-    constructor() {
-        this.tf = this.addComponent(Transform);
+    onCreate() {
+        
+    }
+
+    constructor(engine: Engine) {
+        this.engine = engine;
+
+        // every component must have a transform
+        this.transform = this.addComponent(Transform);
     }
 
     components: Component[] = [];
 
-    addComponent<T extends Component>(type: new () => T): T {
-        const instance: T = new type();
-        this.components.push(instance);
+    addComponent<T extends Component>(componentType: ComponentConstructor<T>): T {
+        const component: T = new componentType(this);
+        component.onCreate();
+        this.components.push(component);
 
-        return instance
+        return component
     }
 
-    getComponent<T extends Component>(type: new() => T): T|null{
+    getComponent<T extends Component>(type: ComponentConstructor<T>): T|null{
         const component = this.components.find(component => typeof component == typeof type) ;
 
         if(component) {
@@ -31,36 +43,27 @@ class GameObject {
     }
 
     update() {
-        for(const child of this.children) {
-            child.update();
+        for(const component of this.components) {
+            component.beforeUpdate();
+        }
+        for(const component of this.components) {
+            component.update();
+        }
+        for(const component of this.components) {
+            component.afterUpdate();
         }
     }
 
     draw(g: Graphics) {
-        for(const child of this.children) {
-            child.tf.beforeDraw(g);
-            child.draw(g);
-            child.tf.afterDraw(g);
+        for(const component of this.components) {
+            component.beforeDraw(g);
         }
-    }
-
-
-    children: GameObject[] = [];
-
-    addChild(obj: GameObject) {
-        if(this.children.includes(obj)) {
-            throw new Error("Tried to add already-present child.");
+        for(const component of this.components) {
+            component.draw(g);
         }
-
-        this.children.push(obj);
-    }
-
-    removeChild(obj: GameObject) {
-        if(!this.children.includes(obj)) {
-            throw new Error("Tried to remove non-present child.");
+        for(const component of this.components) {
+            component.afterDraw(g);
         }
-
-        this.children = this.children.filter(o => o !== obj);
     }
 
 }

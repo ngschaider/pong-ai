@@ -7,21 +7,20 @@ import Vector2 from "../utils/Vector2";
 
 class Player extends GameObject {
 
-    rb: RigidBody;
+    rb!: RigidBody;
 
     size: Vector2 = new Vector2(10, 200);
 
-    constructor(xPosition: number) {
-        super();
-
+    onCreate(): void {
         this.name = "Player";
 
         this.rb = this.addComponent(RigidBody);
-        this.tf.position.x = xPosition;
     }
 
     update() {
-        this.tf.position = this.tf.position.clampY(-1, 1);
+        super.update();
+
+        this.transform.position = this.transform.position.clampY(-540 - this.size.y/2, 540 + this.size.y/2);
     }
 
     draw(g: Graphics) {

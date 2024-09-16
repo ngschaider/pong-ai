@@ -4,21 +4,26 @@ import Player from "./Player";
 
 class ManualPlayer extends Player {
 
-    constructor(xPosition: number) {
-        super(xPosition);
+    onCreate() {
+        super.onCreate();
+        
         this.name = "ManualPlayer";
     }
 
     update() {
-        this.rb.velocity.y = 0;
+        super.update();
 
+        let velocity = 0;
+        
         if(Keys.W) {
-            this.rb.velocity.y -= 1 / 40;
+            velocity -= 2;
         }
         if(Keys.S) {
-            this.rb.velocity.y += 1 / 40;
+            velocity += 2;
         }
 
+        this.rb.velocity = new Vector2(0, velocity);
+        
         super.update();
     }
 

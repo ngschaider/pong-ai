@@ -4,6 +4,8 @@ import Component from "./Component";
 
 class Transform extends Component {
 
+    parent?: Transform;
+
     position: Vector2 = Vector2.Zero;
     rotation: number = 0;
 
@@ -11,6 +13,10 @@ class Transform extends Component {
         g.save();
         g.translate(this.position);
         g.rotate(this.rotation);
+    }
+
+    update() {
+        
     }
 
     afterDraw(g: Graphics) {

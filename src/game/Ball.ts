@@ -6,12 +6,10 @@ import RigidBody from "../engine/RigidBody";
 
 class Ball extends GameObject {
 
-    rb: RigidBody;
+    rb!: RigidBody;
 
-    constructor() {
-        super();
+    onCreate(): void {
         this.name = "Ball";
-
         this.rb = this.addComponent(RigidBody);
     }
 
@@ -21,14 +19,10 @@ class Ball extends GameObject {
 
     draw(g: Graphics) {
         super.draw(g);
-
-        g.save();
-
+        
         g.fill(Color.White);
         g.noStroke();
-        g.circle(this.tf.position, 10);
-
-        g.restore();
+        g.circle(Vector2.Zero, 10);
     }
 
 }
