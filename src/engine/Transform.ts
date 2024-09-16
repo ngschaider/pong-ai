@@ -1,6 +1,7 @@
 import Graphics from "../graphics/Graphics";
 import Vector2 from "../utils/Vector2";
 import Component from "./Component";
+import { Matrix3x3 } from "./Matrix2x2";
 
 class Transform extends Component {
 
@@ -8,18 +9,59 @@ class Transform extends Component {
 
     position: Vector2 = Vector2.Zero;
     rotation: number = 0;
+    scale: Vector2 = Vector2.One;
+
+    getTransformationMatrix(): Matrix3x3 {
+        const scale = new Matrix3x3(
+            this.scale.x, 0, 0, 
+            0, this.scale.y, 0, 
+            0, 0, 1
+        );
+        const translate = new Matrix3x3(
+            1, 0, this.position.x, 
+            0, 1, this.position.y, 
+            0, 0, 1
+        );
+        const rotate = new Matrix3x3(
+            Math.cos(this.rotation), -Math.sin(this.rotation), 0,
+            Math.sin(this.rotation), Math.cos(this.rotation), 0,
+            0, 0, 1
+        );
+
+        const thisMatrix = translate.multiply(rotate).multiply(scale);
+
+        if(this.parent) {
+            return this.parent.getTransformationMatrix().multiply(thisMatrix);
+        } else {
+            return thisMatrix;
+        }
+    }
+
+    getChildren(): Transform[] {
+        const gameObjects = this.gameObject.engine.gameObjects.filter(gameObject => gameObject.transform.parent === this);
+        return gameObjects.map(go => go.transform)
+    }
+
+    setParent(t: Transform) {
+        this.parent = t;
+    }
 
     beforeDraw(g: Graphics) {
         g.save();
-        g.translate(this.position);
-        g.rotate(this.rotation);
+        g.setTransformationMatrix(this.getTransformationMatrix());
     }
 
     update() {
-        
+        for(const child of this.getChildren()) {
+            child.gameObject.update();
+        }
     }
 
     afterDraw(g: Graphics) {
+        for(const child of this.getChildren()) {
+            child.gameObject.draw(g);
+        }
+
         g.restore();
     }
 

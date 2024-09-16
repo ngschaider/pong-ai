@@ -26,14 +26,14 @@ class GameObject {
 
     addComponent<T extends Component>(componentType: ComponentConstructor<T>): T {
         const component: T = new componentType(this);
-        component.onCreate();
         this.components.push(component);
+        component.onCreate();
 
         return component
     }
 
     getComponent<T extends Component>(type: ComponentConstructor<T>): T|null{
-        const component = this.components.find(component => typeof component == typeof type) ;
+        const component = this.components.find(component => type.name === component.constructor.name);
 
         if(component) {
             return component as T;

@@ -1,8 +1,6 @@
-import Vector2 from "../utils/Vector2";
 import GameObject from "../engine/GameObject";
-import Graphics from "../graphics/Graphics";
-import Color from "../graphics/Color";
 import RigidBody from "../engine/RigidBody";
+import Circle from "../engine/Circle";
 
 class Ball extends GameObject {
 
@@ -11,18 +9,9 @@ class Ball extends GameObject {
     onCreate(): void {
         this.name = "Ball";
         this.rb = this.addComponent(RigidBody);
-    }
 
-    update() {
-        super.update();
-    }
-
-    draw(g: Graphics) {
-        super.draw(g);
-        
-        g.fill(Color.White);
-        g.noStroke();
-        g.circle(Vector2.Zero, 10);
+        const circle = this.addComponent(Circle);
+        circle.diameter = 10;
     }
 
 }

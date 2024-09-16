@@ -1,18 +1,17 @@
+import Component from "../engine/Component";
+import RigidBody from "../engine/RigidBody";
 import Keys from "../input/Keys";
 import Vector2 from "../utils/Vector2";
-import Player from "./Player";
 
-class ManualPlayer extends Player {
+class ManualPlayer extends Component {
 
-    onCreate() {
-        super.onCreate();
-        
-        this.name = "ManualPlayer";
+    rb!: RigidBody;
+
+    onCreate(): void {
+        this.rb = this.gameObject.getComponent(RigidBody)!;
     }
 
     update() {
-        super.update();
-
         let velocity = 0;
         
         if(Keys.W) {
@@ -23,8 +22,6 @@ class ManualPlayer extends Player {
         }
 
         this.rb.velocity = new Vector2(0, velocity);
-        
-        super.update();
     }
 
 }
