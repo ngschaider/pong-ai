@@ -1,39 +1,38 @@
-import Graphics from "../graphics/Graphics";
+import Engine from "./Engine";
 import GameObject from "./GameObject";
+import Scene from "./Scene";
+import Transform from "./Transform";
+
+export type ComponentConstructor<T extends Component> = new (gameObject: GameObject) => T;
 
 class Component {
 
-    gameObject: GameObject;
+    private _gameObject: GameObject;
+    public get gameObject() {
+        return this._gameObject;
+    }
 
     constructor(gameObject: GameObject) {
-        this.gameObject = gameObject;
+        this._gameObject = gameObject;
     }
 
-    onCreate() {
-        
+    public get scene(): Scene {
+        return this.gameObject.scene;
     }
 
-    beforeDraw(g: Graphics) {
-
+    public get engine(): Engine {
+        return this.scene.engine;
     }
 
-    draw(g: Graphics) {
-
+    public get transform(): Transform {
+        return this.gameObject.transform;
     }
 
-    afterDraw(g: Graphics) {
-
-    }
-
-    beforeUpdate() {
+    public update() {
 
     }
 
-    update() {
-
-    }
-
-    afterUpdate(){
+    public fixedUpdate() {
 
     }
 

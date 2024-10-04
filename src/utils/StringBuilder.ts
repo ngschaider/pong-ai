@@ -1,30 +1,30 @@
 class StringBuilder {
 
     private result: string = ""
-    private indent: number = 0;
+    private indentationLevel: number = 0;
 
-    public AddLine(line: string) {
+    public addLine(line: string) {
         if(this.result != "") {
             this.result += "\n";
         }
 
-        for(let i = 0; i < this.indent; i++) {
+        for(let i = 0; i < this.indentationLevel; i++) {
             this.result += "\t";
         }
         this.result += line;
     }
 
-    public Indent() {
-        this.indent++;
+    public indent() {
+        this.indentationLevel++;
     }
 
-    public Unindent() {
-        this.indent--;
-        this.indent = Math.max(0, this.indent);
+    public unindent() {
+        this.indentationLevel--;
+        this.indentationLevel = Math.max(0, this.indentationLevel);
     }
 
 
-    public Build(): string {
+    public build(): string {
         return this.result;
     }
 

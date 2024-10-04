@@ -1,8 +1,6 @@
-import { Matrix3x3 } from "../engine/Matrix2x2";
 import Vector2 from "../utils/Vector2";
 import CanvasSettings from "./CanvasSettings";
 import Color from "./Color";
-import RectangleMode from "./RectangleMode";
 
 class Graphics {
 
@@ -46,7 +44,10 @@ class Graphics {
         this.settings = lastSaved;
     }
 
-    public setTransformationMatrix(matrix: Matrix3x3) {
+    public setTransformationMatrix(matrix: Matrix) {
+        if(matrix.width !== 3 || matrix.height !== 3) {
+            throw new Error("Transformation matrix must be of dimension 3x3.");
+        }
         this.ctx.setTransform({
             a: matrix.values[0],
             c: matrix.values[1],

@@ -1,36 +1,23 @@
 import Engine from "./engine/Engine";
 import GameObject from "./engine/GameObject";
-import RectangleObject from "./engine/RectangleObject";
-import Ball from "./game/Ball";
-import ManualPlayer from "./game/ManualPlayer";
-import Player from "./game/Player";
-import Pong from "./game/Pong";
-import TopBar from "./game/TopBar";
-import Vector2 from "./utils/Vector2";
+import Scene from "./engine/Scene";
+import HierarchyLogger from "./game/HierarchyLogger";
 
 const engine = new Engine();
 
-engine.createGameObject(TopBar);
+const go1 = engine.scene.addGameObject(GameObject);
+go1.name = "GameObject 1";
 
-const root = engine.createGameObject(GameObject);
-root.name = "Root"
-root.transform.position = new Vector2(window.innerWidth/2, window.innerHeight/2);
+const go2 = engine.scene.addGameObject(GameObject);
+go2.name = "GameObject 2";
 
-const player1 = engine.createGameObject(Player, root.transform);
-player1.transform.position = new Vector2(-450, 0);
-player1.name = "Player 1";
-player1.addComponent(ManualPlayer);
-        
-// const player2 = engine.createGameObject(Player);
-// player2.transform.position = new Vector2(450, 0);
+const go2Child = engine.scene.addGameObject(GameObject);
+go2Child.name = "GameObject 2 Child";
+go2Child.transform.parent = go2.transform;
 
-// engine.createGameObject(Ball);
+const go3 = engine.scene.addGameObject(GameObject);
+go3.name = "GameObject 3";
 
-// const test = engine.createGameObject(RectangleObject);
-// test.transform.position = new Vector2(200, 100);
-// console.log(test.transform.getTransformationMatrix());
-        
-// const pong = new Pong(player1, player2, ball);
-// engine.addChild(pong);
+engine.scene.addGameObject(HierarchyLogger);
 
 engine.start();

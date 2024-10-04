@@ -1,71 +1,63 @@
-import Component from "./Component";
-import Graphics from "../graphics/Graphics";
-import Transform from "./Transform";
+import Component, { ComponentConstructor } from "./Component";
 import Engine from "./Engine";
+import Scene from "./Scene";
+import Transform from "./Transform";
 
-type ComponentConstructor<T> = new (obj: GameObject) => T
+export type GameObjectConstructor<T extends GameObject> = new (scene: Scene) => T;
 
 class GameObject {
 
-    engine: Engine;
     name: string = "Unnamed GameObject";
-    transform: Transform;
 
-    onCreate() {
-        
+    _components: Component[] = [];
+    public get components(): Readonly<Component[]> {
+        return this._components;
     }
 
-    constructor(engine: Engine) {
-        this.engine = engine;
-
-        // every component must have a transform
-        this.transform = this.addComponent(Transform);
+    addComponent<T extends Component>(type: ComponentConstructor<T>): T {
+        const component = new type(this);
+        this._components.push(component);
+        return component;
     }
 
-    components: Component[] = [];
-
-    addComponent<T extends Component>(componentType: ComponentConstructor<T>): T {
-        const component: T = new componentType(this);
-        this.components.push(component);
-        component.onCreate();
-
-        return component
+    private _scene: Scene;
+    public get scene() {
+        return this._scene;
     }
 
-    getComponent<T extends Component>(type: ComponentConstructor<T>): T|null{
-        const component = this.components.find(component => type.name === component.constructor.name);
+    private _transform: Transform;
+    public get transform() {
+        return this._transform;
+    }
 
-        if(component) {
-            return component as T;
-        } else {
-            return null;
-        }
+    public get engine(): Engine {
+        return this.scene.engine;
+    }
+
+    constructor(scene: Scene) {
+        this._scene = scene;
+        this._transform = this.addComponent(Transform);
+        this.name = this.constructor.name;
+    }
+
+    getComponent<T extends Component>(type: new () => T): T|null {
+        const isType = (c: Component): c is T => c instanceof type
+        return this.components.find(isType) ?? null;
     }
 
     update() {
         for(const component of this.components) {
-            component.beforeUpdate();
-        }
-        for(const component of this.components) {
             component.update();
-        }
-        for(const component of this.components) {
-            component.afterUpdate();
         }
     }
 
-    draw(g: Graphics) {
+    fixedUpdate() {
         for(const component of this.components) {
-            component.beforeDraw(g);
-        }
-        for(const component of this.components) {
-            component.draw(g);
-        }
-        for(const component of this.components) {
-            component.afterDraw(g);
+            component.fixedUpdate();
         }
     }
 
 }
+
 
 export default GameObject;

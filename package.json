@@ -14,7 +14,6 @@
   "author": "Niklas Gschaider <niklas.gschaider@gschaider-systems.at>",
   "license": "All rights reserved.",
   "devDependencies": {
-    "@types/p5": "^1.4.2",
     "@webpack-cli/generators": "^2.4.2",
     "css-loader": "^6.7.1",
     "html-webpack-plugin": "^5.5.0",
@@ -29,6 +28,5 @@
     "webpack-dev-server": "^4.9.0"
   },
   "dependencies": {
-    "p5": "^1.4.1"
   }
 }

@@ -78,13 +78,13 @@ class Vector2 {
         }
     }
 
-    clampX(min: number, max: number): Vector2 {
-        return new Vector2(Math.min(max, Math.max(min, this.x)), this.y);
-    }
+    // clampX(min: number, max: number): Vector2 {
+    //     return new Vector2(Math.min(max, Math.max(min, this.x)), this.y);
+    // }
     
-    clampY(min: number, max: number): Vector2 {
-        return new Vector2(this.x, Math.min(max, Math.max(min, this.y)));
-    }
+    // clampY(min: number, max: number): Vector2 {
+    //     return new Vector2(this.x, Math.min(max, Math.max(min, this.y)));
+    // }
 }
 
 export default Vector2;

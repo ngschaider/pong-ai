@@ -1,65 +1,44 @@
-import Color from "../graphics/Color";
-import Graphics from "../graphics/Graphics";
-import InputManager from "../input/InputManager";
-import Vector2 from "../utils/Vector2";
-import GameObject from "./GameObject";
-import { Matrix3x3 } from "./Matrix2x2";
-import Transform from "./Transform";
-
-type GameObjectConstructor<T extends GameObject> = new (engine: Engine) => T;
+import Scene, { SceneConstructor } from "./Scene";
 
 class Engine {
 
-    graphics: Graphics = new Graphics();
+    private _scene!: Scene;
+    public get scene() {
+        return this._scene;
+    }
+    private set scene(scene: Scene) {
+        this._scene = scene;
+    }
 
-    gameObjects: GameObject[] = [];
+    constructor() {
+        this.switchScene(Scene);
+    }
 
-    inputManager = new InputManager();
-
-    createGameObject<T extends GameObject>(objType: GameObjectConstructor<T>, parent?: Transform): T {
-        const gameObject = new objType(this);
-        this.gameObjects.push(gameObject);
-
-        if(parent) {
-            gameObject.transform.setParent(parent);
-        }
-        
-        gameObject.onCreate();
-
-        return gameObject;
+    switchScene<T extends Scene>(type: SceneConstructor<T>): T {
+        const scene = new type(this);
+        this._scene = scene;
+        return scene;
     }
 
     update() {
-        for(const child of this.gameObjects) {
-            child.update();
-        }
+        this.scene.update();
     }
 
-    draw() {
-        this.graphics.setTransformationMatrix(new Matrix3x3(1, 0, 0, 0, 1, 0, 0, 0, 1));
-        this.graphics.fill(Color.Gray);
-
-        const v = new Vector2(window.innerWidth, window.innerHeight)
-        this.graphics.rectangle(v.scalarDiv(2), v);
-
-        for(const child of this.gameObjects) {
-            child.transform.beforeDraw(this.graphics);
-            child.draw(this.graphics);
-            child.transform.afterDraw(this.graphics);
-        }
+    fixedUpdate() {
+        this.scene.fixedUpdate();
     }
 
     start() {
-        const draw = () => {
-            this.draw();
-            window.requestAnimationFrame(draw);
-        }
-        window.requestAnimationFrame(draw);
-        
-        const tick = () => {
+        const func = () => {
             this.update();
-        };
-        setInterval(tick, 10/1000);
+            window.requestAnimationFrame(func);
+        }
+        window.requestAnimationFrame(func);
+
+        const fixedFunc = () => {
+            this.fixedUpdate();
+        }
+        setInterval(fixedFunc, 1000/30);
     }
 
 }
