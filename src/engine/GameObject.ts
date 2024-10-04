@@ -40,8 +40,8 @@ class GameObject {
         this.name = this.constructor.name;
     }
 
-    getComponent<T extends Component>(type: new () => T): T|null {
-        const isType = (c: Component): c is T => c instanceof type
+    getComponent<T extends Component>(type: ComponentConstructor<T>): T|null {
+        const isType = (c: Component): c is T => c instanceof type;
         return this.components.find(isType) ?? null;
     }
 

@@ -1,3 +1,5 @@
+import Component from "./Component";
+import Renderer from "./Renderer";
 import Scene, { SceneConstructor } from "./Scene";
 
 class Engine {

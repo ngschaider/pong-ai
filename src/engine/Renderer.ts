@@ -1,12 +1,10 @@
 import Graphics from "../graphics/Graphics";
 import Component from "./Component";
 
-class Renderer extends Component {
+abstract class Renderer extends Component {
 
-    graphics!: Graphics;
-
-    update() {
-        
-    }
+    abstract render(graphics: Graphics): void;
 
 }
+
+export default Renderer;
