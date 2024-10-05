@@ -20,6 +20,12 @@ class GameObject {
         return component;
     }
 
+    addGameObject<T extends GameObject>(type: GameObjectConstructor<T>): T {
+        const go = this.scene.addGameObject(type);
+        go.transform.parent = this.transform;
+        return go;
+    }
+
     private _scene: Scene;
     public get scene() {
         return this._scene;

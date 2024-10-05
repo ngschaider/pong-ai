@@ -13,7 +13,7 @@ class InputSystem extends Component {
         window.addEventListener("keyup", this.keyup.bind(this));
     }
 
-    keydown(e: KeyboardEvent) {
+    private keydown(e: KeyboardEvent) {
         switch(e.key) {
             case "a": this.keys.A = true; break;
             case "b": this.keys.B = true; break;
@@ -44,7 +44,7 @@ class InputSystem extends Component {
         }
     }
 
-    keyup(e: KeyboardEvent) {
+    private keyup(e: KeyboardEvent) {
         switch(e.key) {
             case "a": this.keys.A = false; break;
             case "b": this.keys.B = false; break;

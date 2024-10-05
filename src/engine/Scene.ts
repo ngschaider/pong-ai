@@ -27,6 +27,11 @@ class Scene {
         return this.gameObjects.map(go => go.getComponent(type)).filter(notEmpty);
     }
 
+    public getComponent<T extends Component>(type: ComponentConstructor<T>): T|null {
+        const components = this.getAllComponents(type);
+        return components.length === 0 ? null : components[0]
+    }
+
     public getActiveCamera(): Camera|null {
         return this.getAllComponents(Camera).find(c => c.isActive) ?? null;
     }

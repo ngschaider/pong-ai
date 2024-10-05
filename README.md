@@ -1,5 +1,13 @@
 # pong-ai
 
+## Game Engine (design notes)
+
+Engine -> Scene -> GameObject -> Component
+
+RenderSystem iterates through all renderers and calls their render function in the correct order after applying the World->Screen transformation matrix
+
+
+
 ## Neural Network (design notes)
 
 Inputs:

@@ -10,7 +10,7 @@ class Renderer extends Component {
     public strokeColor: Color = Color.black;
     public stroke: boolean = false;
 
-    public lineWidth: number = 1;
+    public lineWidth: number = 0.1;
 
     public render(graphics: Graphics) {
         if(this.fill) {

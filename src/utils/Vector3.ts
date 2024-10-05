@@ -69,6 +69,42 @@ class Vector3 {
         return new Vector2(this.z, this.z);
     }
 
+    get magnitude() {
+        return Math.abs(Math.sqrt(this.x**2 + this.y**2 + this.z**2));
+    }
+
+    get angle() {
+        return Math.atan2(this.y, this.x);
+    }
+
+    add(v: Vector3): Vector3 {
+        return new Vector3(this.x + v.x, this.y + v.y, this.z + v.z);
+    }
+
+    subtract(v: Vector3): Vector3 {
+        return new Vector3(this.x - v.x, this.y - v.y, this.z - v.z);
+    }
+
+    scalarMul(v: Vector3|number): Vector3 {
+        if(typeof v === "number") {
+            return new Vector3(this.x * v, this.y * v, this.z * v);
+        } else if(v instanceof Vector3) {
+            return new Vector3(this.x * v.x, this.y * v.y, this.z * v.z);
+        } else {
+            throw new Error("Invalid type encountered: " + typeof v);
+        }
+    }
+
+    scalarDiv(v: Vector3|number): Vector3 {
+        if(typeof v === "number") {
+            return new Vector3(this.x / v, this.y / v);
+        } else if(v instanceof Vector3) {
+            return new Vector3(this.x / v.x, this.y / v.y, this.z * v.z);
+        } else {
+            throw new Error("Invalid type encountered: " + typeof v);
+        }
+    }
+
 }
 
 export default Vector3;
