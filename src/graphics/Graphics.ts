@@ -1,7 +1,6 @@
 import Matrix from "../utils/Matrix";
 import Sprite from "../utils/Sprite";
 import Vector2 from "../utils/Vector2";
-import CanvasSettings from "./CanvasSettings";
 import Color from "./Color";
 
 class Graphics {
@@ -9,8 +8,8 @@ class Graphics {
     private el: HTMLCanvasElement;
     private ctx: CanvasRenderingContext2D;
 
-    private savedSettings: CanvasSettings[] = []
-    private settings: CanvasSettings = new CanvasSettings();
+    private doStroke = false;
+    private doFill = false;
 
     constructor() {
         this.el = document.getElementById("root") as HTMLCanvasElement;
@@ -33,19 +32,6 @@ class Graphics {
         return new Vector2(this.el.width, this.el.height);
     }
 
-    public save() {
-        this.savedSettings.push(this.settings);
-        this.settings = this.settings.clone();
-    }
-    public restore() {
-        const lastSaved = this.savedSettings.pop();
-        if(lastSaved === undefined) {
-            throw new Error("More restore() calls than save() calls encountered.");
-        }
-
-        this.settings = lastSaved;
-    }
-
     public setTransformationMatrix(matrix: Matrix) {
         if(matrix.width !== 3 || matrix.height !== 3) {
             throw new Error("Transformation matrix must be of dimension 3x3.");
@@ -61,12 +47,12 @@ class Graphics {
     }
 
     public fill(color: Color) {
-        this.settings.doFill = true;
+        this.doFill = true;
         this.ctx.fillStyle = "rgb(" + color.r + ", " + color.g + ", " + color.b + ")"
     }
 
     public stroke(color: Color) {
-        this.settings.doStroke = true;
+        this.doStroke = true;
         this.ctx.strokeStyle = "rgb(" + color.r + ", " + color.g + ", " + color.b + ")"
     }
 
@@ -75,11 +61,11 @@ class Graphics {
     }
 
     public noFill() {
-        this.settings.doFill = false;
+        this.doFill = false;
     }
 
     public noStroke() {
-        this.settings.doStroke = false;
+        this.doStroke = false;
     }
 
     public circle(position: Vector2, diameter: number) {
@@ -87,10 +73,10 @@ class Graphics {
 
         this.ctx.ellipse(position.x, position.x, diameter/2, diameter/2, 0, 0, 2*Math.PI);
 
-        if(this.settings.doFill) {
+        if(this.doFill) {
             this.ctx.fill();
         }
-        if(this.settings.doStroke) {
+        if(this.doStroke) {
             this.ctx.stroke();
         }
 
@@ -102,10 +88,10 @@ class Graphics {
 
         this.ctx.rect(position.x, position.y, size.x, size.y);
         
-        if(this.settings.doFill) {
+        if(this.doFill) {
             this.ctx.fill();
         }
-        if(this.settings.doStroke) {
+        if(this.doStroke) {
             this.ctx.stroke();
         }
         

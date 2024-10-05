@@ -1,5 +1,5 @@
-import Component from "../engine/Component";
-import GameObject from "../engine/GameObject";
+import Component from "./Component";
+import GameObject from "./GameObject";
 import Keys from "./Keys";
 
 class InputSystem extends Component {

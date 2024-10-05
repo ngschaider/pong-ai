@@ -1,18 +1,9 @@
 import Graphics from "../graphics/Graphics";
 import Vector2 from "../utils/Vector2";
+import AnchorPoint from "./AnchorPoint";
 import Renderer from "./Renderer";
 
-export enum AnchorPoint {
-    TopLeft,
-    TopRight,
-    BottomLeft,
-    BottomRight,
-    TopCenter,
-    RightCenter,
-    BottomCenter,
-    LeftCenter,
-    CenterCenter,
-}
+
 
 class RectangleRenderer extends Renderer {
 

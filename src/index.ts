@@ -1,7 +1,7 @@
 import CircleRenderer from "./engine/CircleRenderer";
 import Engine from "./engine/Engine";
 import GameObject from "./engine/GameObject";
-import RectangleRenderer, { AnchorPoint } from "./engine/RectangleRenderer";
+import RectangleRenderer from "./engine/RectangleRenderer";
 import RenderSystem from "./engine/RenderSystem";
 import HierarchyLogger from "./game/HierarchyLogger";
 import Graphics from "./graphics/Graphics";
