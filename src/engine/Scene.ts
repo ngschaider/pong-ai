@@ -1,6 +1,6 @@
 import { notEmpty } from "../utils/funcs";
 import Camera from "./Camera";
-import Component, { ComponentConstructor } from "./Component";
+import Component, { AbstractComponentConstructor, ComponentConstructor } from "./Component";
 import Engine from "./Engine";
 import GameObject, { GameObjectConstructor } from "./GameObject";
 
@@ -23,7 +23,7 @@ class Scene {
         return this.gameObjects.filter(go => go.transform.isRootObject);
     }
 
-    public getAllComponents<T extends Component>(type: ComponentConstructor<T>): T[] {
+    public getAllComponents<T extends Component>(type: AbstractComponentConstructor<T>): T[] {
         return this.gameObjects.map(go => go.getComponent(type)).filter(notEmpty);
     }
 

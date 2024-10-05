@@ -41,6 +41,15 @@ class CanvasGraphics {
             throw new Error("Transformation matrix must be of dimension 3x3.");
         }
 
+        // in canvas, down is y-positive. but we want y-positive to point up, so we scale-y by -1 
+        // to flip the screen and translate-y by the height to move it down into the viewport again
+
+        matrix = Matrix.create3x3(
+            1, 0, 0, 
+            0, -1, this.size.y, 
+            0, 0, 1
+        ).multiply(matrix);
+
         this.ctx.setTransform({
             a: matrix.values[0],
             c: matrix.values[1],

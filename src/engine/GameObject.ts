@@ -1,4 +1,4 @@
-import Component, { ComponentConstructor } from "./Component";
+import Component, { AbstractComponentConstructor, ComponentConstructor } from "./Component";
 import Engine from "./Engine";
 import Scene from "./Scene";
 import Transform from "./Transform";
@@ -46,7 +46,7 @@ class GameObject {
         this.name = this.constructor.name;
     }
 
-    getComponent<T extends Component>(type: ComponentConstructor<T>): T|null {
+    getComponent<T extends Component>(type: AbstractComponentConstructor<T>): T|null {
         const isType = (c: Component): c is T => c instanceof type;
         return this.components.find(isType) ?? null;
     }

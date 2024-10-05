@@ -1,11 +1,10 @@
-import AnchorPoint from "../engine/AnchorPoint";
 import GameObject from "../engine/GameObject";
+import RectangleCollider from "../engine/RectangleCollider";
 import RectangleRenderer from "../engine/RectangleRenderer";
 import RigidBody from "../engine/RigidBody";
 import Scene from "../engine/Scene";
 import Color from "../graphics/Color";
 import Vector2 from "../utils/Vector2";
-import Vector3 from "../utils/Vector3";
 
 class Player extends GameObject {
 
@@ -20,6 +19,8 @@ class Player extends GameObject {
         this.renderer = this.addComponent(RectangleRenderer);
         this.renderer.fillColor = Color.white;
         this.transform.scale = new Vector2(0.6, 4);
+
+        const collider = this.addComponent(RectangleCollider);
     }
 
 }
