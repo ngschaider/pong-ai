@@ -40,7 +40,7 @@ class Engine {
         const fixedFunc = () => {
             this.fixedUpdate();
         }
-        setInterval(fixedFunc, 1000/30);
+        setInterval(fixedFunc, 1000/60);
     }
 
 }

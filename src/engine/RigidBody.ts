@@ -15,6 +15,8 @@ class RigidBody extends Component {
     }
 
     public fixedUpdate(): void {
+        super.fixedUpdate();
+
         this.velocity = this.velocity.add(this.acceleration);
         this.transform.position = this.transform.position.add(this.velocity);
 

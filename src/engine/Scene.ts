@@ -50,7 +50,7 @@ class Scene {
 
     fixedUpdate() {
         for(const gameObject of this.gameObjects) {
-            gameObject.update();
+            gameObject.fixedUpdate();
         }
     }
 

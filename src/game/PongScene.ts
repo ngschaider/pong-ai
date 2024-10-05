@@ -12,6 +12,7 @@ import ManualPlayer from "./ManualPlayer";
 import StrokedLine from "../engine/StrokedLine";
 import MiddleLine from "../engine/StrokedLine";
 import CanvasGraphics from "../graphics/CanvasGraphics";
+import FpsLogger from "./FpsLogger";
 
 class MyBackground extends GameObject {
 
@@ -63,6 +64,7 @@ class PongScene extends Scene {
         this.addGameObject(MyBackground);
         this.addGameObject(ManualPlayer);
         this.addGameObject(StrokedLine);
+        this.addGameObject(FpsLogger);
     }
 
 }
