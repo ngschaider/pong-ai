@@ -1,7 +1,7 @@
 import Vector2 from "./Vector2"
 
 export const collideCircleCircle = (c1: Vector2, d1: number, c2: Vector2, d2: number) => {
-    return c1.sub(c2).magnitude <= d1/2 + d2/2;
+    return c1.subtract(c2).magnitude <= d1/2 + d2/2;
 };
 
 export const collidePointLine = (p: Vector2, v1: Vector2, v2: Vector2, buffer?: number) => {
@@ -9,11 +9,11 @@ export const collidePointLine = (p: Vector2, v1: Vector2, v2: Vector2, buffer?: 
     if (buffer === undefined){ buffer = 0.1; }   // higher # = less accurate
 
     // get distance from the point to the two ends of the line
-    var d1 = p.sub(v1).magnitude
-    var d2 = p.sub(v2).magnitude
+    var d1 = p.subtract(v1).magnitude
+    var d2 = p.subtract(v2).magnitude
 
     // get the length of the line
-    var lineLen = v1.sub(v2).magnitude;
+    var lineLen = v1.subtract(v2).magnitude;
 
     // if the two distances are equal to the line's length, the point is on the line!
     // note we use the buffer here to give a range, rather than one #
@@ -21,7 +21,7 @@ export const collidePointLine = (p: Vector2, v1: Vector2, v2: Vector2, buffer?: 
 };
 
 export const collidePointCircle = (p: Vector2, center: Vector2, diameter: number) => {
-    return p.sub(center).magnitude <= diameter/2;
+    return p.subtract(center).magnitude <= diameter/2;
 };
 
 export const collideLineCircle = (v1: Vector2,  v2: Vector2,  center: Vector2,  diameter: number) => {
@@ -32,7 +32,7 @@ export const collideLineCircle = (v1: Vector2,  v2: Vector2,  center: Vector2,  
     if (inside1 || inside2) return true;
   
     // get length of the line
-    const len = v1.sub(v2).magnitude
+    const len = v1.subtract(v2).magnitude
   
     // get dot product of the line and circle
     var dot = ((center.x-v1.x)*(v2.x-v1.x)) + ((center.y-v1.y)*(v2.y-v1.y)) / len**2;
@@ -46,7 +46,7 @@ export const collideLineCircle = (v1: Vector2,  v2: Vector2,  center: Vector2,  
     if (!onSegment) return false;
   
     // get distance to closest point
-    if (closest.sub(center).magnitude <= diameter/2) {
+    if (closest.subtract(center).magnitude <= diameter/2) {
       return true;
     }
     return false;

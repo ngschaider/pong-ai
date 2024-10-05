@@ -2,10 +2,32 @@ import Graphics from "../graphics/Graphics";
 import Vector2 from "../utils/Vector2";
 import Renderer from "./Renderer";
 
+export enum AnchorPoint {
+    TopLeft,
+    TopRight,
+    BottomLeft,
+    BottomRight,
+    TopCenter,
+    RightCenter,
+    BottomCenter,
+    LeftCenter,
+    CenterCenter,
+}
+
 class RectangleRenderer extends Renderer {
 
-    render(graphics: Graphics): void {
-        graphics.rectangle(Vector2.Zero, Vector2.One);
+    public anchorPoint: AnchorPoint = AnchorPoint.CenterCenter;
+
+    public render(graphics: Graphics): void {
+        super.render(graphics);
+
+        if(this.anchorPoint === AnchorPoint.TopLeft) {
+            graphics.rectangle(new Vector2(0, 0), new Vector2(1, 1));
+        } else if(this.anchorPoint === AnchorPoint.CenterCenter) {
+            graphics.rectangle(new Vector2(-0.5, -0.5), new Vector2(1, 1));
+        } else {
+            throw new Error("Unimplemented anchor point encountered.")
+        }
     }
 
 }

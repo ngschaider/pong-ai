@@ -1,3 +1,4 @@
+import { notEmpty } from "../utils/funcs";
 import Engine from "./Engine";
 import GameObject from "./GameObject";
 import Scene from "./Scene";

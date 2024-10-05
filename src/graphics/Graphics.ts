@@ -1,3 +1,5 @@
+import Matrix from "../utils/Matrix";
+import Sprite from "../utils/Sprite";
 import Vector2 from "../utils/Vector2";
 import CanvasSettings from "./CanvasSettings";
 import Color from "./Color";
@@ -18,7 +20,7 @@ class Graphics {
         this.fill(Color.White);
         this.stroke(Color.White);
 
-        window.addEventListener("resize", this.resize);
+        window.addEventListener("resize", this.resize.bind(this));
         this.resize();
     }
 
@@ -92,7 +94,7 @@ class Graphics {
     public rectangle(position: Vector2, size: Vector2) {
         this.ctx.beginPath();
 
-        this.ctx.rect(position.x - size.x/2, position.y - size.y/2, size.x, size.y);
+        this.ctx.rect(position.x, position.y, size.x, size.y);
         
         if(this.settings.doFill) {
             this.ctx.fill();
@@ -102,6 +104,10 @@ class Graphics {
         }
         
         this.ctx.closePath();
+    }
+
+    public image(sprite: Sprite) {
+        this.ctx.drawImage(sprite.bitmap, 0, 0);
     }
 
     public text(position: Vector2, text: string) {

@@ -50,11 +50,11 @@ class Vector2 {
         return new Vector2(this.x + v.x, this.y + v.y);
     }
 
-    sub(v: Vector2): Vector2 {
+    subtract(v: Vector2): Vector2 {
         return new Vector2(this.x - v.x, this.y - v.y);
     }
 
-    mul(v: Vector2): Vector2 {
+    multiply(v: Vector2): Vector2 {
         return Vector2.fromPolars(this.magnitude * v.magnitude, this.angle + v.angle);
     }
 

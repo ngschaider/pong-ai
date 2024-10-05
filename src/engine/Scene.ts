@@ -1,3 +1,6 @@
+import { notEmpty } from "../utils/funcs";
+import Camera from "./Camera";
+import Component, { ComponentConstructor } from "./Component";
 import Engine from "./Engine";
 import GameObject, { GameObjectConstructor } from "./GameObject";
 
@@ -18,6 +21,14 @@ class Scene {
 
     getRootObjects(): GameObject[] {
         return this.gameObjects.filter(go => go.transform.isRootObject);
+    }
+
+    public getAllComponents<T extends Component>(type: ComponentConstructor<T>): T[] {
+        return this.gameObjects.map(go => go.getComponent(type)).filter(notEmpty);
+    }
+
+    public getActiveCamera(): Camera|null {
+        return this.getAllComponents(Camera).find(c => c.isActive) ?? null;
     }
 
     addGameObject<T extends GameObject>(type: GameObjectConstructor<T>): T {
