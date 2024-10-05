@@ -27,3 +27,5 @@ class MyEvent {
     }
 
 }
+
+export default MyEvent;

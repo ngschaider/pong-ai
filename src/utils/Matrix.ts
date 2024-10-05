@@ -93,7 +93,7 @@ class Matrix {
         }
     }
 
-    invert(): Matrix {
+    adj(): Matrix {
         if(this.height === 3 && this.width === 3) {
             const a = this.getValue(0, 0);
             const b = this.getValue(1, 0);
@@ -104,9 +104,19 @@ class Matrix {
             const g = this.getValue(0, 2);
             const h = this.getValue(1, 2);
             const i = this.getValue(2, 2);
-            return Matrix.create3x3(e*i-f*h, c*h-b*i, b*f-c*e, f*g-d*i, a*i-c*g, c*d-a*f, d*h-e*g, b*g-a*h, a*e-b*d).scalarDiv(this.det())
+            return Matrix.create3x3(e*i-f*h, c*h-b*i, b*f-c*e, f*g-d*i, a*i-c*g, c*d-a*f, d*h-e*g, b*g-a*h, a*e-b*d)
         } else if(this.height === 2 && this.width === 2) {
-            return Matrix.create2x2(this.getValue(1, 1), -this.getValue(1, 0), -this.getValue(0, 1), this.getValue(0, 0)).scalarDiv(this.det());
+            return Matrix.create2x2(this.getValue(1, 1), -this.getValue(1, 0), -this.getValue(0, 1), this.getValue(0, 0))
+        } else {
+            throw new Error("invert is only implemented for 2x2 and 3x3 matrices.");
+        }
+    }
+
+    invert(): Matrix {
+        if(this.height === 3 && this.width === 3) {
+            return this.adj().scalarDiv(this.det())
+        } else if(this.height === 2 && this.width === 2) {
+            return this.adj().scalarDiv(this.det());
         } else {
             throw new Error("invert is only implemented for 2x2 and 3x3 matrices.");
         }
