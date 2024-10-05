@@ -1,11 +1,11 @@
 class Color {
 
-    static White = new Color(255, 255, 255);
-    static Black = new Color(0, 0, 0);
-    static Red = new Color(255, 0, 0);
-    static Green = new Color(0, 255, 0);
-    static Blue = new Color(0, 0, 255);
-    static Gray = new Color(52, 52, 52);
+    static white = new Color(255, 255, 255);
+    static black = new Color(0, 0, 0);
+    static red = new Color(255, 0, 0);
+    static green = new Color(0, 255, 0);
+    static blue = new Color(0, 0, 255);
+    static gray = new Color(52, 52, 52);
 
     r: number;
     g: number;

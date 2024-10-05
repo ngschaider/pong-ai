@@ -1,4 +1,5 @@
 import Graphics from "../graphics/Graphics";
+import Matrix from "../utils/Matrix";
 import Component from "./Component";
 import Renderer from "./Renderer";
 
@@ -20,8 +21,16 @@ class RenderSystem extends Component {
 
         for(const renderer of renderers) {
             const rendererMatrix = renderer.transform.getMatrix();
+            const cameraMatrix = camera.transform.getMatrix();
+            
+            const factor = this.graphics.size.y / camera.size;
+            const scale = Matrix.create3x3(
+                factor, 0, 0, 
+                0, factor, 0, 
+                0, 0, 1
+            );
 
-            const matrix = camera.getMatrix().invert().multiply(rendererMatrix);
+            const matrix = scale.multiply(cameraMatrix.invert()).multiply(rendererMatrix);
 
             this.graphics.setTransformationMatrix(matrix);
             renderer.render(this.graphics);

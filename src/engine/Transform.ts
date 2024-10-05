@@ -6,8 +6,8 @@ class Transform extends Component {
 
     parent: Transform|null = null;
 
-    position: Vector2 = Vector2.Zero;
-    scale: Vector2 = Vector2.One;
+    position: Vector2 = Vector2.zero;
+    scale: Vector2 = Vector2.one;
     rotation: number = 0;
 
     public get isRootObject(): boolean {

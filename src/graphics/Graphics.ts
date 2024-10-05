@@ -17,8 +17,8 @@ class Graphics {
         this.ctx = this.el.getContext("2d") as CanvasRenderingContext2D;
 
         this.ctx.font = "18px Consolas";
-        this.fill(Color.White);
-        this.stroke(Color.White);
+        this.fill(Color.white);
+        this.stroke(Color.white);
 
         window.addEventListener("resize", this.resize.bind(this));
         this.resize();
@@ -64,14 +64,20 @@ class Graphics {
         this.settings.doFill = true;
         this.ctx.fillStyle = "rgb(" + color.r + ", " + color.g + ", " + color.b + ")"
     }
+
     public stroke(color: Color) {
         this.settings.doStroke = true;
         this.ctx.strokeStyle = "rgb(" + color.r + ", " + color.g + ", " + color.b + ")"
     }
 
+    public lineWidth(lineWidth: number) {
+        this.ctx.lineWidth = lineWidth;
+    }
+
     public noFill() {
         this.settings.doFill = false;
     }
+
     public noStroke() {
         this.settings.doStroke = false;
     }

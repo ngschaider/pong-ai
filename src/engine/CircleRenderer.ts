@@ -5,7 +5,9 @@ import Renderer from "./Renderer";
 class CircleRenderer extends Renderer {
 
     public render(graphics: Graphics): void {
-        graphics.circle(Vector2.Zero, 1);
+        super.render(graphics);
+
+        graphics.circle(Vector2.zero, 1);
     }
 
 }

@@ -4,11 +4,13 @@ import Component from "./Component";
 
 class Renderer extends Component {
 
-    public fillColor: Color = Color.Black;
+    public fillColor: Color = Color.black;
     public fill: boolean = true;
 
-    public strokeColor: Color = Color.Black;
-    public stroke: boolean = true;
+    public strokeColor: Color = Color.black;
+    public stroke: boolean = false;
+
+    public lineWidth: number = 1;
 
     public render(graphics: Graphics) {
         if(this.fill) {
@@ -22,6 +24,8 @@ class Renderer extends Component {
         } else {
             graphics.noStroke();
         }
+
+        graphics.lineWidth(this.lineWidth);
     }
 
 }

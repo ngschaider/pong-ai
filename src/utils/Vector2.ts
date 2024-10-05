@@ -1,13 +1,13 @@
 class Vector2 {
 
-    static Zero = new Vector2(0, 0);
-    static One = new Vector2(1, 1);
-    static Right = new Vector2(1, 0);
-    static Down = new Vector2(0, -1);
-    static Up = new Vector2(0, 1);
-    static Left = new Vector2(-1, 0);
+    static zero = new Vector2(0, 0);
+    static one = new Vector2(1, 1);
+    static right = new Vector2(1, 0);
+    static down = new Vector2(0, -1);
+    static up = new Vector2(0, 1);
+    static left = new Vector2(-1, 0);
     
-    static get Random() {
+    static get random() {
         return new Vector2(Math.random(), Math.random());
     }
 
