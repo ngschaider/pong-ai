@@ -2,6 +2,15 @@ import Vector2 from "./Vector2";
 
 class Vector3 {
 
+    static zero = new Vector3(0, 0 ,0);
+    static one = new Vector3(1, 1, 1);
+    static right = new Vector3(1, 0, 0);
+    static left = new Vector3(-1, 0, 0);
+    static up = new Vector3(0, 1, 0);
+    static down = new Vector3(0, -1, 0);
+    static back = new Vector3(0, 0, -1);
+    static front = new Vector3(0, 0, 1);
+
     private _x: number;
     public get x() {
         return this._x;
@@ -26,10 +35,10 @@ class Vector3 {
         this._z = value;
     }
 
-    constructor(x: number, y: number, z: number) {
+    constructor(x: number, y: number, z?: number) {
         this._x = x;
         this._y = y;
-        this._z = z;
+        this._z = z ?? 0;
     }
     
     get xx() {

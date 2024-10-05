@@ -14,7 +14,12 @@ class RenderSystem extends Component {
 
         const renderers = this.scene.gameObjects
             .map(go => go.getComponent(Renderer))
-            .filter(isRenderer);
+            .filter(isRenderer)
+            .sort((a, b) => {
+                if(a.transform.position.z < b.transform.position.z) return -1;
+                if(a.transform.position.z > b.transform.position.z) return 1;
+                return 0;
+            });
 
         const camera = this.scene.getActiveCamera();
         if(!camera) return;

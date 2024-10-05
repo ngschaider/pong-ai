@@ -40,6 +40,7 @@ class Graphics {
         if(matrix.width !== 3 || matrix.height !== 3) {
             throw new Error("Transformation matrix must be of dimension 3x3.");
         }
+
         this.ctx.setTransform({
             a: matrix.values[0],
             c: matrix.values[1],

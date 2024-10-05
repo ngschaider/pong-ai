@@ -8,6 +8,7 @@ import Vector2 from "./utils/Vector2";
 import Camera from "./engine/Camera";
 import Color from "./graphics/Color";
 import BackgroundRenderer from "./engine/BackgroundRenderer";
+import Vector3 from "./utils/Vector3";
 
 const main = async() => {
     const engine = new Engine();
@@ -27,15 +28,16 @@ const main = async() => {
 
     const upperBar = engine.scene.addGameObject(GameObject);
     upperBar.transform.scale = new Vector2(1000, 1);
-    upperBar.transform.position = new Vector2(0, 1);
+    upperBar.transform.position = new Vector3(0, 1);
     upperBar.addComponent(RectangleRenderer);
 
     const lowerBar = engine.scene.addGameObject(GameObject);
     lowerBar.transform.scale = new Vector2(1000, 1);
-    lowerBar.transform.position = new Vector2(0, 19);
+    lowerBar.transform.position = new Vector3(0, 19);
     lowerBar.addComponent(RectangleRenderer).fillColor = Color.red;
     
     const background = engine.scene.addGameObject(GameObject);
+    background.transform.position = new Vector3(0, 0, -1);
     const bg = background.addComponent(BackgroundRenderer);
     bg.color = Color.gray;
     

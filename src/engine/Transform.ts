@@ -1,12 +1,13 @@
 import Matrix from "../utils/Matrix";
 import Vector2 from "../utils/Vector2";
+import Vector3 from "../utils/Vector3";
 import Component from "./Component";
 
 class Transform extends Component {
 
     parent: Transform|null = null;
 
-    position: Vector2 = Vector2.zero;
+    position: Vector3 = Vector3.zero;
     scale: Vector2 = Vector2.one;
     rotation: number = 0;
 
