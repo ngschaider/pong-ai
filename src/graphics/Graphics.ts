@@ -32,6 +32,10 @@ class Graphics {
         return new Vector2(this.el.width, this.el.height);
     }
 
+    get aspectRatio(): number {
+        return this.size.x / this.size.y;
+    }
+
     public setTransformationMatrix(matrix: Matrix) {
         if(matrix.width !== 3 || matrix.height !== 3) {
             throw new Error("Transformation matrix must be of dimension 3x3.");

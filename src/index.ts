@@ -3,13 +3,11 @@ import Engine from "./engine/Engine";
 import GameObject from "./engine/GameObject";
 import RectangleRenderer from "./engine/RectangleRenderer";
 import RenderSystem from "./engine/RenderSystem";
-import HierarchyLogger from "./game/HierarchyLogger";
 import Graphics from "./graphics/Graphics";
-import SpriteRenderer from "./engine/SpriteRenderer";
-import Sprite from "./utils/Sprite";
 import Vector2 from "./utils/Vector2";
 import Camera from "./engine/Camera";
 import Color from "./graphics/Color";
+import BackgroundRenderer from "./engine/BackgroundRenderer";
 
 const main = async() => {
     const engine = new Engine();
@@ -29,13 +27,17 @@ const main = async() => {
 
     const upperBar = engine.scene.addGameObject(GameObject);
     upperBar.transform.scale = new Vector2(1000, 1);
-    upperBar.transform.position = new Vector2(0, 0.5);
+    upperBar.transform.position = new Vector2(0, 1);
     upperBar.addComponent(RectangleRenderer);
 
     const lowerBar = engine.scene.addGameObject(GameObject);
     lowerBar.transform.scale = new Vector2(1000, 1);
-    lowerBar.transform.position = new Vector2(0, 19.5);
+    lowerBar.transform.position = new Vector2(0, 19);
     lowerBar.addComponent(RectangleRenderer).fillColor = Color.red;
+    
+    const background = engine.scene.addGameObject(GameObject);
+    const bg = background.addComponent(BackgroundRenderer);
+    bg.color = Color.gray;
     
     // engine.scene.addGameObject(HierarchyLogger);
     
