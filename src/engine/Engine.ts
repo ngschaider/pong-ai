@@ -1,8 +1,11 @@
+import MyEvent from "../utils/MyEvent";
 import Component from "./Component";
 import Renderer from "./Renderer";
 import Scene, { SceneConstructor } from "./Scene";
 
 class Engine {
+    
+    onStart: MyEvent = new MyEvent();
 
     private _scene!: Scene;
     public get scene() {
@@ -41,6 +44,8 @@ class Engine {
             this.fixedUpdate();
         }
         setInterval(fixedFunc, 1000/60);
+
+        this.onStart.emit();
     }
 
 }
