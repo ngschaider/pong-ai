@@ -15,7 +15,7 @@ interface Graphics {
     circle(position: Vector2, diameter: number): void;
     rectangle(position: Vector2, size: Vector2): void;
     line(start: Vector2, end: Vector2): void;
-    image(sprite: Sprite): void;
+    image(position: Vector2, sprite: Sprite): void;
     text(position: Vector2, text: string): void;
 }
 
