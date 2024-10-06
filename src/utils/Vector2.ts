@@ -44,15 +44,31 @@ class Vector2 {
     }
 
     get magnitude() {
-        return Math.abs(Math.sqrt(this.x**2 + this.y**2));
+        return Math.sqrt(this.magnitudeSquared);
+    }
+
+    get magnitudeSquared() {
+        return this.x**2 + this.y**2;
     }
 
     get angle() {
         return Math.atan2(this.y, this.x);
     }
 
+    normal() {
+        return new Vector2(-this.y, this.x);
+    }
+
+    normalize() {
+        return this.scalarDiv(this.magnitude);
+    }
+
     add(v: Vector2): Vector2 {
         return new Vector2(this.x + v.x, this.y + v.y);
+    }
+
+    dot(v: Vector2): number {
+        return this.x * v.x + this.y * v.y;
     }
 
     subtract(v: Vector2): Vector2 {
@@ -61,6 +77,14 @@ class Vector2 {
 
     multiply(v: Vector2): Vector2 {
         return Vector2.fromPolars(this.magnitude * v.magnitude, this.angle + v.angle);
+    }
+
+    public distance(v: Vector2) {
+        return v.subtract(this).magnitude;
+    }
+
+    public distanceSquared(v: Vector2) {
+        return v.subtract(this).magnitudeSquared;
     }
 
     scalarMul(v: Vector2|number): Vector2 {

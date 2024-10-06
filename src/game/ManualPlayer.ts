@@ -13,7 +13,7 @@ class ManualPlayer extends Player {
 
         this.inputSystem = this.scene.getComponent(InputSystem);
 
-        this.transform.position = new Vector3(-9, 0, 0);
+        this.transform.position = new Vector2(-9, 0);
     }
 
     update(): void {
@@ -25,7 +25,7 @@ class ManualPlayer extends Player {
         if(this.inputSystem.keys.W) value += 1;
         if(this.inputSystem.keys.S) value -= 1;
 
-        this.rigidBody.velocity = new Vector3(0, value, 0);
+        this.rigidBody.velocity = new Vector2(0, value);
     }
 
 }

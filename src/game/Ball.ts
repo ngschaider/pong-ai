@@ -16,10 +16,10 @@ class Ball extends GameObject {
         super(scene);
 
         this.transform.scale = new Vector2(1, 1);
-        this.transform.position = new Vector3(-6, -8, 0);
+        this.transform.position = new Vector2(-6, -8);
 
         this.rigidbody = this.addComponent(RigidBody);
-        this.rigidbody.velocity = new Vector3(0, 0, 0);
+        this.rigidbody.velocity = new Vector2(0, 0);
 
         const r = this.addComponent(CircleRenderer);
         r.fillColor = Color.white;

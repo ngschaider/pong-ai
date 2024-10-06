@@ -33,7 +33,7 @@ class Camera extends Component {
         this._isActive = this.scene.getActiveCamera() == null;
     }
 
-    public getWorldToScreenMatrix(): Matrix {
+    public getWorldToScreenMatrix(): Matrix3x3 {
         const transformMatrix = this.transform.getMatrix();
         const translate = Matrix3x3.translate(this.size.scalarDiv(2));
         const scaleDown = Matrix3x3.scale(Vector2.one.scalarDiv(this.size));

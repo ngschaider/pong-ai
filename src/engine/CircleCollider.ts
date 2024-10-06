@@ -9,11 +9,12 @@ const DEBUG = true;
 
 class CircleCollider extends Collider {
 
-    offset: Vector2 = Vector2.zero;
-    diameter: number = 1;
+    localPosition: Vector2 = Vector2.zero;
+    radius: number = 0.5;
 
-    public get position(): Vector3 {
-        return this.transform.position.add(this.offset.toVector3());
+    public get worldPosition(): Vector2 {
+        const matrix = this.transform.getMatrix();
+        return this.localPosition.applyMatrix(matrix);
     }
 
 }

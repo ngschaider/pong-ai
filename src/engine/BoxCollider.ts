@@ -1,9 +1,10 @@
 import Vector2 from "../utils/Vector2";
 import Collider from "./Collider";
 import Polygon from "./Polygon";
+import PolygonCollider from "./PolygonCollider";
 import Rect from "./Rect";
 
-class BoxCollider extends Collider {
+class BoxCollider extends PolygonCollider {
 
     public rect: Rect = new Rect(Vector2.zero, Vector2.one)
 

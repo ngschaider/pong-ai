@@ -19,8 +19,8 @@ class RenderSystem extends Component {
             .map(go => go.getComponent(Renderer))
             .filter(isRenderer)
             .sort((a, b) => {
-                if(a.transform.position.z < b.transform.position.z) return -1;
-                if(a.transform.position.z > b.transform.position.z) return 1;
+                if(a.transform.renderOrder < b.transform.renderOrder) return -1;
+                if(a.transform.renderOrder > b.transform.renderOrder) return 1;
                 return 0;
             });
 
@@ -33,7 +33,7 @@ class RenderSystem extends Component {
 
             const factor = this.graphics.aspectRatio > 1 ? this.graphics.size.y : this.graphics.size.x;
             const scaleUp = Matrix3x3.scale(new Vector2(factor, factor));
-            
+
             const matrix = scaleUp.multiply(worldToScreen).multiply(rendererMatrix);
 
             this.graphics.setTransformationMatrix(matrix);

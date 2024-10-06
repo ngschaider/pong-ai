@@ -2,9 +2,10 @@ import BoxCollider from "../engine/BoxCollider";
 import CircleCollider from "../engine/CircleCollider";
 import CircleRenderer from "../engine/CircleRenderer";
 import Collider from "../engine/Collider";
+import Component from "../engine/Component";
 import Engine from "../engine/Engine";
 import GameObject from "../engine/GameObject";
-import Rect from "../engine/Rect";
+import InputSystem from "../engine/InputSystem";
 import RectangleRenderer from "../engine/RectangleRenderer";
 import RigidBody from "../engine/RigidBody";
 import Scene from "../engine/Scene";
@@ -32,74 +33,6 @@ class RectangleObj extends GameObject{
 
 }
 
-class Boundary extends GameObject {
-
-    right: RectangleObj;
-    bottom: RectangleObj;
-    left: RectangleObj;
-    top: RectangleObj;
-
-    constructor(scene: Scene) {
-        super(scene);
-
-        this.right = this.addGameObject(RectangleObj);
-        this.right.name = "Right";
-        this.right.transform.position = new Vector3(9.5, 0, 0);
-        this.right.transform.scale = new Vector2(1, 20);
-        
-        this.bottom = this.addGameObject(RectangleObj);
-        this.bottom.name = "Bottom";
-        this.bottom.transform.position = new Vector3(0, -9.5, 0);
-        this.bottom.transform.scale = new Vector2(20, 1);
-        
-        this.left = this.addGameObject(RectangleObj);
-        this.left.name = "Left";
-        this.left.transform.position = new Vector3(-9.5, 0, 0);
-        this.left.transform.scale = new Vector2(1, 20);
-        
-        this.top = this.addGameObject(RectangleObj);
-        this.top.name = "Top";
-        this.top.transform.position = new Vector3(0, 9.5, 0);
-        this.top.transform.scale = new Vector2(20, 1);
-    }
-
-}
-
-class Reflector extends GameObject {
-
-    public targetCollider?: Collider;
-    public target?: RigidBody;
-    public right?: Collider;
-    public bottom?: Collider;
-    public left?: Collider;
-    public top?: Collider;
-
-    constructor(scene: Scene) {
-        super(scene);
-
-        this.engine.onStart.on(this.onStart.bind(this));
-    }
-
-    onStart() {
-        if(!this.targetCollider) return;
-        this.targetCollider.onCollisionStart.on(this.onCollisionStart.bind(this));
-    }
-
-    onCollisionStart(other: Collider) {
-        if(!this.target || !this.right || !this.bottom || !this.left || !this.top) {
-            return;
-        }
-
-        if([this.left, this.right].includes(other)) {
-            this.target.velocity = this.target.velocity.scalarMul(new Vector3(-1, 1, 1));
-        }
-        if([this.top, this.bottom].includes(other)) {
-            this.target.velocity = this.target.velocity.scalarMul(new Vector3(1, -1, 1));
-        }
-    }
-    
-}
-
 class Test extends GameObject {
 
     r: RectangleRenderer;
@@ -119,6 +52,119 @@ class Test extends GameObject {
     }
 }
 
+class MyCircle extends GameObject {
+
+    rigidBody: RigidBody;
+
+    constructor(scene: Scene) {
+        super(scene);
+
+        this.rigidBody = this.addComponent(RigidBody);
+        this.addComponent(CircleCollider);
+        const c = this.addComponent(CircleRenderer);
+        c.fillColor = Color.red;
+
+        this.transform.position = new Vector2(8, -8);
+    }
+
+    update(): void {
+        const inputSystem = this.scene.getComponent(InputSystem);
+        if(!inputSystem) return;
+
+        let x = 0
+        if(inputSystem.keys.D) x += 1;
+        if(inputSystem.keys.A) x -= 1;
+
+        let y = 0;
+        if(inputSystem.keys.W) y -= 1;
+        if(inputSystem.keys.S) y += 1;
+
+        this.rigidBody.velocity = new Vector2(x, y).scalarMul(0.1);
+    }
+
+}
+
+
+class MyBox extends GameObject {
+
+    rigidBody: RigidBody;
+
+    constructor(scene: Scene) {
+        super(scene);
+
+        this.rigidBody = this.addComponent(RigidBody);
+        this.addComponent(BoxCollider);
+        this.addComponent(Rotator);
+        const c = this.addComponent(RectangleRenderer);
+        c.fillColor = Color.red;
+
+        this.transform.position = new Vector2(8, -8);
+    }
+
+    update(): void {
+        const inputSystem = this.scene.getComponent(InputSystem);
+        if(!inputSystem) return;
+
+        let x = 0
+        if(inputSystem.keys.D) x += 1;
+        if(inputSystem.keys.A) x -= 1;
+
+        let y = 0;
+        if(inputSystem.keys.W) y -= 1;
+        if(inputSystem.keys.S) y += 1;
+
+        this.rigidBody.velocity = new Vector2(x, y).scalarMul(0.1);
+    }
+
+}
+
+class Rotator extends Component {
+    constructor(gameObject: GameObject) {
+        super(gameObject);
+
+        this.engine.onStart.on(this.onStart.bind(this));
+    }
+
+    onStart() {
+        const rb = this.gameObject.getComponent(RigidBody);
+        if(rb) {
+            rb.angularVelocity = Math.random() * 0.8 + 1;
+        }
+    }
+}
+
+
+class CollidingCircle extends GameObject {
+
+    constructor(scene: Scene) {
+        super(scene);
+
+        this.addComponent(RigidBody);
+        this.addComponent(CircleCollider);
+        const c = this.addComponent(CircleRenderer);
+        c.fillColor = Color.white;
+    }
+
+}
+
+class CollidingBox extends GameObject {
+
+    constructor(scene: Scene) {
+        super(scene);
+
+        this.addComponent(RigidBody);
+        this.addComponent(BoxCollider);
+        //this.addComponent(Rotator);
+        const c = this.addComponent(RectangleRenderer);
+        c.fillColor = Color.white;
+    }
+
+    update(): void {
+        this.transform.position = Vector2.zero;
+    }
+
+}
+
 class PhysicsTestScene extends Scene {
 
     constructor(engine: Engine) {
@@ -129,22 +175,32 @@ class PhysicsTestScene extends Scene {
         // this.addGameObject(MyCamera);
         // this.addGameObject(Test);
 
-        this.addGameObject(Origin);
+        // this.addGameObject(Origin);
         this.addGameObject(Systems);
         this.addGameObject(Background);
         this.addGameObject(MyCamera);
-        const boundary = this.addGameObject(Boundary);
-        const ball = this.addGameObject(Ball);
+        // const boundary = this.addGameObject(Boundary);
 
-        const reflector = this.addGameObject(Reflector);
-        reflector.targetCollider = ball.collider;
-        reflector.target = ball.rigidbody;
-        reflector.top = boundary.top.collider;
-        reflector.right = boundary.right.collider;
-        reflector.bottom = boundary.bottom.collider;
-        reflector.left = boundary.left.collider;
+
+        const g = this.addGameObject(CollidingBox)
+        g.transform.position = new Vector2(3, 3);
+
+        this.addGameObject(MyCircle);
+        // this.addGameObject(MyBox);
+
+        // for(let y = 0; y < 3; y++) {
+        //     for(let x = 0; x < 3; x++) {
+        //         const g = this.addGameObject(CollidingCircle)
+        //         g.transform.position = new Vector2((x-3) * 3, (y-3) * 3);
+        //     }
+        // }
+
         
-        ball.rigidbody.velocity = new Vector3(0.1, 0.2, 0);
+        //const g2 = this.addGameObject(CollidingBox)
+        //g2.transform.position = new Vector2(-3, -3);
+
+        // const ball = this.addGameObject(Ball);
+        // ball.rigidbody.velocity = new Vector2(0.1, 0.2);
     }
 
 }
