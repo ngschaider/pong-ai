@@ -65,7 +65,7 @@ class MyCircle extends GameObject {
         c.fillColor = Color.red;
 
         this.transform.position = new Vector2(8, -8);
-        this.rigidBody.velocity = new Vector2(-0.05, 0.05);
+        this.rigidBody.velocity = new Vector2(0, 0);
     }
 
     update(): void {
@@ -80,7 +80,7 @@ class MyCircle extends GameObject {
         if(inputSystem.keys.W) y -= 1;
         if(inputSystem.keys.S) y += 1;
 
-        this.rigidBody.addForce(new Vector2(x, y).scalarMul(0.01));
+        this.rigidBody.addForce(new Vector2(x, y).scalarMul(0.002));
     }
 
 }
@@ -140,7 +140,8 @@ class CollidingCircle extends GameObject {
     constructor(scene: Scene) {
         super(scene);
 
-        this.addComponent(RigidBody);
+        const rb = this.addComponent(RigidBody);
+        rb.mass = 1000;
         this.addComponent(CircleCollider);
 
         const cr = this.addComponent(CircleRenderer);

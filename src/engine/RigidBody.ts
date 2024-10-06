@@ -13,7 +13,7 @@ class RigidBody extends Component {
 
     angularVelocity: number = 0;
     angularAcceleration: number = 0;
-    angularFriction: number = 0.9;
+    angularFriction: number = 0.8;
     mass: number = 1;
     restitution = 1;
 
@@ -32,28 +32,7 @@ class RigidBody extends Component {
     }
 
     onCollision(collision: Collision) {
-        const rbA = collision.bodyA.gameObject.getComponent(RigidBody);
-        const rbB = collision.bodyB.gameObject.getComponent(RigidBody);
-        if(!rbA || !rbB) return;
 
-        const e: number = Math.min(rbA.restitution, rbB.restitution);
-        const vAB: Vector2 = rbB.velocity.subtract(rbA.velocity);
-
-        const enumerator = -(1 + e) * vAB.dot(collision.normal);
-        const denominator = (1/rbA.mass) + (1/rbB.mass);
-        const j = enumerator / denominator;
-
-        const deltaV = collision.normal.scalarMul(j/this.mass);
-
-        if(collision.bodyA.gameObject === this.gameObject) {
-            this.transform.move(collision.normal.scalarMul(-collision.depth));
-            this.velocity = this.velocity.subtract(deltaV);
-        } else if(collision.bodyB.gameObject === this.gameObject) {
-            this.transform.move(collision.normal.scalarMul(collision.depth));
-            this.velocity = this.velocity.add(deltaV);
-        } else {
-            throw new Error();
-        }
     }
 
     public addForce(force: Vector2): void {
