@@ -15,6 +15,7 @@ class Player extends GameObject {
         super(scene);
 
         this.rigidBody = this.addComponent(RigidBody);
+        this.rigidBody.mass = Infinity;
 
         this.renderer = this.addComponent(RectangleRenderer);
         this.renderer.fillColor = Color.white;

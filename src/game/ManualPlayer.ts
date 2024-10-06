@@ -22,10 +22,10 @@ class ManualPlayer extends Player {
         if(!this.inputSystem) return;
         
         let value = 0;
-        if(this.inputSystem.keys.W) value += 1;
-        if(this.inputSystem.keys.S) value -= 1;
+        if(this.inputSystem.keys.W) value -= 1;
+        if(this.inputSystem.keys.S) value += 1;
 
-        this.rigidBody.velocity = new Vector2(0, value);
+        this.rigidBody.velocity = new Vector2(0, value).scalarMul(0.4);
     }
 
 }

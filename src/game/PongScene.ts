@@ -34,8 +34,10 @@ class PongScene extends Scene {
         this.addGameObject(StrokedLine);
         this.addGameObject(Background);
         // this.addGameObject(FpsLogger);
-        this.addGameObject(Ball);
+        const b = this.addGameObject(Ball);
         this.addGameObject(Origin);
+
+        b.rigidbody.velocity = new Vector2(-0.02, 0.01);
     }
 
 }
