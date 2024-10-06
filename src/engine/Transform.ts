@@ -1,4 +1,5 @@
 import Matrix from "../utils/Matrix";
+import Matrix3x3 from "../utils/Matrix3x3";
 import Vector2 from "../utils/Vector2";
 import Vector3 from "../utils/Vector3";
 import Component from "./Component";
@@ -19,37 +20,11 @@ class Transform extends Component {
         return this.scene.gameObjects.map(go => go.transform).filter(tf => tf.parent === this);
     }
 
-    getMatrix(): Matrix {
-        const parent = this.transform.parent?.getMatrix() || Matrix.createIdentity(3, 3);
-
-        return parent
-            .multiply(this.translationMatrix)
-            .multiply(this.scaleMatrix)
-            .multiply(this.rotationMatrix);
-    }
-
-    get scaleMatrix() {
-        return Matrix.create3x3(
-            this.scale.x, 0, 0, 
-            0, this.scale.y, 0,
-            0, 0, 1
-        );
-    }
-
-    get translationMatrix() {
-        return Matrix.create3x3(
-            1, 0, this.position.x,
-            0, 1, this.position.y,
-            0, 0, 1
-        );
-    }
-
-    get rotationMatrix() {
-        return Matrix.create3x3(
-            Math.cos(this.rotation/180*Math.PI), -Math.sin(this.rotation/180*Math.PI), 0, 
-            Math.sin(this.rotation/180*Math.PI), Math.cos(this.rotation/180*Math.PI), 0, 
-            0, 0, 1
-        );
+    getMatrix(): Matrix3x3 {
+        const parent = this.transform.parent?.getMatrix() ?? Matrix3x3.identity;
+        const trs = Matrix3x3.TRS(this.position.xy, this.rotation, this.scale);
+        
+        return parent.multiply(trs);
     }
 
 }

@@ -49,7 +49,10 @@ export const collideCircleCircle = (c1: Vector2, d1: number, c2: Vector2, d2: nu
 
 export const collidePointLine = (p: Vector2, v1: Vector2, v2: Vector2, buffer?: number) => {
 	// since floats are so minutely accurate, add a little buffer zone that will give collision
-	if (buffer === undefined){ buffer = 0.1; }   // higher # = less accurate
+	if (buffer === undefined){ 
+		// higher # = less accurate
+		buffer = 0.1; 
+	}   
 
 	// get distance from the point to the two ends of the line
 	var d1 = p.subtract(v1).magnitude
@@ -67,25 +70,27 @@ export const collidePointCircle = (p: Vector2, center: Vector2, diameter: number
 	return p.subtract(center).magnitude <= diameter/2;
 };
 
-export const collideLineCircle = (v1: Vector2,  v2: Vector2,  center: Vector2,  diameter: number) => {
+export const collideLineCircle = (p1: Vector2,  p2: Vector2,  center: Vector2,  diameter: number) => {
 	// is either end INSIDE the circle?
 	// if so, return true immediately
-	var inside1 = collidePointCircle(v1, center, diameter);
-	var inside2 = collidePointCircle(v2, center, diameter);
-	if (inside1 || inside2) return true;
+	var inside1 = collidePointCircle(p1, center, diameter);
+	var inside2 = collidePointCircle(p2, center, diameter);
+	if (inside1 || inside2) {
+		return true;
+	}
   
 	// get length of the line
-	const len = v1.subtract(v2).magnitude
+	const len = p1.subtract(p2).magnitude;
   
 	// get dot product of the line and circle
-	var dot = ((center.x-v1.x)*(v2.x-v1.x)) + ((center.y-v1.y)*(v2.y-v1.y)) / len**2;
+	const dot = ( ((center.x-p1.x)*(p2.x-p1.x)) + ((center.y-p1.y)*(p2.y-p1.y)) ) / len**2;
   
 	// find the closest point on the line
-	const closest = new Vector2(v1.x + (dot * (v2.x-v1.x)), v1.y + (dot * (v2.y-v1.y)))
-  
+	const closest = new Vector2(p1.x + (dot * (p2.x-p1.x)), p1.y + (dot * (p2.y-p1.y)))
+
 	// is this point actually on the line segment?
 	// if so keep going, but if not, return false
-	var onSegment = collidePointLine(closest, v1, v2);
+	var onSegment = collidePointLine(closest, p1, p2);
 	if (!onSegment) return false;
   
 	// get distance to closest point
@@ -93,43 +98,44 @@ export const collideLineCircle = (v1: Vector2,  v2: Vector2,  center: Vector2,  
 	  return true;
 	}
 	return false;
-  }
+};
 
-  export const collidePointPoly = (point: Vector2, poly: Polygon): boolean => {
+export const collidePointPoly = (point: Vector2, poly: Polygon): boolean => {
 	let collision = false;
 
 	// go through each of the vertices, plus the next vertex in the list
-	for (var current = 0; current < poly.vertices.length; current++) {
-  
-	  // get next vertex in list if we've hit the end, wrap around to 0
-	  const next = current + 1 >= poly.vertices.length ? 0 : current + 1;
-  
-	  // get the Vectors at our current position this makes our if statement a little cleaner
-	  var vc = poly.vertices[current];    // c for "current"
-	  var vn = poly.vertices[next];       // n for "next"
-  
-	  // compare position, flip 'collision' variable back and forth
-	  const ySwitches = (vc.y >= point.y && vn.y < point.y) || (vc.y < point.y && vn.y >= point.y)
-	  if (ySwitches && (point.x < (vn.x-vc.x)*(point.y-vc.y) / (vn.y-vc.y)+vc.x)) {
-			  collision = !collision;
-	  }
+	for (let current = 0; current < poly.vertices.length; current++) {
+
+		// get next vertex in list if we've hit the end, wrap around to 0
+		const next = current + 1 >= poly.vertices.length ? 0 : current + 1;
+
+		// get the Vectors at our current position this makes our if statement a little cleaner
+		const vc = poly.vertices[current];    // c for "current"
+		const vn = poly.vertices[next];       // n for "next"
+
+		// compare position, flip 'collision' variable back and forth
+		const ySwitches = (vc.y >= point.y && vn.y < point.y) || (vc.y < point.y && vn.y >= point.y)
+		if (ySwitches && (point.x < (vn.x-vc.x)*(point.y-vc.y) / (vn.y-vc.y)+vc.x)) {
+			collision = !collision;
+		}
 	}
 	return collision;
-}
+};
 
 export const collideCirclePoly = (center: Vector2, diameter: number, poly: Polygon): boolean => {
 	// go through each of the vertices, plus the next vertex in the list
-	for (var current = 0; current < poly.vertices.length; current++) {
+	for (let current = 0; current < poly.vertices.length; current++) {
 	  // get next vertex in list if we've hit the end, wrap around to 0
 	  const next = current + 1 >= poly.vertices.length ? 0 : current + 1;
   
 	  // get the Vectors at our current position this makes our if statement a little cleaner
-	  var vc = poly.vertices[current];    // c for "current"
-	  var vn = poly.vertices[next];       // n for "next"
+	  const vc = poly.vertices[current];    // c for "current"
+	  const vn = poly.vertices[next];       // n for "next"
   
 	  // check for collision between the circle and a line formed between the two vertices
-	  var collision = collideLineCircle(vc, vn, center,diameter);
-	  if (collision) return true;
+	  if (collideLineCircle(vc, vn, center,diameter)) {
+		return true;
+	  }
 	}
   
 	// test if the center of the circle is inside the polygon
@@ -142,70 +148,60 @@ export const collideCirclePoly = (center: Vector2, diameter: number, poly: Polyg
   }
 
   export const collideLineLine = function(p1: Vector2, p2: Vector2, p3: Vector2, p4: Vector2) {
-
-	var intersection;
-  
 	// calculate the distance to intersection point
-	var uA = ((p4.x-p3.x)*(p1.y-p3.y) - (p4.y-p3.y)*(p1.x-p3.x)) / ((p4.y-p3.y)*(p2.x-p1.x) - (p4.x-p3.x)*(p2.y-p1.y));
-	var uB = ((p2.x-p1.x)*(p1.y-p3.y) - (p2.y-p1.y)*(p1.x-p3.x)) / ((p4.y-p3.y)*(p2.x-p1.x) - (p4.x-p3.x)*(p2.y-p1.y));
+	const uA = ((p4.x-p3.x)*(p1.y-p3.y) - (p4.y-p3.y)*(p1.x-p3.x)) / ((p4.y-p3.y)*(p2.x-p1.x) - (p4.x-p3.x)*(p2.y-p1.y));
+	const uB = ((p2.x-p1.x)*(p1.y-p3.y) - (p2.y-p1.y)*(p1.x-p3.x)) / ((p4.y-p3.y)*(p2.x-p1.x) - (p4.x-p3.x)*(p2.y-p1.y));
   
 	// if uA and uB are between 0-1, lines are colliding
-	if (uA >= 0 && uA <= 1 && uB >= 0 && uB <= 1) {
-		return true;
-	}
+	return uA >= 0 && uA <= 1 && uB >= 0 && uB <= 1;
+};
 
-	return false;
-  }
-
-  export const collideLinePoly = function(p1: Vector2, p2: Vector2, poly: Polygon) {
-
+export const collideLinePoly = function(p1: Vector2, p2: Vector2, poly: Polygon) {
 	// go through each of the vertices, plus the next vertex in the list
-	var next = 0;
-	for (var current = 0; current < poly.vertices.length; current++) {
+	for (let current = 0; current < poly.vertices.length; current++) {
+		// get next vertex in list if we've hit the end, wrap around to 0
+		const next = current + 1 >= poly.vertices.length ? 0 : current + 1;
+
+		// get the PVectors at our current position extract X/Y coordinates from each
+		const p3 = poly.vertices[current];
+		const p4 = poly.vertices[next];
   
-	  // get next vertex in list if we've hit the end, wrap around to 0
-	  next = current+1;
-	  if (next === poly.vertices.length) next = 0;
-  
-	  // get the PVectors at our current position extract X/Y coordinates from each
-	  const p3 = poly.vertices[current];
-	  const p4 = poly.vertices[next];
-  
-	  // do a Line/Line comparison if true, return 'true' immediately and stop testing (faster)
-	  if (collideLineLine(p1, p2, p3, p4)) {
-		return true;
-	  }
+		// do a Line/Line comparison if true, return 'true' immediately and stop testing (faster)
+		if (collideLineLine(p1, p2, p3, p4)) {
+			return true;
+		}
 	}
+
 	// never got a hit
 	return false;
-  }
+};
 
-  export const collidePolyPoly = function(p1: Polygon, p2: Polygon) {
+export const collidePolyPoly = function(poly1: Polygon, poly2: Polygon) {
 	// go through each of the vertices, plus the next vertex in the list
 	let next = 0;
-	for (let current = 0; current < p1.vertices.length; current++) {
+	for (let current = 0; current < poly1.vertices.length; current++) {
 
 		// get next vertex in list, if we've hit the end, wrap around to 0
 		next = current+1;
-		if (next === p1.vertices.length) next = 0;
+		if (next === poly1.vertices.length) next = 0;
 
 		// get the PVectors at our current position this makes our if statement a little cleaner
-		var vc = p1.vertices[current];    // c for "current"
-		var vn = p1.vertices[next];       // n for "next"
+		var vc = poly1.vertices[current];    // c for "current"
+		var vn = poly1.vertices[next];       // n for "next"
 
 		//use these two points (a line) to compare to the other polygon's vertices using polyLine()
-		var collision = collideLinePoly(vc.x,vc.y,vn.x,vn.y,p2);
+		var collision = collideLinePoly(vc, vn, poly2);
 		if (collision) return true;
 		
 		//check if the either polygon is INSIDE the other
 	
-		if(collidePointPoly(p2.vertices[0], p1)) {
+		if(collidePointPoly(poly2.vertices[0], poly1)) {
 			return true;
 		}
-		if(collidePointPoly(p1.vertices[0], p2)) {
+		if(collidePointPoly(poly1.vertices[0], poly2)) {
 			return true;
 		}
 	}
   
 	return false;
-  }
+};

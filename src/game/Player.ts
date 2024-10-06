@@ -1,5 +1,5 @@
+import BoxCollider from "../engine/BoxCollider";
 import GameObject from "../engine/GameObject";
-import RectangleCollider from "../engine/RectangleCollider";
 import RectangleRenderer from "../engine/RectangleRenderer";
 import RigidBody from "../engine/RigidBody";
 import Scene from "../engine/Scene";
@@ -20,7 +20,7 @@ class Player extends GameObject {
         this.renderer.fillColor = Color.white;
         this.transform.scale = new Vector2(0.6, 4);
 
-        const collider = this.addComponent(RectangleCollider);
+        const collider = this.addComponent(BoxCollider);
     }
 
 }

@@ -1,3 +1,8 @@
+import Matrix from "./Matrix";
+import Matrix2x2 from "./Matrix2x2";
+import Matrix3x3 from "./Matrix3x3";
+import Vector3 from "./Vector3";
+
 class Vector2 {
 
     static zero = new Vector2(0, 0);
@@ -76,6 +81,24 @@ class Vector2 {
         } else {
             throw new Error("Invalid type encountered: " + typeof v);
         }
+    }
+
+    public toVector3(): Vector3 {
+        return new Vector3(this.x, this.y, 0);
+    }
+
+    public applyMatrix(m: Matrix2x2|Matrix3x3): Vector2 {
+        if(m instanceof Matrix2x2) {
+            return new Vector2(
+                m.getValue(0, 0) * this.x + m.getValue(1, 0) * this.y,
+                m.getValue(0, 1) * this.x + m.getValue(1, 1) * this.y,
+            );
+        } 
+        if(m instanceof Matrix3x3) {
+            const v = new Vector3(this.x, this.y, 1).applyMatrix(m);
+            return new Vector2(v.x, v.y);
+        }
+        throw new Error();
     }
 
     // clampX(min: number, max: number): Vector2 {

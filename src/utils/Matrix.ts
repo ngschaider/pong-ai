@@ -1,5 +1,6 @@
+import Vector3 from "./Vector3";
 
-class Matrix {
+abstract class Matrix {
 
     width: number;
     values: number[];
@@ -17,32 +18,21 @@ class Matrix {
         return this.values.length / this.width;
     }
 
-    public static createIdentity(width: number, height: number) {
-        const values = [];
+    abstract clone(): Matrix;
+
+    transpose(): Matrix {
+        const height = this.width;
+        const width = this.height;
+
+        const m = this.clone();
 
         for(let y = 0; y < height; y++) {
             for(let x = 0; x < width; x++) {
-                values.push(0);
+                m.values[x + y * width] = this.getValue(y, x);
             }
         }
 
-        const num = Math.min(width, height);
-        for(let i = 0; i < num; i++) {
-            values[i + i * width] = 1;
-        }
-        
-        return new Matrix(values, width);
-    }
-
-    public static create3x3(a: number, b: number, c: number, 
-        d: number, e: number, f: number, 
-        g: number, h: number, i: number): Matrix {
-
-        return new Matrix([a, b, c, d, e, f, g, h, i], 3);
-    }
-
-    public static create2x2(a: number, b: number, c: number, d: number): Matrix {
-        return new Matrix([a, b, c, d], 2);
+        return m;
     }
 
     multiply(other: Matrix) {
@@ -65,61 +55,31 @@ class Matrix {
             }
         }
 
-        return new Matrix(values, this.width);
+        const m = this.clone();
+        m.values = values;
+        return m;
     }
 
     scalarMul(other: number) {
-        const values = this.values.map(v => v * other);
-        return new Matrix(values, this.width);
+        const m = this.clone()
+        m.values = this.values.map(v => v * other);
+
+        return m;
     }
 
     scalarDiv(other: number) {
-        const values = this.values.map(v => v / other);
-        return new Matrix(values, this.width);
+        const m = this.clone()
+        m.values = this.values.map(v => v / other);
+
+        return m;
     }
 
-    det(): number {
-        if(this.height === 3 && this.width === 3) {
-            return this.getValue(0, 0) * this.getValue(1, 1) * this.getValue(2, 2)
-                + this.getValue(1, 0) * this.getValue(2, 1) * this.getValue(0, 2)
-                + this.getValue(2, 0) * this.getValue(0, 1) * this.getValue(1, 2)
-                - this.getValue(2, 0) * this.getValue(1, 1) * this.getValue(0, 2)
-                - this.getValue(0, 0) * this.getValue(2, 1) * this.getValue(1, 2)
-                - this.getValue(1, 0) * this.getValue(0, 1) * this.getValue(2, 2);
-        } else if(this.height === 2 && this.width === 2) {
-            return this.getValue(0, 0) * this.getValue(1, 1) - this.getValue(1, 0) * this.getValue(0, 1);
-        } else {
-            throw new Error("det is only implemented for 2x2 and 3x3 matrices.");
-        }
-    }
+    abstract det(): number;
 
-    adj(): Matrix {
-        if(this.height === 3 && this.width === 3) {
-            const a = this.getValue(0, 0);
-            const b = this.getValue(1, 0);
-            const c = this.getValue(2, 0);
-            const d = this.getValue(0, 1);
-            const e = this.getValue(1, 1);
-            const f = this.getValue(2, 1);
-            const g = this.getValue(0, 2);
-            const h = this.getValue(1, 2);
-            const i = this.getValue(2, 2);
-            return Matrix.create3x3(e*i-f*h, c*h-b*i, b*f-c*e, f*g-d*i, a*i-c*g, c*d-a*f, d*h-e*g, b*g-a*h, a*e-b*d)
-        } else if(this.height === 2 && this.width === 2) {
-            return Matrix.create2x2(this.getValue(1, 1), -this.getValue(1, 0), -this.getValue(0, 1), this.getValue(0, 0))
-        } else {
-            throw new Error("invert is only implemented for 2x2 and 3x3 matrices.");
-        }
-    }
+    abstract adj(): Matrix;
 
     invert(): Matrix {
-        if(this.height === 3 && this.width === 3) {
-            return this.adj().scalarDiv(this.det())
-        } else if(this.height === 2 && this.width === 2) {
-            return this.adj().scalarDiv(this.det());
-        } else {
-            throw new Error("invert is only implemented for 2x2 and 3x3 matrices.");
-        }
+        return this.adj().scalarDiv(this.det());
     }
 
     getValue(x: number, y: number) {

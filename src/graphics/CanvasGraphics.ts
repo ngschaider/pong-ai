@@ -1,4 +1,5 @@
 import Matrix from "../utils/Matrix";
+import Matrix3x3 from "../utils/Matrix3x3";
 import Sprite from "../utils/Sprite";
 import Vector2 from "../utils/Vector2";
 import Color from "./Color";
@@ -43,12 +44,10 @@ class CanvasGraphics {
 
         // in canvas, down is y-positive. but we want y-positive to point up, so we scale-y by -1 
         // to flip the screen and translate-y by the height to move it down into the viewport again
-
-        matrix = Matrix.create3x3(
-            1, 0, 0, 
-            0, -1, this.size.y, 
-            0, 0, 1
-        ).multiply(matrix);
+        const flipY = Matrix3x3.scale(new Vector2(1, -1));
+        const moveDown = Matrix3x3.translate(new Vector2(0, -this.size.y));
+        
+        matrix = flipY.multiply(moveDown).multiply(matrix);
 
         this.ctx.setTransform({
             a: matrix.values[0],

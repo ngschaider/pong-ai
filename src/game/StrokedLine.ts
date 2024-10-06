@@ -1,7 +1,7 @@
-import GameObject from "./GameObject";
-import LineRenderer from "./LineRenderer";
-import Renderer from "./Renderer";
-import Scene from "./Scene";
+import GameObject from "../engine/GameObject";
+import LineRenderer from "../engine/LineRenderer";
+import Renderer from "../engine/Renderer";
+import Scene from "../engine/Scene";
 import Color from "../graphics/Color";
 import Graphics from "../graphics/Graphics";
 import Vector2 from "../utils/Vector2";
@@ -27,7 +27,7 @@ class StrokedLine extends GameObject {
     constructor(scene: Scene) {
         super(scene);
 
-        this.transform.position = new Vector3(20, 0, 0);
+        this.transform.position = new Vector3(0, -10, 0);
 
         for(let i = 0; i < this.numSegments; i++) {
             const line = this.addGameObject(Line);

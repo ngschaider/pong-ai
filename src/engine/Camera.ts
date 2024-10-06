@@ -1,10 +1,13 @@
 import Matrix from "../utils/Matrix";
+import Matrix3x3 from "../utils/Matrix3x3";
+import Vector2 from "../utils/Vector2";
 import Component from "./Component";
 import GameObject from "./GameObject";
+import Rect from "./Rect";
 
 class Camera extends Component {
 
-    public size: number = 10;
+    public size: Vector2 = new Vector2(20, 20);
 
     private _isActive: boolean;
     public get isActive() {
@@ -30,19 +33,14 @@ class Camera extends Component {
         this._isActive = this.scene.getActiveCamera() == null;
     }
 
-    getMatrix(): Matrix {
+    public getWorldToScreenMatrix(): Matrix {
         const transformMatrix = this.transform.getMatrix();
+        const translate = Matrix3x3.translate(this.size.scalarDiv(2));
+        const scaleDown = Matrix3x3.scale(Vector2.one.scalarDiv(this.size));
 
-        const scale = Matrix.create3x3(
-            1/this.size, 0, 0,
-            0, 1/this.size, 0,
-            0, 0, 1
-        );
-
-        return transformMatrix
-            .multiply(this.transform.translationMatrix)
-            .multiply(scale)
-            .multiply(this.transform.rotationMatrix);
+        // return scaleDown.multiply(translate).multiply(transformMatrix);
+        // return transformMatrix.multiply(scaleDown.multiply(translate));
+        return transformMatrix.multiply(scaleDown).multiply(translate);
     }
 
 

@@ -1,6 +1,9 @@
 import Graphics from "../graphics/Graphics";
 import Matrix from "../utils/Matrix";
+import Matrix3x3 from "../utils/Matrix3x3";
+import Vector2 from "../utils/Vector2";
 import Component from "./Component";
+import RectangleRenderer from "./RectangleRenderer";
 import Renderer from "./Renderer";
 
 class RenderSystem extends Component {
@@ -26,16 +29,12 @@ class RenderSystem extends Component {
 
         for(const renderer of renderers) {
             const rendererMatrix = renderer.transform.getMatrix();
-            const cameraMatrix = camera.transform.getMatrix();
-            
-            const factor = this.graphics.size.y / camera.size;
-            const scale = Matrix.create3x3(
-                factor, 0, 0, 
-                0, factor, 0, 
-                0, 0, 1
-            );
+            const worldToScreen = camera.getWorldToScreenMatrix();
 
-            const matrix = scale.multiply(cameraMatrix.invert()).multiply(rendererMatrix);
+            const factor = this.graphics.aspectRatio > 1 ? this.graphics.size.y : this.graphics.size.x;
+            const scaleUp = Matrix3x3.scale(new Vector2(factor, factor));
+            
+            const matrix = scaleUp.multiply(worldToScreen).multiply(rendererMatrix);
 
             this.graphics.setTransformationMatrix(matrix);
             renderer.render(this.graphics);

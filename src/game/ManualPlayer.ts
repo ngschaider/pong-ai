@@ -13,7 +13,7 @@ class ManualPlayer extends Player {
 
         this.inputSystem = this.scene.getComponent(InputSystem);
 
-        this.transform.position = new Vector3(1, 10);
+        this.transform.position = new Vector3(-9, 0, 0);
     }
 
     update(): void {

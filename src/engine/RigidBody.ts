@@ -1,4 +1,5 @@
 import Vector3 from "../utils/Vector3";
+import Collider from "./Collider";
 import Component from "./Component";
 import GameObject from "./GameObject";
 

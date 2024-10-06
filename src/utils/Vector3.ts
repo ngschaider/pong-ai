@@ -1,3 +1,4 @@
+import Matrix from "./Matrix";
 import Vector2 from "./Vector2";
 
 class Vector3 {
@@ -35,11 +36,10 @@ class Vector3 {
         this._z = value;
     }
 
-    constructor(x: number, y: number, z?: number) {
+    constructor(x: number, y: number, z: number) {
         this._x = x;
         this._y = y;
-        this._z = z ?? 0;
-    }
+        this._z = z;    }
     
     get xx() {
         return new Vector2(this.x, this.x);
@@ -81,7 +81,11 @@ class Vector3 {
         return new Vector3(this.x + v.x, this.y + v.y, this.z + v.z);
     }
 
-    subtract(v: Vector3): Vector3 {
+    subtract(v: Vector3|Vector2): Vector3 {
+        if(v instanceof Vector2) {
+            v = v.toVector3();
+        }
+
         return new Vector3(this.x - v.x, this.y - v.y, this.z - v.z);
     }
 
@@ -97,12 +101,24 @@ class Vector3 {
 
     scalarDiv(v: Vector3|number): Vector3 {
         if(typeof v === "number") {
-            return new Vector3(this.x / v, this.y / v);
+            return new Vector3(this.x / v, this.y / v, this.z * v);
         } else if(v instanceof Vector3) {
             return new Vector3(this.x / v.x, this.y / v.y, this.z * v.z);
         } else {
             throw new Error("Invalid type encountered: " + typeof v);
         }
+    }
+
+    public applyMatrix(m: Matrix) {
+        if(m.width !== 3 || m.height !== 3) {
+            throw new Error("Applying a matrix is only implemented for 3x3 matrices.");
+        }
+        
+        return new Vector3(
+            m.getValue(0, 0) * this.x + m.getValue(1, 0) * this.y + m.getValue(2, 0) * this.z,
+            m.getValue(0, 1) * this.x + m.getValue(1, 1) * this.y + m.getValue(2, 1) * this.z,
+            m.getValue(0, 2) * this.x + m.getValue(1, 2) * this.y + m.getValue(2, 2) * this.z
+        );
     }
 
 }

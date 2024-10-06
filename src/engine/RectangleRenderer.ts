@@ -1,24 +1,16 @@
 import Graphics from "../graphics/Graphics";
 import Vector2 from "../utils/Vector2";
-import AnchorPoint from "./AnchorPoint";
+import Rect from "./Rect";
 import Renderer from "./Renderer";
-
-
 
 class RectangleRenderer extends Renderer {
 
-    public anchorPoint: AnchorPoint = AnchorPoint.CenterCenter;
+    public readonly rect: Rect = new Rect(Vector2.zero, Vector2.one);
 
     public render(graphics: Graphics): void {
         super.render(graphics);
 
-        if(this.anchorPoint === AnchorPoint.TopLeft) {
-            graphics.rectangle(new Vector2(0, 0), new Vector2(1, 1));
-        } else if(this.anchorPoint === AnchorPoint.CenterCenter) {
-            graphics.rectangle(new Vector2(-0.5, -0.5), new Vector2(1, 1));
-        } else {
-            throw new Error("Unimplemented anchor point encountered.")
-        }
+        graphics.rectangle(this.rect.bottomLeft, this.rect.size);
     }
 
 }
