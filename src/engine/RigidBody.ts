@@ -9,13 +9,13 @@ class RigidBody extends Component {
 
     velocity: Vector2 = Vector2.zero;
     acceleration: Vector2 = Vector2.zero;
-    friction: number = 1;
+    friction: number = 0.98;
 
     angularVelocity: number = 0;
     angularAcceleration: number = 0;
-    angularFriction: number = 0.8;
+    angularFriction: number = 0.9;
     mass: number = 1;
-    restitution = 1;
+    restitution = 0.6;
 
 
     constructor(gameObject: GameObject) {
@@ -40,7 +40,7 @@ class RigidBody extends Component {
     }
 
     public fixedUpdate(): void {
-        super.fixedUpdate();
+        super.update();
 
         // apply linear acceleration, velocity and friction
         this.velocity = this.velocity.add(this.acceleration);

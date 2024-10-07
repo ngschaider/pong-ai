@@ -1,10 +1,10 @@
 import { getCombinations } from "../utils/funcs";
 import Collider from "./Collider";
 import Component from "./Component";
-import CollisionChecker from "../utils/CollisionChecker";
 import Collision from "../utils/Collision";
 import Vector2 from "../utils/Vector2";
 import RigidBody from "./RigidBody";
+import CollisionChecker from "./CollisionChecker";
 
 class CollisionSystem extends Component {
 
@@ -62,15 +62,15 @@ class CollisionSystem extends Component {
         const denominator = (1/rbA.mass) + (1/rbB.mass);
         const j = enumerator / denominator;
 
-        console.log(rbA.mass + rbB.mass);
-
         if(rbA.mass != Infinity) {
-            rbA.transform.move(collision.normal.scalarMul(-collision.depth/2 * rbA.mass / (rbA.mass + rbB.mass)));
+            const factor = rbB.mass === Infinity ? 1 : 2;
+            rbA.transform.move(collision.normal.scalarMul(-collision.depth / factor));
             rbA.velocity = rbA.velocity.subtract(collision.normal.scalarMul(j/rbA.mass));
         }
 
         if(rbB.mass != Infinity) {
-            rbB.transform.move(collision.normal.scalarMul(collision.depth/2 * rbB.mass / (rbA.mass + rbB.mass)));
+            const factor = rbA.mass === Infinity ? 1 : 2;
+            rbB.transform.move(collision.normal.scalarMul(collision.depth / factor));
             rbB.velocity = rbB.velocity.add(collision.normal.scalarMul(j/rbB.mass));
         }
     }

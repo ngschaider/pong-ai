@@ -141,7 +141,7 @@ class CollidingCircle extends GameObject {
         super(scene);
 
         const rb = this.addComponent(RigidBody);
-        rb.mass = 1000;
+        rb.mass = 2;
         this.addComponent(CircleCollider);
 
         const cr = this.addComponent(CircleRenderer);
@@ -159,7 +159,9 @@ class CollidingBox extends GameObject {
     constructor(scene: Scene) {
         super(scene);
 
-        this.addComponent(RigidBody);
+        const rb = this.addComponent(RigidBody);
+        rb.mass = 10;
+        
         this.addComponent(BoxCollider);
         const rr = this.addComponent(RectangleRenderer);
         rr.fillColor = RandomHelper.color();

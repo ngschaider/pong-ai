@@ -7,7 +7,7 @@ class Engine {
     
     onStart: MyEvent = new MyEvent();
 
-    public readonly fixedUpdateInterval: number = 1000/60;
+    public readonly fixedUpdateInterval: number = 1000/100;
 
     private _scene!: Scene;
     public get scene() {
@@ -38,14 +38,15 @@ class Engine {
     start() {
         const func = () => {
             this.update();
+            this.fixedUpdate();
             window.requestAnimationFrame(func);
         }
         window.requestAnimationFrame(func);
 
-        const fixedFunc = () => {
-            this.fixedUpdate();
-        }
-        setInterval(fixedFunc, this.fixedUpdateInterval);
+        // const fixedFunc = () => {
+        //     this.fixedUpdate();
+        // }
+        //setInterval(fixedFunc, this.fixedUpdateInterval);
 
         this.onStart.emit();
     }
