@@ -18,7 +18,7 @@ class Debug {
         const graphics = this.engine.scene.getComponent(RenderSystem)?.graphics;
         if(!graphics) return;
 
-        const matrix = camera.getWorldToScreenMatrix()
+        const matrix = camera.getWorldToClipMatrix()
 
         const start = Vector2.zero.applyMatrix(matrix);
         const end = v.applyMatrix(matrix);

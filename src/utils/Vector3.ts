@@ -109,7 +109,7 @@ class Vector3 {
         }
     }
 
-    public applyMatrix(m: Matrix) {
+    public applyMatrix(m: Matrix<any>) {
         if(m.width !== 3 || m.height !== 3) {
             throw new Error("Applying a matrix is only implemented for 3x3 matrices.");
         }

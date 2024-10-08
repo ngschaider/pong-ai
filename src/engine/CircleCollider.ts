@@ -12,6 +12,11 @@ class CircleCollider extends Collider {
     localPosition: Vector2 = Vector2.zero;
     radius: number = 0.5;
 
+    public get worldRadius(): number {
+        // apply scaleX
+        return this.radius * this.transform.getMatrix().getValue(0, 0);
+    }
+
     public get worldPosition(): Vector2 {
         const matrix = this.transform.getMatrix();
         return this.localPosition.applyMatrix(matrix);

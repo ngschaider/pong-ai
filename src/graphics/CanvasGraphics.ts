@@ -37,18 +37,7 @@ class CanvasGraphics {
         return this.size.x / this.size.y;
     }
 
-    public setTransformationMatrix(matrix: Matrix): void {
-        if(matrix.width !== 3 || matrix.height !== 3) {
-            throw new Error("Transformation matrix must be of dimension 3x3.");
-        }
-
-        // in canvas, down is y-positive. but we want y-positive to point up, so we scale-y by -1 
-        // to flip the screen and translate-y by the height to move it down into the viewport again
-        // const flipY = Matrix3x3.scale(new Vector2(1, -1));
-        // const moveDown = Matrix3x3.translate(new Vector2(0, -this.size.y));
-        
-        // matrix = flipY.multiply(moveDown).multiply(matrix);
-
+    public setTransformationMatrix(matrix: Matrix3x3): void {
         this.ctx.setTransform({
             a: matrix.values[0],
             c: matrix.values[1],
@@ -86,12 +75,16 @@ class CanvasGraphics {
 
         this.ctx.ellipse(position.x, position.x, diameter/2, diameter/2, 0, 0, 2*Math.PI);
 
+        this.ctx.save();
         if(this.doFill) {
             this.ctx.fill();
         }
         if(this.doStroke) {
+            this.ctx.clip();
+            this.ctx.lineWidth *= 2;
             this.ctx.stroke();
         }
+        this.ctx.restore();
 
         this.ctx.closePath();
     }
@@ -101,12 +94,16 @@ class CanvasGraphics {
 
         this.ctx.rect(position.x, position.y, size.x, size.y);
         
+        this.ctx.save();
         if(this.doFill) {
             this.ctx.fill();
         }
         if(this.doStroke) {
+            this.ctx.clip();
+            this.ctx.lineWidth *= 2;
             this.ctx.stroke();
         }
+        this.ctx.restore();
         
         this.ctx.closePath();
     }

@@ -1,16 +1,59 @@
+import MyEvent from "../utils/MyEvent";
+import Vector2 from "../utils/Vector2";
 import Component from "./Component";
 import GameObject from "./GameObject";
 import Keys from "./Keys";
+import RenderSystem from "./RenderSystem";
 
 class InputSystem extends Component {
 
     keys: Keys = new Keys();
+    mousePosition: Vector2 = new Vector2(-1, -1);
+    onMouseLeft = new MyEvent();
 
     constructor(gameObject: GameObject) {
         super(gameObject);
 
         window.addEventListener("keydown", this.keydown.bind(this));
         window.addEventListener("keyup", this.keyup.bind(this));
+
+        window.addEventListener("mousedown", this.mousedown.bind(this));
+        window.addEventListener("mouseup", this.mouseup.bind(this));
+
+        window.addEventListener("mousemove", this.mousemove.bind(this));
+    }
+
+    private mousemove(e: MouseEvent) {
+        const page = new Vector2(e.pageX, e.pageY);
+        
+        const renderSystem = this.scene.getComponent(RenderSystem)
+        
+        if(renderSystem) {
+            const screen = page.add(renderSystem.elementPosition);
+            this.mousePosition = renderSystem.screenToWorld(screen);
+        } else {
+            this.mousePosition = new Vector2(-1, -1);
+        }
+    }
+
+    private mousedown(e: MouseEvent) {
+        switch(e.button) {
+            case 0: this.keys.MouseLeft = true; this.onMouseLeft.emit(); break;
+            case 1: this.keys.MouseMiddle = true; break;
+            case 2: this.keys.MouseRight = true; break;
+            case 3: this.keys.Mouse4 = true; break;
+            case 4: this.keys.Mouse5 = true; break;
+        }
+    }
+
+    private mouseup(e: MouseEvent) {
+        switch(e.button) {
+            case 0: this.keys.MouseLeft = false;
+            case 1: this.keys.MouseMiddle = false;
+            case 2: this.keys.MouseRight = false;
+            case 3: this.keys.Mouse4 = false;
+            case 4: this.keys.Mouse5 = false;
+        }
     }
 
     private keydown(e: KeyboardEvent) {

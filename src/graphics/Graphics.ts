@@ -1,4 +1,5 @@
 import Matrix from "../utils/Matrix";
+import Matrix3x3 from "../utils/Matrix3x3";
 import Sprite from "../utils/Sprite";
 import Vector2 from "../utils/Vector2";
 import Color from "./Color";
@@ -6,7 +7,7 @@ import Color from "./Color";
 interface Graphics {
     get size(): Vector2;
     get aspectRatio(): number;
-    setTransformationMatrix(matrix: Matrix): void;
+    setTransformationMatrix(matrix: Matrix3x3): void;
     fill(color: Color): void;
     stroke(color: Color): void;
     lineWidth(lineWidth: number): void;

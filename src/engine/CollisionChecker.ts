@@ -15,20 +15,20 @@ type CollisionTestResult = {
 class CollisionChecker {
 
     public static checkCollision(bodyA: Collider, bodyB: Collider): Collision|null {
-        if(bodyA instanceof CircleCollider && bodyB instanceof CircleCollider) {
-            const info = this.circleCircle(bodyA.worldPosition, bodyA.radius, bodyB.worldPosition, bodyB.radius);
+        if(bodyA instanceof CircleCollider && bodyB instanceof CircleCollider) { // Circle <-> Circle
+            const info = this.circleCircle(bodyA.worldPosition, bodyA.worldRadius, bodyB.worldPosition, bodyB.worldRadius);
             return info ? new Collision(bodyA, bodyB, info.depth, info.normal) : null;
         }
-        if(bodyA instanceof BoxCollider && bodyB instanceof BoxCollider) {
+        if(bodyA instanceof PolygonCollider && bodyB instanceof PolygonCollider) { // Polygon <-> Polygon
             const info = this.polygonPolygon(bodyA.getWorldPolygon(), bodyB.getWorldPolygon());
             return info ? new Collision(bodyA, bodyB, info.depth, info.normal): null;
         }
-        if((bodyA instanceof CircleCollider && bodyB instanceof PolygonCollider)) {
-            const info = this.circlePolygon(bodyA.worldPosition, bodyA.radius, bodyB.getWorldPolygon());
+        if((bodyA instanceof CircleCollider && bodyB instanceof PolygonCollider)) { // Circle <-> Polygon
+            const info = this.circlePolygon(bodyA.worldPosition, bodyA.worldRadius, bodyB.getWorldPolygon());
             return info ? new Collision(bodyA, bodyB, info.depth, info.normal): null;
         }
-        if((bodyA instanceof PolygonCollider && bodyB instanceof CircleCollider)) {
-            const info = this.circlePolygon(bodyB.worldPosition, bodyB.radius, bodyA.getWorldPolygon());
+        if((bodyA instanceof PolygonCollider && bodyB instanceof CircleCollider)) { // Polygon <-> Circle
+            const info = this.circlePolygon(bodyB.worldPosition, bodyB.worldRadius, bodyA.getWorldPolygon());
             return info ? new Collision(bodyB, bodyA, info.depth, info.normal): null;
         }
 

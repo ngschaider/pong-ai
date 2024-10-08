@@ -1,5 +1,11 @@
 class Keys {
 
+    MouseLeft: boolean = false;
+    MouseMiddle: boolean = false;
+    MouseRight: boolean = false;
+    Mouse4: boolean = false;
+    Mouse5: boolean = false;
+
     A: boolean = false;
     B: boolean = false;
     C: boolean = false;

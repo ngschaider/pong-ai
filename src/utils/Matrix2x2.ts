@@ -1,7 +1,7 @@
 import Matrix from "./Matrix";
 import Matrix3x3 from "./Matrix3x3";
 
-class Matrix2x2 extends Matrix {
+class Matrix2x2 extends Matrix<Matrix2x2> {
 
     public static readonly identity: Matrix2x2 = new Matrix2x2(1, 0, 0, 1);
 

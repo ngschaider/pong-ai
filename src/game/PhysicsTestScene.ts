@@ -17,40 +17,6 @@ import Background from "./Background";
 import MyCamera from "./MyCamera";
 import Systems from "./Systems";
 
-class Ground extends GameObject {
-
-    constructor(scene: Scene) {
-        super(scene);
-
-        const r = this.addComponent(RectangleRenderer);
-        r.fillColor = Color.white;
-
-        this.transform.scale = new Vector2(20, 1);
-        this.transform.position = new Vector2(0, -10);
-    }
-}
-
-class Wrapper extends GameObject {
-
-    update(): void {
-        for(const go of this.scene.gameObjects) {
-            if(go.transform.position.x < -10) {
-                go.transform.move(new Vector2(20, 0));
-            }
-            if(go.transform.position.x > 10) {
-                go.transform.move(new Vector2(-20, 0));
-            }
-            if(go.transform.position.y < -10) {
-                go.transform.move(new Vector2(0, 20));
-            }
-            if(go.transform.position.y > 10) {
-                go.transform.move(new Vector2(0, -20));
-            }
-        }
-    }
-
-}
-
 class MyCircle extends GameObject {
 
     rigidBody: RigidBody;
@@ -86,55 +52,6 @@ class MyCircle extends GameObject {
 }
 
 
-class MyBox extends GameObject {
-
-    rigidBody: RigidBody;
-
-    constructor(scene: Scene) {
-        super(scene);
-
-        this.rigidBody = this.addComponent(RigidBody);
-        this.addComponent(BoxCollider);
-        this.addComponent(Rotator);
-        const c = this.addComponent(RectangleRenderer);
-        c.fillColor = Color.red;
-
-        this.transform.position = new Vector2(8, -8);
-    }
-
-    update(): void {
-        const inputSystem = this.scene.getComponent(InputSystem);
-        if(!inputSystem) return;
-
-        let x = 0
-        if(inputSystem.keys.D) x += 1;
-        if(inputSystem.keys.A) x -= 1;
-
-        let y = 0;
-        if(inputSystem.keys.W) y -= 1;
-        if(inputSystem.keys.S) y += 1;
-
-        this.rigidBody.addForce(new Vector2(x, y).scalarMul(0.1));
-    }
-
-}
-
-class Rotator extends Component {
-    constructor(gameObject: GameObject) {
-        super(gameObject);
-
-        this.engine.onStart.on(this.onStart.bind(this));
-    }
-
-    onStart() {
-        const rb = this.gameObject.getComponent(RigidBody);
-        if(rb) {
-            rb.angularVelocity = Math.random() * 0.8 + 1;
-        }
-    }
-}
-
-
 class CollidingCircle extends GameObject {
 
     constructor(scene: Scene) {
@@ -142,14 +59,18 @@ class CollidingCircle extends GameObject {
 
         const rb = this.addComponent(RigidBody);
         rb.mass = 2;
+        rb.acceleration = new Vector2(0, 0.001);
+
         this.addComponent(CircleCollider);
 
         const cr = this.addComponent(CircleRenderer);
         cr.fillColor = RandomHelper.color();
         cr.stroke = true;
         cr.strokeColor = Color.white;
+        cr.lineWidth = 0.03;
 
-        this.transform.position = new Vector2(RandomHelper.floatRange(-10, 10), RandomHelper.floatRange(-10, 10));
+        const radius = RandomHelper.floatRange(0.5641, 1.6925);
+        this.transform.scale = new Vector2(radius, radius);
     }
 
 }
@@ -161,14 +82,16 @@ class CollidingBox extends GameObject {
 
         const rb = this.addComponent(RigidBody);
         rb.mass = 10;
-        
+        rb.acceleration = new Vector2(0, 0.001);
+
         this.addComponent(BoxCollider);
         const rr = this.addComponent(RectangleRenderer);
         rr.fillColor = RandomHelper.color();
         rr.stroke = true;
         rr.strokeColor = Color.white;
+        rr.lineWidth = 0.03;
 
-        this.transform.position = new Vector2(RandomHelper.floatRange(-10, 10), RandomHelper.floatRange(-10, 10));
+        this.transform.scale = new Vector2(RandomHelper.floatRange(0.5, 1.5), RandomHelper.floatRange(0.5, 1.5));
     }
 
     update(): void {
@@ -186,6 +109,7 @@ class StaticCircle extends GameObject {
         cr.fillColor = new Color(50, 50, 50);
         cr.stroke = true;
         cr.strokeColor = new Color(255, 0, 0);
+        cr.lineWidth = 0.03;
 
         const rb = this.addComponent(RigidBody);
         rb.mass = Infinity;
@@ -197,22 +121,74 @@ class StaticCircle extends GameObject {
 
 }
 
-class StaticBox extends GameObject {
+// class StaticBox extends GameObject {
+
+//     constructor(scene: Scene) {
+//         super(scene);
+
+//         const rr = this.addComponent(RectangleRenderer);
+//         rr.fillColor = new Color(50, 50, 50);
+//         rr.stroke = true;
+//         rr.strokeColor = new Color(255, 0, 0);
+//         rr.lineWidth = 0.03;
+        
+//         const rb = this.addComponent(RigidBody);
+//         rb.mass = Infinity;
+
+//         this.addComponent(BoxCollider);
+
+//         this.transform.position = new Vector2(RandomHelper.floatRange(-10, 10), RandomHelper.floatRange(-10, 10));
+//     }
+
+// }
+
+class Ground extends GameObject {
 
     constructor(scene: Scene) {
         super(scene);
 
-        const rr = this.addComponent(RectangleRenderer);
-        rr.fillColor = new Color(50, 50, 50);
-        rr.stroke = true;
-        rr.strokeColor = new Color(255, 0, 0);
+        this.transform.scale = new Vector2(20, 1);
+        this.transform.position = new Vector2(0, 9.5);
+
+        const bc = this.addComponent(BoxCollider)
+
+        const rb = this.addComponent(RigidBody)
+        rb.mass = Infinity
+
+        const rr = this.addComponent(RectangleRenderer)
+        rr.fillColor = Color.green;
+    }
+
+}
+
+class ObjectPlacer extends GameObject {
+
+    inputSystem: InputSystem|null = null;
+
+    constructor(scene: Scene) {
+        super(scene);
         
-        const rb = this.addComponent(RigidBody);
-        rb.mass = Infinity;
+        this.engine.onStart.on(this.onStart.bind(this));
+    }
 
-        this.addComponent(BoxCollider);
+    onStart() {
+        this.inputSystem = this.scene.getComponent(InputSystem);
+        if(!this.inputSystem) return;
 
-        this.transform.position = new Vector2(RandomHelper.floatRange(-10, 10), RandomHelper.floatRange(-10, 10));
+        this.inputSystem.onMouseLeft.on(this.onMouseLeft.bind(this));
+    }
+
+    onMouseLeft() {
+        if(!this.inputSystem) return;
+
+        if(Math.random() > 0.5) {
+            const go = this.scene.addGameObject(CollidingBox);
+            go.transform.position = this.inputSystem.mousePosition;
+        } else {
+            const go = this.scene.addGameObject(CollidingCircle);
+            go.transform.position = this.inputSystem.mousePosition;
+
+        }
     }
 
 }
@@ -228,24 +204,10 @@ class PhysicsTestScene extends Scene {
 
         this.addGameObject(MyCircle);
         this.addGameObject(Ground);
-        this.addGameObject(Wrapper);
+        this.addGameObject(ObjectPlacer);
 
-        for(let i = 0; i < 10; i++) {
-            if(RandomHelper.boolean()) {
-                this.addGameObject(CollidingCircle);
-            } else {
-                this.addGameObject(CollidingBox);
-            }
-        }
-
-        this.addGameObject(StaticCircle).transform.position = new Vector2(2, 2);
-        this.addGameObject(StaticCircle).transform.position = new Vector2(-2, -2);
-        this.addGameObject(StaticBox).transform.position = new Vector2(4, 2);
-        this.addGameObject(StaticBox).transform.position = new Vector2(-4, -2);
-        this.addGameObject(StaticBox).transform.position = new Vector2(4, 6);
-        this.addGameObject(StaticBox).transform.position = new Vector2(-4, -6);
-        this.addGameObject(StaticCircle).transform.position = new Vector2(-6, 8);
-        this.addGameObject(StaticCircle).transform.position = new Vector2(6, -8);
+        this.addGameObject(StaticCircle).transform.position = new Vector2(6, -4);
+        this.addGameObject(StaticCircle).transform.position = new Vector2(-6, -4);
     }
 
 }

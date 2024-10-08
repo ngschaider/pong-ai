@@ -1,6 +1,6 @@
 import Vector3 from "./Vector3";
 
-abstract class Matrix {
+abstract class Matrix<T extends Matrix<any>> {
 
     width: number;
     values: number[];
@@ -18,9 +18,9 @@ abstract class Matrix {
         return this.values.length / this.width;
     }
 
-    abstract clone(): Matrix;
+    abstract clone(): T;
 
-    transpose(): Matrix {
+    transpose(): T {
         const height = this.width;
         const width = this.height;
 
@@ -35,7 +35,7 @@ abstract class Matrix {
         return m;
     }
 
-    multiply(other: Matrix) {
+    multiply(other: Matrix<any>): Matrix<any> {
         if(this.width !== other.height) {
             throw new Error("Width of left matrix must equal to height of right matrix.");
         }
@@ -60,14 +60,14 @@ abstract class Matrix {
         return m;
     }
 
-    scalarMul(other: number) {
+    scalarMul(other: number): T {
         const m = this.clone()
         m.values = this.values.map(v => v * other);
 
         return m;
     }
 
-    scalarDiv(other: number) {
+    scalarDiv(other: number): T {
         const m = this.clone()
         m.values = this.values.map(v => v / other);
 
@@ -76,11 +76,13 @@ abstract class Matrix {
 
     abstract det(): number;
 
-    abstract adj(): Matrix;
+    abstract adj(): T;
 
-    invert(): Matrix {
-        return this.adj().scalarDiv(this.det());
+    
+    invert<T extends this>(): T {
+        return this.adj().scalarDiv(this.det()) as T;
     }
+
 
     getValue(x: number, y: number) {
         if(x > this.width - 1) {

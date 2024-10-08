@@ -34,6 +34,7 @@ class CollisionSystem extends Component {
                     // we werent colliding before
                     bodyA.onCollisionStart.emit(c);
                     bodyB.onCollisionStart.emit(c);
+                    this.transferImpulse(c);
                 }
 
                 bodyA.onCollision.emit(c);
@@ -50,7 +51,7 @@ class CollisionSystem extends Component {
         }
     }
 
-    private resolveCollision(collision: Collision) {
+    private transferImpulse(collision: Collision) {
         const rbA = collision.bodyA.gameObject.getComponent(RigidBody);
         const rbB = collision.bodyB.gameObject.getComponent(RigidBody);
         if(!rbA || !rbB) return;
@@ -64,14 +65,32 @@ class CollisionSystem extends Component {
 
         if(rbA.mass != Infinity) {
             const factor = rbB.mass === Infinity ? 1 : 2;
-            rbA.transform.move(collision.normal.scalarMul(-collision.depth / factor));
             rbA.velocity = rbA.velocity.subtract(collision.normal.scalarMul(j/rbA.mass));
         }
 
         if(rbB.mass != Infinity) {
             const factor = rbA.mass === Infinity ? 1 : 2;
-            rbB.transform.move(collision.normal.scalarMul(collision.depth / factor));
             rbB.velocity = rbB.velocity.add(collision.normal.scalarMul(j/rbB.mass));
+        }
+    }
+
+    private resolveCollision(collision: Collision) {
+        const rbA = collision.bodyA.gameObject.getComponent(RigidBody);
+        const rbB = collision.bodyB.gameObject.getComponent(RigidBody);
+        if(!rbA || !rbB) return;
+
+        // if(rbB.velocity.subtract(rbA.velocity).dot(collision.normal) > 0) {
+        //     return;
+        // }
+
+        if(rbA.mass != Infinity) {
+            const factor = rbB.mass === Infinity ? 1 : 2;
+            rbA.transform.move(collision.normal.scalarMul(-collision.depth / factor));
+        }
+
+        if(rbB.mass != Infinity) {
+            const factor = rbA.mass === Infinity ? 1 : 2;
+            rbB.transform.move(collision.normal.scalarMul(collision.depth / factor));
         }
     }
 

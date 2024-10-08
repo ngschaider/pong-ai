@@ -27,7 +27,7 @@ class StrokedLine extends GameObject {
         this.transform.position = new Vector2(0, -10);
 
         for(let i = 0; i < this.numSegments; i++) {
-            const line = this.addGameObject(Line);
+            const line = this.addChild(Line);
             line.transform.position = new Vector2(0, (this.space + 1) * i);
         }
     }

@@ -10,9 +10,7 @@ class Systems extends GameObject {
     constructor(scene: Scene) {
         super(scene);
 
-        const r = this.addComponent(RenderSystem);
-        r.graphics = new CanvasGraphics(document.getElementById("root") as HTMLCanvasElement);
-        
+        this.addComponent(RenderSystem);
         this.addComponent(InputSystem);
         this.addComponent(CollisionSystem);
     }

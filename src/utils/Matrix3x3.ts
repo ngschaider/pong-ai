@@ -2,7 +2,7 @@ import Matrix from "./Matrix";
 import Matrix2x2 from "./Matrix2x2";
 import Vector2 from "./Vector2";
 
-class Matrix3x3 extends Matrix {
+class Matrix3x3 extends Matrix<Matrix3x3> {
 
     public static readonly identity: Matrix3x3 = new Matrix3x3(1, 0, 0, 0, 1, 0, 0, 0, 1);
 
@@ -13,7 +13,7 @@ class Matrix3x3 extends Matrix {
         super([a, b, c, d, e, f, g, h, i], 3);
     }
 
-    clone() {
+    clone(): Matrix3x3 {
         return new Matrix3x3(
             this.values[0], this.values[1], this.values[2], 
             this.values[3], this.values[4], this.values[5], 
@@ -30,7 +30,7 @@ class Matrix3x3 extends Matrix {
                 - this.getValue(1, 0) * this.getValue(0, 1) * this.getValue(2, 2);
     }
 
-    adj() {
+    adj(): Matrix3x3 {
         const a = this.getValue(0, 0);
         const b = this.getValue(1, 0);
         const c = this.getValue(2, 0);
@@ -43,7 +43,7 @@ class Matrix3x3 extends Matrix {
         return new Matrix3x3(e*i-f*h, c*h-b*i, b*f-c*e, f*g-d*i, a*i-c*g, c*d-a*f, d*h-e*g, b*g-a*h, a*e-b*d);
     }
 
-    multiply(other: Matrix): Matrix3x3 {
+    multiply(other: Matrix3x3): Matrix3x3 {
         const a = super.multiply(other);
 
         const ret = new Matrix3x3(0, 0, 0, 0, 0, 0, 0, 0, 0);
