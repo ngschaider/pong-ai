@@ -1,5 +1,3 @@
-import { debug } from "..";
-import BoxCollider from "./BoxCollider";
 import CircleCollider from "./CircleCollider";
 import Collider from "./Collider";
 import Polygon from "./Polygon";
