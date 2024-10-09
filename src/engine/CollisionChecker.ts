@@ -62,9 +62,11 @@ class CollisionChecker {
         const dist = center1.distance(center2);
         const radii = radius1 + radius2;
 
+        const normal = dist === 0 ? new Vector2(0, -1) : center2.subtract(center1);
+
         if(dist < radii) {
             return {
-                normal: center2.subtract(center1).normalize(),
+                normal: normal,
                 depth: radii - dist,
             }
         } else {

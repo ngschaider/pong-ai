@@ -1,13 +1,10 @@
 import { getCombinations } from "../utils/funcs";
 import Collider from "./Collider";
-import Component from "./Component";
 import Collision from "../utils/Collision";
 import Vector2 from "../utils/Vector2";
 import RigidBody from "./RigidBody";
 import CollisionChecker from "./CollisionChecker";
-import RenderSystem from "./RenderSystem";
 import Color from "../utils/Color";
-import Matrix3x3 from "../utils/Matrix3x3";
 import Renderer from "./Renderer";
 import Graphics from "../graphics/Graphics";
 
@@ -91,7 +88,8 @@ class CollisionSystem extends Renderer {
         if(rbA.mass != Infinity) {
             const factor = rbB.mass === Infinity ? 1 : 2;
             rbA.transform.move(collision.normal.scalarMul(-collision.depth / factor));
-            rbA.velocity = rbA.velocity.subtract(collision.normal.scalarMul(j/rbA.mass));
+            const newV = rbA.velocity.subtract(collision.normal.scalarMul(j/rbA.mass))
+            rbA.velocity = newV;
         }
 
         if(rbB.mass != Infinity) {
