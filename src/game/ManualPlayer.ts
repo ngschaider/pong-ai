@@ -1,4 +1,4 @@
-import Keyboard from "../engine/Keyboard";
+import Keyboard, { KeyCode } from "../engine/Keyboard";
 import Scene from "../engine/Scene";
 import Vector2 from "../utils/Vector2";
 import Player from "./Player";
@@ -21,8 +21,8 @@ class ManualPlayer extends Player {
         if(!this.keyboard) return;
         
         let value = 0;
-        if(this.keyboard.w) value -= 1;
-        if(this.keyboard.s) value += 1;
+        if(this.keyboard.isKeyPressed(KeyCode.W)) value -= 1;
+        if(this.keyboard.isKeyPressed(KeyCode.S)) value += 1;
 
         this.rigidBody.velocity = new Vector2(0, value).scalarMul(0.4);
     }

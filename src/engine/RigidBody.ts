@@ -9,11 +9,10 @@ class RigidBody extends Component {
 
     velocity: Vector2 = Vector2.zero;
     acceleration: Vector2 = Vector2.zero;
-    friction: number = 1;
 
     angularVelocity: number = 0;
     angularAcceleration: number = 0;
-    angularFriction: number = 0.9;
+    angularFriction: number = 1;
     mass: number = 1;
     restitution = 0.6;
 
@@ -45,7 +44,6 @@ class RigidBody extends Component {
         // apply linear acceleration, velocity and friction
         this.velocity = this.velocity.add(this.acceleration.scalarMul(this.engine.deltaTimePhysics));
         this.transform.position = this.transform.position.add(this.velocity.scalarMul(this.engine.deltaTimePhysics));
-        this.velocity = this.velocity.scalarMul(this.friction);
 
         // apply angular acceleration, velocity and friction
         this.angularVelocity += this.angularAcceleration * this.engine.deltaTimePhysics;

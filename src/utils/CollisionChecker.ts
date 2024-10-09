@@ -1,11 +1,11 @@
-import CircleCollider from "./CircleCollider";
-import Collider from "./Collider";
-import Polygon from "./Polygon";
-import PolygonCollider from "./PolygonCollider";
-import Collision from "../utils/Collision";
-import Vector2 from "../utils/Vector2";
-import RigidBody from "./RigidBody";
-import Rect from "./Rect";
+import { debug } from "..";
+import BoxCollider from "../engine/BoxCollider";
+import CircleCollider from "../engine/CircleCollider";
+import Collider from "../engine/Collider";
+import Polygon from "../engine/Polygon";
+import PolygonCollider from "../engine/PolygonCollider";
+import Collision from "./Collision";
+import Vector2 from "./Vector2";
 
 type CollisionTestResult = {
     depth: number, 
@@ -14,48 +14,25 @@ type CollisionTestResult = {
 
 class CollisionChecker {
 
-    private static findCircleCircleContactPoint(centerA: Vector2, radiusA: number, centerB: Vector2): Vector2 {
-        const dir = centerB.subtract(centerA).normalize();
-
-        return dir.scalarMul(radiusA);
-    }
-
     public static checkCollision(bodyA: Collider, bodyB: Collider): Collision|null {
-        const boxA = bodyA.getWorldAABB();
-        const boxB = bodyB.getWorldAABB();
-
-        if(!this.areRectsIntersecting(boxA, boxB)) {
-            return null;
+        if(bodyA instanceof CircleCollider && bodyB instanceof CircleCollider) {
+            const info = this.circleCircle(bodyA.globalPosition, bodyA.localRadius, bodyB.globalPosition, bodyB.localRadius);
+            return info ? new Collision(bodyA, bodyB, info.depth, info.normal) : null;
         }
-
-        if(bodyA instanceof CircleCollider && bodyB instanceof CircleCollider) { // Circle <-> Circle
-            const info = this.circleCircle(bodyA.globalPosition, bodyA.globalRadius, bodyB.globalPosition, bodyB.globalRadius);
-            const contact = this.findCircleCircleContactPoint(bodyA.globalPosition, bodyA.globalRadius, bodyB.globalPosition);
-            return info ? new Collision(bodyA, bodyB, info.depth, info.normal, [contact]) : null;
-        }
-        if(bodyA instanceof PolygonCollider && bodyB instanceof PolygonCollider) { // Polygon <-> Polygon
+        if(bodyA instanceof BoxCollider && bodyB instanceof BoxCollider) {
             const info = this.polygonPolygon(bodyA.getWorldPolygon(), bodyB.getWorldPolygon());
-            return info ? new Collision(bodyA, bodyB, info.depth, info.normal, []): null;
-        }
-        if((bodyA instanceof CircleCollider && bodyB instanceof PolygonCollider)) { // Circle <-> Polygon
-            const info = this.circlePolygon(bodyA.globalPosition, bodyA.globalRadius, bodyB.getWorldPolygon());
-            return info ? new Collision(bodyA, bodyB, info.depth, info.normal, []): null;
-        }
-        if((bodyA instanceof PolygonCollider && bodyB instanceof CircleCollider)) { // Polygon <-> Circle
-            const info = this.circlePolygon(bodyB.globalPosition, bodyB.globalRadius, bodyA.getWorldPolygon());
-            return info ? new Collision(bodyB, bodyA, info.depth, info.normal, []): null;
-        }
+            return info ? new Collision(bodyA, bodyB, info.depth, info.normal): null;
+        };
+        if((bodyA instanceof CircleCollider && bodyB instanceof PolygonCollider)) {
+            const info = this.circlePolygon(bodyA.globalPosition, bodyA.localRadius, bodyB.getWorldPolygon());
+            return info ? new Collision(bodyA, bodyB, info.depth, info.normal): null;
+        };
+        if((bodyA instanceof PolygonCollider && bodyB instanceof CircleCollider)) {
+            const info = this.circlePolygon(bodyB.globalPosition, bodyB.localRadius, bodyA.getWorldPolygon());
+            return info ? new Collision(bodyB, bodyA, info.depth, info.normal): null;
+        };
 
         throw new Error("Unsupported collision between bodies");
-    }
-
-    private static areRectsIntersecting(rect1: Rect, rect2: Rect): boolean {
-        if(rect1.right < rect2.left) return false;
-        if(rect1.bottom < rect2.top) return false;
-        if(rect1.top > rect2.bottom) return false;
-        if(rect1.left > rect2.right) return false;
-
-        return true;
     }
 
     private static circleCircle(center1: Vector2, radius1: number, center2: Vector2, radius2: number): CollisionTestResult {

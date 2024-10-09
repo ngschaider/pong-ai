@@ -1,244 +1,172 @@
+import MyEvent from "../utils/MyEvent";
 import Component from "./Component";
 import GameObject from "./GameObject";
 
+export enum KeyCode {
+    A = "a",
+    B = "b",
+    C = "c",
+    D = "d",
+    E = "e",
+    F = "f",
+    G = "g",
+    H = "h",
+    I = "i",
+    J = "j",
+    K = "k",
+    L = "l",
+    M = "m",
+    N = "n",
+    O = "o",
+    P = "p",
+    Q = "q",
+    R = "r",
+    S = "s",
+    T = "t",
+    U = "u",
+    V = "v",
+    W = "w",
+    X = "x",
+    Y = "y",
+    Z = "z",
+    One = "1",
+    Two = "2",
+    Three = "3",
+    Four = "4",
+    Five = "5",
+    Six = "6",
+    Seven = "7",
+    Eight = "8",
+    Nine = "9",
+    Zero = "0",
+    F1 = "F1",
+    F2 = "F2",
+    F3 = "F3",
+    F4 = "F4",
+    F5 = "F5",
+    F6 = "F6",
+    F7 = "F7",
+    F8 = "F8",
+    F9 = "F9",
+    F10 = "F10",
+    F11 = "F11",
+    F12 = "F12",
+    GermanS = "ß",
+    GermanU = "ü",
+    GermanA = "ä",
+    GermanO = "ö",
+    Underline = "_",
+    Backspace = "Backspace",
+    Degree = "°",
+    QuestionMark = "?",
+    Squared = "²",
+    Cubed = "³",
+    ClosingCurlyParentheses = "}",
+    OpeningCurlyParantheses = "{",
+    OpeningSquareBracket = "[",
+    ClosingSquareBrakcet = "]",
+    Mu = "µ",
+    Euro = "€",
+    Quote = "\"",
+    Equals = "=",
+    Shift = "Shift",
+    DoublePoint = ":",
+    Semicolon = ";",
+    ExclamationMark = "!",
+    Backslash = "\\",
+    Paragraph = "§",
+    Dollar = "$",
+    Percent = "%",
+    Ampersand = "&",
+    OpeningParantheses = "(",
+    ClosingParentheses = ")",
+    Alt = "Alt",
+    Dead = "Dead",
+    AltGraph = "AltGraph",
+    CapsLock = "CapsLock",
+    Tab = "Tab",
+    ArrowLeft = "ArrowLeft",
+    ArrowUp = "ArrowUp",
+    ArrowRight = "ArrowRight",
+    ArrowDown = "ArrowDown",
+    NumLock = "NumLock",
+    Enter = "Enter",
+    Pause = "Pause",
+    ScrollLock = "ScrollLock",
+    PrintScreen = "PrintScreen",
+    ContextMenu = "ContextMenu",
+    Control = "Control",
+    Escape = "Escape",
+    Delete = "Delete",
+    End = "End",
+    PageDown = "PageDown",
+    PageUp = "PageUp",
+    Home = "Home",
+    Insert = "Insert",
+    Comma = "Comma",
+    Decimal = ".",
+    Minus = "-",
+    Plus = "+",
+    Asterisk = "*",
+    Slash = "/",
+    Space = " ",
+}
+
+class Key {
+    constructor() {
+        this.onKeyDown.on(() => {
+            this.state = true;
+        });
+
+        this.onKeyUp.on(() => {
+            this.state = false;
+        });
+    }
+
+    state: boolean = false;
+
+    onKeyDown: MyEvent = new MyEvent();
+    onKeyUp: MyEvent = new MyEvent();
+}
+
 class Keyboard extends Component {
 
-    public a: boolean = false;
-    public b: boolean = false;
-    public c: boolean = false;
-    public d: boolean = false;
-    public e: boolean = false;
-    public f: boolean = false;
-    public g: boolean = false;
-    public h: boolean = false;
-    public i: boolean = false;
-    public j: boolean = false;
-    public k: boolean = false;
-    public l: boolean = false;
-    public m: boolean = false;
-    public n: boolean = false;
-    public o: boolean = false;
-    public p: boolean = false;
-    public q: boolean = false;
-    public r: boolean = false;
-    public s: boolean = false;
-    public t: boolean = false;
-    public u: boolean = false;
-    public v: boolean = false;
-    public w: boolean = false;
-    public x: boolean = false;
-    public y: boolean = false;
-    public z: boolean = false;
-
-    public one: boolean = false;
-    public two: boolean = false;
-    public three: boolean = false;
-    public four: boolean = false;
-    public five: boolean = false;
-    public six: boolean = false;
-    public seven: boolean = false;
-    public eight: boolean = false;
-    public nine: boolean = false;
-    public zero: boolean = false;
-    public f1: boolean = false;
-    public f2: boolean = false;
-    public f3: boolean = false;
-    public f4: boolean = false;
-    public f5: boolean = false;
-    public f6: boolean = false;
-    public f7: boolean = false;
-    public f8: boolean = false;
-    public f9: boolean = false;
-    public f10: boolean = false;
-    public f11: boolean = false;
-    public f12: boolean = false;
-    public shift: boolean = false;
-    public control: boolean = false;
-    public altGraph: boolean = false;
-    public capsLock: boolean = false;
-    public tab: boolean = false;
-    public arrowLeft: boolean = false;
-    public arrowUp: boolean = false;
-    public arrowRight: boolean = false;
-    public arrowDown: boolean = false;
-    public numLock: boolean = false;
-    public enter: boolean = false;
-    public pause: boolean = false;
-    public scrollLock: boolean = false;
-    public escape: boolean = false;
-    public delete: boolean = false;
-    public end: boolean = false;
-    public pageDown: boolean = false;
-    public pageUp: boolean = false;
-    public home: boolean = false;
-    public insert: boolean = false;
-    public comma: boolean = false;
-    public decimal: boolean = false;
-    public minus: boolean = false;
-    public plus: boolean = false;
-    public asterisk: boolean = false;
+    public readonly keys: Map<KeyCode, Key> = new Map();
 
     constructor(gameObject: GameObject) {
         super(gameObject);
+
+        for(const keyCode of Object.values(KeyCode)) {
+            this.keys.set(keyCode, new Key());
+        }
 
         window.addEventListener("keydown", this.keydown.bind(this));
         window.addEventListener("keyup", this.keyup.bind(this));
     }
 
+    isKeyPressed(keyCode: KeyCode): boolean {
+        const key = this.keys.get(keyCode);
+        if(!key) throw new Error("Unsupported KeyCode supplied.");
+        return key.state;
+    }
+
     private keydown(e: KeyboardEvent) {
-        switch(e.key.toLowerCase()) {
-            case "a": this.a = true; break;
-            case "b": this.b = true; break;
-            case "c": this.c = true; break;
-            case "d": this.d = true; break;
-            case "e": this.e = true; break;
-            case "f": this.f = true; break;
-            case "g": this.g = true; break;
-            case "h": this.h = true; break;
-            case "i": this.i = true; break;
-            case "j": this.j = true; break;
-            case "k": this.k = true; break;
-            case "l": this.l = true; break;
-            case "m": this.m = true; break;
-            case "n": this.n = true; break;
-            case "o": this.o = true; break;
-            case "p": this.p = true; break;
-            case "q": this.q = true; break;
-            case "r": this.r = true; break;
-            case "s": this.s = true; break;
-            case "t": this.t = true; break;
-            case "u": this.u = true; break;
-            case "v": this.v = true; break;
-            case "w": this.w = true; break;
-            case "x": this.x = true; break;
-            case "y": this.y = true; break;
-            case "z": this.z = true; break;
-            case "1": this.one = true; break;
-            case "2": this.two = true; break;
-            case "3": this.three = true; break;
-            case "4": this.four = true; break;
-            case "5": this.five = true; break;
-            case "6": this.six = true; break;
-            case "7": this.seven = true; break;
-            case "8": this.eight = true; break;
-            case "9": this.nine = true; break;
-            case "0": this.zero = true; break;
-            case "F1": this.f1 = true; break;
-            case "F2": this.f2 = true; break;
-            case "F3": this.f3 = true; break;
-            case "F4": this.f4 = true; break;
-            case "F5": this.f5 = true; break;
-            case "F6": this.f6 = true; break;
-            case "F7": this.f7 = true; break;
-            case "F8": this.f8 = true; break;
-            case "F9": this.f9 = true; break;
-            case "F10": this.f10 = true; break;
-            case "F11": this.f11 = true; break;
-            case "F12": this.f12 = true; break;
-            case "Shift": this.shift = true; break;
-            case "Control": this.control = true; break;
-            case "AltGraph": this.altGraph = true; break;
-            case "CapsLock": this.altGraph = true; break;
-            case "Tab": this.altGraph = true; break;
-            case "ArrowLeft": this.arrowLeft = true; break;
-            case "ArrowUp": this.arrowUp = true; break;
-            case "ArrowRight": this.arrowRight = true; break;
-            case "ArrowDown": this.arrowDown = true; break;
-            case "NumLock": this.numLock = true; break;
-            case "Enter": this.enter = true; break;
-            case "Pause": this.pause = true; break;
-            case "ScrollLock": this.scrollLock = true; break;
-            case "Escape": this.escape = true; break;
-            case "Delete": this.delete = true; break;
-            case "End": this.end = true; break;
-            case "PageDown": this.pageDown = true; break;
-            case "PageUp": this.pageUp = true; break;
-            case "Home": this.home = true; break;
-            case "Insert": this.insert = true; break;
-            case ",": this.comma = true; break;
-            case ".": this.decimal = true; break;
-            case "-": this.minus = true; break;
-            case "+": this.plus = true; break;
-            case "*": this.asterisk = true; break;
-        }
+        const k = e.key.length === 1 ? e.key.toLowerCase() : e.key;
+
+        const key = this.keys.get(k as KeyCode);
+        if(!key) throw new Error("Unsupported key pressed: " + k);
+
+        key.onKeyDown.emit()
+        key.state = true;
     }
 
     private keyup(e: KeyboardEvent) {
-        switch(e.key.toLowerCase()) {
-            case "a": this.a = false; break;
-            case "b": this.b = false; break;
-            case "c": this.c = false; break;
-            case "d": this.d = false; break;
-            case "e": this.e = false; break;
-            case "f": this.f = false; break;
-            case "g": this.g = false; break;
-            case "h": this.h = false; break;
-            case "i": this.i = false; break;
-            case "j": this.j = false; break;
-            case "k": this.k = false; break;
-            case "l": this.l = false; break;
-            case "m": this.m = false; break;
-            case "n": this.n = false; break;
-            case "o": this.o = false; break;
-            case "p": this.p = false; break;
-            case "q": this.q = false; break;
-            case "r": this.r = false; break;
-            case "s": this.s = false; break;
-            case "t": this.t = false; break;
-            case "u": this.u = false; break;
-            case "v": this.v = false; break;
-            case "w": this.w = false; break;
-            case "x": this.x = false; break;
-            case "y": this.y = false; break;
-            case "z": this.z = false; break;
-            case "1": this.one = false; break;
-            case "2": this.two = false; break;
-            case "3": this.three = false; break;
-            case "4": this.four = false; break;
-            case "5": this.five = false; break;
-            case "6": this.six = false; break;
-            case "7": this.seven = false; break;
-            case "8": this.eight = false; break;
-            case "9": this.nine = false; break;
-            case "0": this.zero = false; break;
-            case "F1": this.f1 = false; break;
-            case "F2": this.f2 = false; break;
-            case "F3": this.f3 = false; break;
-            case "F4": this.f4 = false; break;
-            case "F5": this.f5 = false; break;
-            case "F6": this.f6 = false; break;
-            case "F7": this.f7 = false; break;
-            case "F8": this.f8 = false; break;
-            case "F9": this.f9 = false; break;
-            case "F10": this.f10 = false; break;
-            case "F11": this.f11 = false; break;
-            case "F12": this.f12 = false; break;
-            case "Shift": this.shift = false; break;
-            case "Control": this.control = false; break;
-            case "AltGraph": this.altGraph = false; break;
-            case "CapsLock": this.capsLock = false; break;
-            case "Tab": this.tab = false; break;
-            case "ArrowLeft": this.arrowLeft = false; break;
-            case "ArrowUp": this.arrowUp = false; break;
-            case "ArrowRight": this.arrowRight = false; break;
-            case "ArrowDown": this.arrowDown = false; break;
-            case "NumLock": this.numLock = false; break;
-            case "Enter": this.enter = false; break;
-            case "Pause": this.pause = false; break;
-            case "ScrollLock": this.scrollLock = false; break;
-            case "Escape": this.escape = false; break;
-            case "Delete": this.delete = false; break;
-            case "End": this.end = false; break;
-            case "PageDown": this.pageDown = false; break;
-            case "PageUp": this.pageUp = false; break;
-            case "Home": this.home = false; break;
-            case "Insert": this.insert = false; break;
-            case ",": this.comma = false; break;
-            case ".": this.decimal = false; break;
-            case "-": this.minus = false; break;
-            case "+": this.plus = false; break;
-            case "*": this.asterisk = false; break;
-        }
+        const k = e.key.length === 1 ? e.key.toLowerCase() : e.key;
+        const key = this.keys.get(k as KeyCode);
+        if(!key) throw new Error("Unsupported key released: " + k);
+        
+        key.onKeyUp.emit()
+        key.state = false;
     }
 
 }

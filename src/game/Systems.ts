@@ -15,6 +15,8 @@ class Systems extends GameObject {
         this.addComponent(Keyboard);
         this.addComponent(Mouse);
         this.addComponent(CollisionSystem);
+
+        this.transform.renderOrder = 10;
     }
 
 }

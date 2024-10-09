@@ -73,7 +73,7 @@ class CanvasGraphics {
     public circle(position: Vector2, diameter: number): void {
         this.ctx.beginPath();
 
-        this.ctx.ellipse(position.x, position.x, diameter/2, diameter/2, 0, 0, 2*Math.PI);
+        this.ctx.ellipse(position.x, position.y, diameter/2, diameter/2, 0, 0, 2*Math.PI);
 
         this.ctx.save();
         if(this.doFill) {

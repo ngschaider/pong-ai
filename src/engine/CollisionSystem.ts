@@ -5,16 +5,36 @@ import Collision from "../utils/Collision";
 import Vector2 from "../utils/Vector2";
 import RigidBody from "./RigidBody";
 import CollisionChecker from "./CollisionChecker";
+import RenderSystem from "./RenderSystem";
+import Color from "../utils/Color";
+import Matrix3x3 from "../utils/Matrix3x3";
+import Renderer from "./Renderer";
+import Graphics from "../graphics/Graphics";
 
-class CollisionSystem extends Component {
+class CollisionSystem extends Renderer {
 
     private currentCollisions: Collision[] = [];
 
-    public physicsUpdate(): void {
-        this.checkCollisions();
+    public render(g: Graphics): void {
+        g.noFill();
+        g.stroke(Color.lime);
+
+        for(const collision of this.currentCollisions) {
+            for(const contact of collision.contacts) {
+                g.circle(collision.bodyA.transform.position.add(contact), 0.2);
+            }
+        }
     }
 
-    private checkCollisions() {
+    public physicsUpdate(): void {
+        this.detectCollisions();
+
+        for(const collision of this.currentCollisions) {
+            this.resolveCollision(collision);
+        }
+    }
+
+    private detectCollisions() {
         const colliders = this.scene.getAllComponents(Collider);
         const combinations = getCombinations(colliders);
 
@@ -22,7 +42,7 @@ class CollisionSystem extends Component {
             if(bodyA === bodyB) continue;
 
             // find an existing collision and remove it from the list
-            // (will be added again when we are still colliding)
+            // (will be re-added again if we are still colliding)
             const existingCollision = this.currentCollisions.find(c => {
                 return (c.bodyA == bodyA && c.bodyB == bodyB) || (c.bodyA == bodyB && c.bodyB == bodyA);
             });
@@ -31,9 +51,6 @@ class CollisionSystem extends Component {
             const c = CollisionChecker.checkCollision(bodyA, bodyB);
 
             if(c !== null) {
-                // we are still colliding
-                this.resolveCollision(c)
-
                 if(!existingCollision) {
                     // we werent colliding before
                     bodyA.onCollisionStart.emit(c);
