@@ -1,19 +1,22 @@
+import { vec2 } from "gl-matrix";
 import BoxCollider from "../engine/BoxCollider";
 import CircleCollider from "../engine/CircleCollider";
 import CircleRenderer from "../engine/CircleRenderer";
 import Component from "../engine/Component";
 import Engine from "../engine/Engine";
 import GameObject from "../engine/GameObject";
-import InputSystem from "../engine/InputSystem";
+import Keyboard from "../engine/Keyboard";
+import Mouse from "../engine/Mouse";
 import Rect from "../engine/Rect";
 import RectangleRenderer from "../engine/RectangleRenderer";
 import RigidBody from "../engine/RigidBody";
 import Scene from "../engine/Scene";
-import Color from "../graphics/Color";
+import Color from "../utils/Color";
 import RandomHelper from "../utils/RandomHelper";
 import Vector2 from "../utils/Vector2";
 import Vector3 from "../utils/Vector3";
 import Background from "./Background";
+import FpsLogger from "./FpsLogger";
 import MyCamera from "./MyCamera";
 import Systems from "./Systems";
 
@@ -35,16 +38,16 @@ class MyCircle extends GameObject {
     }
 
     update(): void {
-        const inputSystem = this.scene.getComponent(InputSystem);
-        if(!inputSystem) return;
+        const keyboard = this.scene.getComponent(Keyboard);
+        if(!keyboard) return;
 
         let x = 0
-        if(inputSystem.keys.D) x += 1;
-        if(inputSystem.keys.A) x -= 1;
+        if(keyboard.d) x += 1;
+        if(keyboard.a) x -= 1;
 
         let y = 0;
-        if(inputSystem.keys.W) y -= 1;
-        if(inputSystem.keys.S) y += 1;
+        if(keyboard.w) y -= 1;
+        if(keyboard.s) y += 1;
 
         this.rigidBody.addForce(new Vector2(x, y).scalarMul(0.002));
     }
@@ -59,7 +62,7 @@ class CollidingCircle extends GameObject {
 
         const rb = this.addComponent(RigidBody);
         rb.mass = 2;
-        rb.acceleration = new Vector2(0, 0.001);
+        rb.acceleration = new Vector2(0, 9.807);
 
         this.addComponent(CircleCollider);
 
@@ -82,7 +85,7 @@ class CollidingBox extends GameObject {
 
         const rb = this.addComponent(RigidBody);
         rb.mass = 10;
-        rb.acceleration = new Vector2(0, 0.001);
+        rb.acceleration = new Vector2(0, 9.807);
 
         this.addComponent(BoxCollider);
         const rr = this.addComponent(RectangleRenderer);
@@ -156,14 +159,14 @@ class Ground extends GameObject {
         rb.mass = Infinity
 
         const rr = this.addComponent(RectangleRenderer)
-        rr.fillColor = Color.green;
+        rr.fillColor = Color.darkGreen;
     }
 
 }
 
 class ObjectPlacer extends GameObject {
 
-    inputSystem: InputSystem|null = null;
+    mouse: Mouse|null = null;
 
     constructor(scene: Scene) {
         super(scene);
@@ -172,21 +175,21 @@ class ObjectPlacer extends GameObject {
     }
 
     onStart() {
-        this.inputSystem = this.scene.getComponent(InputSystem);
-        if(!this.inputSystem) return;
+        this.mouse = this.scene.getComponent(Mouse);
+        if(!this.mouse) return;
 
-        this.inputSystem.onMouseLeft.on(this.onMouseLeft.bind(this));
+        this.mouse.onButtonLeftClicked.on(this.onButtonLeftClicked.bind(this));
     }
 
-    onMouseLeft() {
-        if(!this.inputSystem) return;
+    onButtonLeftClicked() {
+        if(!this.mouse) return;
 
-        if(Math.random() > 0.5) {
+        if(Math.random() > 0) {
             const go = this.scene.addGameObject(CollidingBox);
-            go.transform.position = this.inputSystem.mousePosition;
+            go.transform.position = this.mouse.mousePosition;
         } else {
             const go = this.scene.addGameObject(CollidingCircle);
-            go.transform.position = this.inputSystem.mousePosition;
+            go.transform.position = this.mouse.mousePosition;
 
         }
     }
@@ -206,8 +209,17 @@ class PhysicsTestScene extends Scene {
         this.addGameObject(Ground);
         this.addGameObject(ObjectPlacer);
 
+        const fpsLogger = this.addGameObject(FpsLogger);
+        fpsLogger.transform.position = new Vector2(0, 0);
+
         this.addGameObject(StaticCircle).transform.position = new Vector2(6, -4);
         this.addGameObject(StaticCircle).transform.position = new Vector2(-6, -4);
+    }
+
+    update(): void {
+        super.update();
+
+        
     }
 
 }

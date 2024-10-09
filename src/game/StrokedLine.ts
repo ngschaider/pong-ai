@@ -1,7 +1,7 @@
 import GameObject from "../engine/GameObject";
 import LineRenderer from "../engine/LineRenderer";
 import Scene from "../engine/Scene";
-import Color from "../graphics/Color";
+import Color from "../utils/Color";
 import Vector2 from "../utils/Vector2";
 
 

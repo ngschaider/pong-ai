@@ -3,7 +3,7 @@ import CircleRenderer from "../engine/CircleRenderer";
 import GameObject from "../engine/GameObject";
 import RigidBody from "../engine/RigidBody";
 import Scene from "../engine/Scene";
-import Color from "../graphics/Color";
+import Color from "../utils/Color";
 import Vector2 from "../utils/Vector2";
 import Vector3 from "../utils/Vector3";
 

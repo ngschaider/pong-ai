@@ -1,39 +1,53 @@
+import Collider from "../engine/Collider";
 import GameObject from "../engine/GameObject";
+import Scene from "../engine/Scene";
+import TextRenderer from "../engine/TextRenderer";
+import Vector2 from "../utils/Vector2";
 
 class FpsLogger extends GameObject {
 
     private lastUpdate: number = 0;
-    private lastLog: number = 0;
 
-    private lastFixedUpdate: number = 0;
-    private lastLogFixed: number = 0;
+    private lastPhysicsUpdate: number = 0;
+
+    private updateRate: TextRenderer;
+    private updatePhysicsRate: TextRenderer;
+    private colliderCount: TextRenderer;
+
+    constructor(scene: Scene) {
+        super(scene);
+
+        this.updateRate = this.addComponent(TextRenderer);
+        this.updateRate.offset = new Vector2(0, 0.03);
+
+        this.updatePhysicsRate = this.addComponent(TextRenderer);
+        this.updatePhysicsRate.offset = new Vector2(0, 0.06);
+
+        this.colliderCount = this.addComponent(TextRenderer);
+        this.colliderCount.offset = new Vector2(0, 0.09);
+    }
 
     update(): void {
         const now = new Date().getTime();
 
-        if(now - this.lastLog > 1000) {
-            const delta = now - this.lastUpdate;
-            const fps = 1000/delta;
-            console.log("update: " + Math.round(fps));
-
-            this.lastLog = now;
-        }
+        const delta = now - this.lastUpdate;
+        const fps = 1000/delta;
+        this.updateRate.text = "Update: " + Math.round(fps) + " FPS";
 
         this.lastUpdate = now;
+
+
+        this.colliderCount.text = "Collider Count: " + this.scene.getAllComponents(Collider).length;
     }
 
-    fixedUpdate(): void {
+    physicsUpdate(): void {
         const now = new Date().getTime();
 
-        if(now - this.lastLogFixed > 1000) {
-            const delta = now - this.lastFixedUpdate;
-            const fps = 1000/delta;
-            console.log("fixedUpdate: " + Math.round(fps));
+        const delta = now - this.lastPhysicsUpdate;
+        const fps = 1000/delta;
+        this.updatePhysicsRate.text = "Physics Update: " + Math.round(fps) + " FPS";
 
-            this.lastLogFixed = now;
-        }
-
-        this.lastFixedUpdate = now;
+        this.lastPhysicsUpdate = now;
     }
 
 }

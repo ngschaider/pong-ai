@@ -3,7 +3,7 @@ import GameObject from "../engine/GameObject";
 import RectangleRenderer from "../engine/RectangleRenderer";
 import Scene from "../engine/Scene";
 import SpriteRenderer from "../engine/SpriteRenderer";
-import Color from "../graphics/Color";
+import Color from "../utils/Color";
 import Sprite from "../utils/Sprite";
 import Vector2 from "../utils/Vector2";
 import Vector3 from "../utils/Vector3";

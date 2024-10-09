@@ -34,7 +34,7 @@ class Component {
 
     }
 
-    public fixedUpdate() {
+    public physicsUpdate() {
 
     }
 

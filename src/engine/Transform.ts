@@ -21,8 +21,8 @@ class Transform extends Component {
         return this.scene.gameObjects.map(go => go.transform).filter(tf => tf.parent === this);
     }
 
-    public getMatrix(): Matrix3x3 {
-        const parent = this.transform.parent?.getMatrix() ?? Matrix3x3.identity;
+    public getLocalToWorldMatrix(): Matrix3x3 {
+        const parent = this.transform.parent?.getLocalToWorldMatrix() ?? Matrix3x3.identity;
         const trs = Matrix3x3.TRS(this.position, this.rotation, this.scale);
         
         return parent.multiply(trs);

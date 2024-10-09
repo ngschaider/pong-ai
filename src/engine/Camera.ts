@@ -35,7 +35,7 @@ class Camera extends Component {
     }
 
     public getWorldToClipMatrix(): Matrix3x3 {
-        const transformMatrix = this.transform.getMatrix();
+        const transformMatrix = this.transform.getLocalToWorldMatrix();
         const translate = Matrix3x3.translate(this.size.scalarDiv(2));
         const scaleDown = Matrix3x3.scale(Vector2.one.scalarDiv(this.size));
 

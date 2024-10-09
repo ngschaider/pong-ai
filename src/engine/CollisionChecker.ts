@@ -14,19 +14,19 @@ class CollisionChecker {
 
     public static checkCollision(bodyA: Collider, bodyB: Collider): Collision|null {
         if(bodyA instanceof CircleCollider && bodyB instanceof CircleCollider) { // Circle <-> Circle
-            const info = this.circleCircle(bodyA.worldPosition, bodyA.worldRadius, bodyB.worldPosition, bodyB.worldRadius);
+            const info = this.circleCircle(bodyA.globalPosition, bodyA.globalRadius, bodyB.globalPosition, bodyB.globalRadius);
             return info ? new Collision(bodyA, bodyB, info.depth, info.normal) : null;
         }
         if(bodyA instanceof PolygonCollider && bodyB instanceof PolygonCollider) { // Polygon <-> Polygon
-            const info = this.polygonPolygon(bodyA.getWorldPolygon(), bodyB.getWorldPolygon());
+            const info = this.polygonPolygon(bodyA.getGlobalPolygon(), bodyB.getGlobalPolygon());
             return info ? new Collision(bodyA, bodyB, info.depth, info.normal): null;
         }
         if((bodyA instanceof CircleCollider && bodyB instanceof PolygonCollider)) { // Circle <-> Polygon
-            const info = this.circlePolygon(bodyA.worldPosition, bodyA.worldRadius, bodyB.getWorldPolygon());
+            const info = this.circlePolygon(bodyA.globalPosition, bodyA.globalRadius, bodyB.getGlobalPolygon());
             return info ? new Collision(bodyA, bodyB, info.depth, info.normal): null;
         }
         if((bodyA instanceof PolygonCollider && bodyB instanceof CircleCollider)) { // Polygon <-> Circle
-            const info = this.circlePolygon(bodyB.worldPosition, bodyB.worldRadius, bodyA.getWorldPolygon());
+            const info = this.circlePolygon(bodyB.globalPosition, bodyB.globalRadius, bodyA.getGlobalPolygon());
             return info ? new Collision(bodyB, bodyA, info.depth, info.normal): null;
         }
 

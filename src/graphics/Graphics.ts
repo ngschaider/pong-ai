@@ -2,7 +2,7 @@ import Matrix from "../utils/Matrix";
 import Matrix3x3 from "../utils/Matrix3x3";
 import Sprite from "../utils/Sprite";
 import Vector2 from "../utils/Vector2";
-import Color from "./Color";
+import Color from "../utils/Color";
 
 interface Graphics {
     get size(): Vector2;
@@ -17,6 +17,7 @@ interface Graphics {
     rectangle(position: Vector2, size: Vector2): void;
     line(start: Vector2, end: Vector2): void;
     image(position: Vector2, sprite: Sprite): void;
+    fontSize(size: number): void;
     text(position: Vector2, text: string): void;
 }
 

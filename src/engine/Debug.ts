@@ -1,4 +1,4 @@
-import Color from "../graphics/Color";
+import Color from "../utils/Color";
 import Vector2 from "../utils/Vector2";
 import Engine from "./Engine";
 import RenderSystem from "./RenderSystem";

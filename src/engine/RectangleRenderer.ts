@@ -11,10 +11,9 @@ class RectangleRenderer extends Renderer {
     public render(graphics: Graphics): void {
         super.render(graphics);
 
-        const rect = new Rect(Vector2.zero, Vector2.one);
-        rect.anchorPoint = this.anchorPoint;
+        const rect = new Rect(Vector2.zero, this.anchorPoint, Vector2.one);
 
-        graphics.rectangle(rect.bottomLeft, rect.size);
+        graphics.rectangle(rect.topLeft, rect.size);
     }
 
 }

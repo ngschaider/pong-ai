@@ -4,7 +4,7 @@ import Matrix3x3 from "../utils/Matrix3x3";
 import Vector2 from "../utils/Vector2";
 import Component from "./Component";
 import GameObject from "./GameObject";
-import Renderer from "./Renderer";
+import Renderer, { RendererSpace } from "./Renderer";
 
 class RenderSystem extends Component {
 
@@ -36,12 +36,23 @@ class RenderSystem extends Component {
         if(!camera) return;
 
         const worldToScreen = this.getWorldToScreenMatrix();
+        const clipToScreen = this.getClipToScreenMatrix();
 
         for(const renderer of renderers) {
-            const transformMatrix = renderer.transform.getMatrix();
-
-            const matrix = worldToScreen.multiply(transformMatrix);
-            this.graphics.setTransformationMatrix(matrix);
+            if(renderer.space === RendererSpace.World) {
+                const transformMatrix = renderer.transform.getLocalToWorldMatrix()
+                const matrix = transformMatrix.multiply(worldToScreen);
+                this.graphics.setTransformationMatrix(matrix);
+            } else if(renderer.space === RendererSpace.Local) {
+                const localToWorld = renderer.transform.getLocalToWorldMatrix();
+                const localToScreen = worldToScreen.multiply(localToWorld);
+                this.graphics.setTransformationMatrix(localToScreen);
+            } else if(renderer.space === RendererSpace.Clip) {
+                const transformMatrix = renderer.transform.getLocalToWorldMatrix()
+                this.graphics.setTransformationMatrix(transformMatrix.multiply(clipToScreen));
+            } else {
+                throw new Error("Encountered unsupported RendererSpace")
+            }
 
             renderer.render(this.graphics);
         }

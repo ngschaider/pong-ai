@@ -47,8 +47,12 @@ class GameObject {
     }
 
     getComponent<T extends Component>(type: AbstractComponentConstructor<T>): T|null {
+        return this.getComponents(type)[0] || null;
+    }
+
+    getComponents<T extends Component>(type: AbstractComponentConstructor<T>): T[] {
         const isType = (c: Component): c is T => c instanceof type;
-        return this.components.find(isType) ?? null;
+        return this.components.filter(isType);
     }
 
     update() {
@@ -57,9 +61,9 @@ class GameObject {
         }
     }
 
-    fixedUpdate() {
+    physicsUpdate() {
         for(const component of this.components) {
-            component.fixedUpdate();
+            component.physicsUpdate();
         }
     }
 

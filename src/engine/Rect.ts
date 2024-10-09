@@ -3,13 +3,13 @@ import AnchorPoint from "./AnchorPoint";
 
 class Rect {
 
-    anchorPoint: AnchorPoint = AnchorPoint.CenterCenter;
-
+    readonly anchorPoint: AnchorPoint;
     position: Vector2;
     size: Vector2;
 
-    constructor(position: Vector2, size: Vector2) {
+    constructor(position: Vector2, anchorPoint: AnchorPoint, size: Vector2) {
         this.position = position;
+        this.anchorPoint = anchorPoint;
         this.size = size;
     }
 
@@ -77,9 +77,9 @@ class Rect {
         if([AnchorPoint.TopLeft, AnchorPoint.TopCenter, AnchorPoint.TopRight].includes(this.anchorPoint)) {
             return this.position.y;
         } else if([AnchorPoint.LeftCenter, AnchorPoint.CenterCenter, AnchorPoint.RightCenter].includes(this.anchorPoint)) {
-            return this.position.y + this.size.y/2;
+            return this.position.y - this.size.y/2;
         } else if([AnchorPoint.BottomLeft, AnchorPoint.BottomCenter, AnchorPoint.BottomRight].includes(this.anchorPoint)) {
-            return this.position.y + this.size.y;
+            return this.position.y - this.size.y;
         } else {
             throw new Error("Unsupported AnchorPoint encountered.")
         }
@@ -87,9 +87,9 @@ class Rect {
 
     public get bottom(): number {
         if([AnchorPoint.TopLeft, AnchorPoint.TopCenter, AnchorPoint.TopRight].includes(this.anchorPoint)) {
-            return this.position.y - this.size.y;
+            return this.position.y + this.size.y;
         } else if([AnchorPoint.LeftCenter, AnchorPoint.CenterCenter, AnchorPoint.RightCenter].includes(this.anchorPoint)) {
-            return this.position.y - this.size.y/2;
+            return this.position.y + this.size.y/2;
         } else if([AnchorPoint.BottomLeft, AnchorPoint.BottomCenter, AnchorPoint.BottomRight].includes(this.anchorPoint)) {
             return this.position.y;
         } else {

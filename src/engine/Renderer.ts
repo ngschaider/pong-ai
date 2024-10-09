@@ -1,6 +1,13 @@
-import Color from "../graphics/Color";
+import Color from "../utils/Color";
 import Graphics from "../graphics/Graphics";
 import Component from "./Component";
+
+export enum RendererSpace {
+    Screen,
+    Clip,
+    World,
+    Local,
+}
 
 class Renderer extends Component {
 
@@ -11,6 +18,9 @@ class Renderer extends Component {
     public stroke: boolean = false;
 
     public lineWidth: number = 0.1;
+    public fontSize: number = 0.03;
+
+    public space: RendererSpace = RendererSpace.Local;
 
     public render(graphics: Graphics) {
         if(this.fill) {
@@ -24,6 +34,8 @@ class Renderer extends Component {
         } else {
             graphics.noStroke();
         }
+
+        graphics.fontSize(this.fontSize);
 
         graphics.lineWidth(this.lineWidth);
     }

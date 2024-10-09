@@ -1,6 +1,7 @@
 import CollisionSystem from "../engine/CollisionSystem";
 import GameObject from "../engine/GameObject";
-import InputSystem from "../engine/InputSystem";
+import Keyboard from "../engine/Keyboard";
+import Mouse from "../engine/Mouse";
 import RenderSystem from "../engine/RenderSystem";
 import Scene from "../engine/Scene";
 import CanvasGraphics from "../graphics/CanvasGraphics";
@@ -11,7 +12,8 @@ class Systems extends GameObject {
         super(scene);
 
         this.addComponent(RenderSystem);
-        this.addComponent(InputSystem);
+        this.addComponent(Keyboard);
+        this.addComponent(Mouse);
         this.addComponent(CollisionSystem);
     }
 

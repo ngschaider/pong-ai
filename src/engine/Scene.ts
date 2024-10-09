@@ -24,12 +24,11 @@ class Scene {
     }
 
     public getAllComponents<T extends Component>(type: AbstractComponentConstructor<T>): T[] {
-        return this.gameObjects.map(go => go.getComponent(type)).filter(notEmpty);
+        return this.gameObjects.map(go => go.getComponents(type)).flat().filter(notEmpty);
     }
 
     public getComponent<T extends Component>(type: ComponentConstructor<T>): T|null {
-        const components = this.getAllComponents(type);
-        return components.length === 0 ? null : components[0]
+        return this.getAllComponents(type)[0] || null;
     }
 
     public getActiveCamera(): Camera|null {
@@ -48,9 +47,9 @@ class Scene {
         }
     }
 
-    fixedUpdate() {
+    physicsUpdate() {
         for(const gameObject of this.gameObjects) {
-            gameObject.fixedUpdate();
+            gameObject.physicsUpdate();
         }
     }
 

@@ -11,10 +11,8 @@ class CustomCollider extends PolygonCollider {
         new Vector2(0.5, -0.5)
     ]);
 
-    getWorldPolygon(): Polygon {
-        const matrix = this.transform.getMatrix();
-
-        return new Polygon(this.localPolygon.vertices.map(v => v.applyMatrix(matrix)));
+    getLocalPolygon(): Polygon {
+        return this.localPolygon;
     }
 
 }

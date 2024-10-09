@@ -1,27 +1,27 @@
-import Color from "../graphics/Color";
+import { vec2 } from "gl-matrix";
 import Vector2 from "../utils/Vector2";
-import Vector3 from "../utils/Vector3";
-import CircleRenderer from "./CircleRenderer";
+import AnchorPoint from "./AnchorPoint";
 import Collider from "./Collider";
-import GameObject from "./GameObject";
-
-const DEBUG = true;
+import Rect from "./Rect";
 
 class CircleCollider extends Collider {
 
     localPosition: Vector2 = Vector2.zero;
-    radius: number = 0.5;
+    localRadius: number = 0.5;
 
-    public get worldRadius(): number {
+    public get globalRadius(): number {
         // apply scaleX
-        return this.radius * this.transform.getMatrix().getValue(0, 0);
+        return this.localRadius * this.transform.getLocalToWorldMatrix().getValue(0, 0);
     }
 
-    public get worldPosition(): Vector2 {
-        const matrix = this.transform.getMatrix();
+    public get globalPosition(): Vector2 {
+        const matrix = this.transform.getLocalToWorldMatrix();
         return this.localPosition.applyMatrix(matrix);
     }
 
+    getLocalAABB(): Rect {
+        return new Rect(this.localPosition, AnchorPoint.CenterCenter, new Vector2(this.localRadius*2, this.localRadius*2));
+    }
 }
 
 export default CircleCollider;

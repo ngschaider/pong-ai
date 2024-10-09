@@ -2,7 +2,7 @@ import Matrix from "../utils/Matrix";
 import Matrix3x3 from "../utils/Matrix3x3";
 import Sprite from "../utils/Sprite";
 import Vector2 from "../utils/Vector2";
-import Color from "./Color";
+import Color from "../utils/Color";
 
 class CanvasGraphics {
 
@@ -118,6 +118,10 @@ class CanvasGraphics {
 
     public image(position: Vector2, sprite: Sprite): void {
         this.ctx.drawImage(sprite.bitmap, position.x, position.y);
+    }
+
+    public fontSize(size: number) {
+        this.ctx.font = size + "px Arial";
     }
 
     public text(position: Vector2, text: string): void {
