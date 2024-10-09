@@ -18,7 +18,7 @@ class CollisionSystem extends Renderer {
 
         for(const collision of this.currentCollisions) {
             for(const contact of collision.contacts) {
-                g.circle(collision.bodyA.transform.position.add(contact), 0.2);
+                g.circle(contact, 0.2);
             }
         }
     }
