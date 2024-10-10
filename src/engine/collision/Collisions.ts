@@ -1,5 +1,5 @@
+import Vector2 from "../../utils/Vector2";
 import Collider from "./Collider";
-import Vector2 from "../utils/Vector2"
 
 class Collisions {
 

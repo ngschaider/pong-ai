@@ -1,10 +1,8 @@
-import Graphics from "../graphics/Graphics";
 import Color from "../utils/Color";
 import Vector2 from "../utils/Vector2";
-import Component from "./Component";
-import Engine from "./Engine";
-import GameObject from "./GameObject";
-import RenderSystem from "./RenderSystem";
+import Engine from "./core/Engine";
+import Graphics from "./graphics/Graphics";
+import RenderSystem from "./rendering/RenderSystem";
 
 class Debug {
 

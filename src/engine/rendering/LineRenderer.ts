@@ -1,6 +1,6 @@
+import Vector2 from "../../utils/Vector2";
+import GameObject from "../core/GameObject";
 import Graphics from "../graphics/Graphics";
-import Vector2 from "../utils/Vector2";
-import GameObject from "./GameObject";
 import Renderer from "./Renderer";
 
 class LineRenderer extends Renderer {

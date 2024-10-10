@@ -1,8 +1,8 @@
-import MyEvent from "../utils/MyEvent";
-import Vector2 from "../utils/Vector2";
-import Component from "./Component";
-import GameObject from "./GameObject";
-import RenderSystem from "./RenderSystem";
+import MyEvent from "../../utils/MyEvent";
+import Vector2 from "../../utils/Vector2";
+import Component from "../core/Component";
+import GameObject from "../core/GameObject";
+import RenderSystem from "../rendering/RenderSystem";
 
 class Mouse extends Component {
 

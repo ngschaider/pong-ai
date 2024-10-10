@@ -1,7 +1,7 @@
-import Collider from "../collision/Collider";
-import GameObject from "../engine/GameObject";
-import Scene from "../engine/Scene";
-import TextRenderer from "../engine/TextRenderer";
+import Collider from "../engine/collision/Collider";
+import GameObject from "../engine/core/GameObject";
+import Scene from "../engine/core/Scene";
+import TextRenderer from "../engine/rendering/TextRenderer";
 import Vector2 from "../utils/Vector2";
 
 class FpsLogger extends GameObject {

@@ -1,7 +1,7 @@
 import Graphics from "../graphics/Graphics";
-import Vector2 from "../utils/Vector2";
-import AnchorPoint from "./AnchorPoint";
-import Rect from "./Rect";
+import Vector2 from "../../utils/Vector2";
+import AnchorPoint from "../AnchorPoint";
+import Rect from "../Rect";
 import Renderer from "./Renderer";
 
 class RectangleRenderer extends Renderer {

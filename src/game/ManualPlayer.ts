@@ -1,5 +1,5 @@
-import Keyboard, { KeyCode } from "../engine/Keyboard";
-import Scene from "../engine/Scene";
+import Keyboard, { KeyCode } from "../engine/input/Keyboard";
+import Scene from "../engine/core/Scene";
 import Vector2 from "../utils/Vector2";
 import Player from "./Player";
 

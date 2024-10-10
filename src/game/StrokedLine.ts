@@ -1,6 +1,6 @@
-import GameObject from "../engine/GameObject";
-import LineRenderer from "../engine/LineRenderer";
-import Scene from "../engine/Scene";
+import GameObject from "../engine/core/GameObject";
+import Scene from "../engine/core/Scene";
+import LineRenderer from "../engine/rendering/LineRenderer";
 import Color from "../utils/Color";
 import Vector2 from "../utils/Vector2";
 

@@ -1,10 +1,7 @@
-import Matrix from "../utils/Matrix";
-import Matrix3x3 from "../utils/Matrix3x3";
-import Vector2 from "../utils/Vector2";
-import Vector3 from "../utils/Vector3";
-import Component from "./Component";
-import GameObject from "./GameObject";
-import Rect from "./Rect";
+import Matrix3x3 from "../../utils/Matrix3x3";
+import Vector2 from "../../utils/Vector2";
+import Component from "../core/Component";
+import GameObject from "../core/GameObject";
 
 class Camera extends Component {
 

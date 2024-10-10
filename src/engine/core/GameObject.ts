@@ -1,7 +1,7 @@
+import Transform from "../Transform";
 import Component, { AbstractComponentConstructor, ComponentConstructor } from "./Component";
 import Engine from "./Engine";
 import Scene from "./Scene";
-import Transform from "./Transform";
 
 export type GameObjectConstructor<T extends GameObject> = new (scene: Scene) => T;
 

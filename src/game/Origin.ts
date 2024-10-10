@@ -1,7 +1,6 @@
-import CircleRenderer from "../engine/CircleRenderer";
-import GameObject from "../engine/GameObject";
-import RectangleRenderer from "../engine/RectangleRenderer";
-import Scene from "../engine/Scene";
+import GameObject from "../engine/core/GameObject";
+import Scene from "../engine/core/Scene";
+import CircleRenderer from "../engine/rendering/CircleRenderer";
 import Color from "../utils/Color";
 import Vector2 from "../utils/Vector2";
 

@@ -1,9 +1,8 @@
-import Collisions from "../collision/Collisions";
 import Vector2 from "../utils/Vector2";
-import Vector3 from "../utils/Vector3";
-import Collider from "../collision/Collider";
-import Component from "./Component";
-import GameObject from "./GameObject";
+import Collider from "./collision/Collider";
+import Collisions from "./collision/Collisions";
+import Component from "./core/Component";
+import GameObject from "./core/GameObject";
 
 class RigidBody extends Component {
 

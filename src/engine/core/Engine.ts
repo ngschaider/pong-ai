@@ -1,6 +1,4 @@
-import MyEvent from "../utils/MyEvent";
-import Component from "./Component";
-import Renderer from "./Renderer";
+import MyEvent from "../../utils/MyEvent";
 import Scene, { SceneConstructor } from "./Scene";
 
 class Engine {

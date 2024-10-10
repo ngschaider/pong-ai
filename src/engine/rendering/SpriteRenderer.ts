@@ -1,8 +1,8 @@
 import Graphics from "../graphics/Graphics";
-import Sprite from "../utils/Sprite";
-import Vector2 from "../utils/Vector2";
-import AnchorPoint from "./AnchorPoint";
-import Rect from "./Rect";
+import Sprite from "../../utils/Sprite";
+import Vector2 from "../../utils/Vector2";
+import AnchorPoint from "../AnchorPoint";
+import Rect from "../Rect";
 import Renderer from "./Renderer";
 
 class SpriteRenderer extends Renderer {

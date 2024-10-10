@@ -1,6 +1,4 @@
-import Engine from "../engine/Engine";
-import GameObject from "../engine/GameObject";
-import Transform from "../engine/Transform";
+import GameObject from "../engine/core/GameObject";
 import StringBuilder from "../utils/StringBuilder";
 
 class HierarchyLogger extends GameObject {

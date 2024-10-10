@@ -1,10 +1,9 @@
-import CollisionSystem from "../collision/CollisionSystem";
-import GameObject from "../engine/GameObject";
-import Keyboard from "../engine/Keyboard";
-import Mouse from "../engine/Mouse";
-import RenderSystem from "../engine/RenderSystem";
-import Scene from "../engine/Scene";
-import CanvasGraphics from "../graphics/CanvasGraphics";
+import Keyboard from "../engine/input/Keyboard";
+import Mouse from "../engine/input/Mouse";
+import Scene from "../engine/core/Scene";
+import CollisionSystem from "../engine/collision/CollisionSystem";
+import GameObject from "../engine/core/GameObject";
+import RenderSystem from "../engine/rendering/RenderSystem";
 
 class Systems extends GameObject {
 

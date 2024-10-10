@@ -1,8 +1,8 @@
 import Color from "../utils/Color";
-import GameObject from "../engine/GameObject";
-import RectangleRenderer from "../engine/RectangleRenderer";
-import Scene from "../engine/Scene";
+import Scene from "../engine/core/Scene";
 import Vector2 from "../utils/Vector2";
+import GameObject from "../engine/core/GameObject";
+import RectangleRenderer from "../engine/rendering/RectangleRenderer";
 
 class Background extends GameObject {
 

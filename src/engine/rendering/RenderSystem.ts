@@ -1,9 +1,9 @@
 import CanvasGraphics from "../graphics/CanvasGraphics";
 import Graphics from "../graphics/Graphics";
-import Matrix3x3 from "../utils/Matrix3x3";
-import Vector2 from "../utils/Vector2";
-import Component from "./Component";
-import GameObject from "./GameObject";
+import Matrix3x3 from "../../utils/Matrix3x3";
+import Vector2 from "../../utils/Vector2";
+import Component from "../core/Component";
+import GameObject from "../core/GameObject";
 import Renderer, { RendererSpace } from "./Renderer";
 
 class RenderSystem extends Component {

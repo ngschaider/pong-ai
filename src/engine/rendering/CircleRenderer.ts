@@ -1,5 +1,5 @@
 import Graphics from "../graphics/Graphics";
-import Vector2 from "../utils/Vector2";
+import Vector2 from "../../utils/Vector2";
 import Renderer from "./Renderer";
 
 class CircleRenderer extends Renderer {

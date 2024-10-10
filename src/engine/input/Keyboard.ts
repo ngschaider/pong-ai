@@ -1,6 +1,6 @@
-import MyEvent from "../utils/MyEvent";
-import Component from "./Component";
-import GameObject from "./GameObject";
+import MyEvent from "../../utils/MyEvent";
+import Component from "../core/Component";
+import GameObject from "../core/GameObject";
 
 export enum KeyCode {
     A = "a",

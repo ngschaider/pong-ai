@@ -1,8 +1,7 @@
-import Matrix from "../utils/Matrix";
-import Matrix3x3 from "../utils/Matrix3x3";
-import Sprite from "../utils/Sprite";
-import Vector2 from "../utils/Vector2";
-import Color from "../utils/Color";
+import Color from "../../utils/Color";
+import Matrix3x3 from "../../utils/Matrix3x3";
+import Sprite from "../../utils/Sprite";
+import Vector2 from "../../utils/Vector2";
 
 interface Graphics {
     get size(): Vector2;

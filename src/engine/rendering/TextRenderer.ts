@@ -1,7 +1,7 @@
 import Graphics from "../graphics/Graphics";
-import Color from "../utils/Color";
-import Vector2 from "../utils/Vector2";
-import GameObject from "./GameObject";
+import Color from "../../utils/Color";
+import Vector2 from "../../utils/Vector2";
+import GameObject from "../core/GameObject";
 import Renderer, { RendererSpace } from "./Renderer";
 
 class TextRenderer extends Renderer {

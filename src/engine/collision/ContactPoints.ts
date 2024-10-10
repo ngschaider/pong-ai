@@ -1,5 +1,5 @@
-import Polygon from "../engine/Polygon";
-import Vector2 from "../utils/Vector2";
+import Vector2 from "../../utils/Vector2";
+import Polygon from "../Polygon";
 
 class ContactPoints {
 

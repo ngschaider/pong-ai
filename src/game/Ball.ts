@@ -1,11 +1,10 @@
-import CircleCollider from "../collision/CircleCollider";
-import CircleRenderer from "../engine/CircleRenderer";
-import GameObject from "../engine/GameObject";
 import RigidBody from "../engine/RigidBody";
-import Scene from "../engine/Scene";
+import CircleCollider from "../engine/collision/CircleCollider";
+import GameObject from "../engine/core/GameObject";
+import Scene from "../engine/core/Scene";
+import CircleRenderer from "../engine/rendering/CircleRenderer";
 import Color from "../utils/Color";
 import Vector2 from "../utils/Vector2";
-import Vector3 from "../utils/Vector3";
 
 class Ball extends GameObject {
 

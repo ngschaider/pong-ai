@@ -1,12 +1,12 @@
-import { getCombinations } from "../utils/funcs";
 import Collider from "./Collider";
 import Collisions from "./Collisions";
-import Vector2 from "../utils/Vector2";
-import RigidBody from "../engine/RigidBody";
 import CollisionChecker from "./CollisionChecker";
-import Color from "../utils/Color";
-import Renderer from "../engine/Renderer";
 import Graphics from "../graphics/Graphics";
+import Color from "../../utils/Color";
+import { getCombinations } from "../../utils/funcs";
+import Vector2 from "../../utils/Vector2";
+import Renderer from "../rendering/Renderer";
+import RigidBody from "../RigidBody";
 
 class CollisionSystem extends Renderer {
 

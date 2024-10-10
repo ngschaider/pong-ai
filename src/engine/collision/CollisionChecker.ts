@@ -1,12 +1,11 @@
 import CircleCollider from "./CircleCollider";
 import Collider from "./Collider";
-import Polygon from "../engine/Polygon";
 import PolygonCollider from "./PolygonCollider";
 import Collisions from "./Collisions";
-import Vector2 from "../utils/Vector2";
-import RigidBody from "../engine/RigidBody";
-import Rect from "../engine/Rect";
 import ContactPoints from "./ContactPoints";
+import Vector2 from "../../utils/Vector2";
+import Polygon from "../Polygon";
+import Rect from "../Rect";
 
 type CollisionTestResult = {
     depth: number, 

@@ -1,6 +1,6 @@
-import Color from "../utils/Color";
+import Color from "../../utils/Color";
+import Component from "../core/Component";
 import Graphics from "../graphics/Graphics";
-import Component from "./Component";
 
 export enum RendererSpace {
     Screen,

@@ -1,5 +1,5 @@
-import { notEmpty } from "../utils/funcs";
-import Camera from "./Camera";
+import { notEmpty } from "../../utils/funcs";
+import Camera from "../rendering/Camera";
 import Component, { AbstractComponentConstructor, ComponentConstructor } from "./Component";
 import Engine from "./Engine";
 import GameObject, { GameObjectConstructor } from "./GameObject";

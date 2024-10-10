@@ -1,8 +1,7 @@
-import { vec2 } from "gl-matrix";
-import Vector2 from "../utils/Vector2";
-import AnchorPoint from "../engine/AnchorPoint";
 import Collider from "./Collider";
-import Rect from "../engine/Rect";
+import Vector2 from "../../utils/Vector2";
+import AnchorPoint from "../AnchorPoint";
+import Rect from "../Rect";
 
 class CircleCollider extends Collider {
 

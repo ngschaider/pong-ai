@@ -1,8 +1,8 @@
-import BoxCollider from "../collision/BoxCollider";
-import GameObject from "../engine/GameObject";
-import RectangleRenderer from "../engine/RectangleRenderer";
 import RigidBody from "../engine/RigidBody";
-import Scene from "../engine/Scene";
+import BoxCollider from "../engine/collision/BoxCollider";
+import GameObject from "../engine/core/GameObject";
+import Scene from "../engine/core/Scene";
+import RectangleRenderer from "../engine/rendering/RectangleRenderer";
 import Color from "../utils/Color";
 import Vector2 from "../utils/Vector2";
 

@@ -1,13 +1,13 @@
-import BoxCollider from "../collision/BoxCollider";
-import CircleCollider from "../collision/CircleCollider";
-import CircleRenderer from "../engine/CircleRenderer";
-import Engine from "../engine/Engine";
-import GameObject from "../engine/GameObject";
-import Keyboard, { KeyCode } from "../engine/Keyboard";
-import Mouse from "../engine/Mouse";
-import RectangleRenderer from "../engine/RectangleRenderer";
 import RigidBody from "../engine/RigidBody";
-import Scene from "../engine/Scene";
+import BoxCollider from "../engine/collision/BoxCollider";
+import CircleCollider from "../engine/collision/CircleCollider";
+import Engine from "../engine/core/Engine";
+import GameObject from "../engine/core/GameObject";
+import Scene from "../engine/core/Scene";
+import Keyboard, { KeyCode } from "../engine/input/Keyboard";
+import Mouse from "../engine/input/Mouse";
+import CircleRenderer from "../engine/rendering/CircleRenderer";
+import RectangleRenderer from "../engine/rendering/RectangleRenderer";
 import Color from "../utils/Color";
 import RandomHelper from "../utils/RandomHelper";
 import Vector2 from "../utils/Vector2";
@@ -58,6 +58,7 @@ class CollidingCircle extends GameObject {
 
         const rb = this.addComponent(RigidBody);
         rb.mass = 10;
+        // rb.mass = Infinity;
         rb.acceleration = new Vector2(0, 9.807);
 
         this.addComponent(CircleCollider);
@@ -81,6 +82,7 @@ class CollidingBox extends GameObject {
 
         const rb = this.addComponent(RigidBody);
         rb.mass = 10;
+        // rb.mass = Infinity;
         rb.acceleration = new Vector2(0, 9.807);
 
         this.addComponent(BoxCollider);

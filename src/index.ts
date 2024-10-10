@@ -1,5 +1,5 @@
+import Engine from "./engine/core/Engine";
 import Debug from "./engine/Debug";
-import Engine from "./engine/Engine";
 import PhysicsTestScene from "./game/PhysicsTestScene";
 
 const engine = new Engine();

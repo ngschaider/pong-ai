@@ -1,10 +1,9 @@
-import Color from "../utils/Color";
+import Color from "../../utils/Color";
+import MyEvent from "../../utils/MyEvent";
+import AnchorPoint from "../AnchorPoint";
 import Graphics from "../graphics/Graphics";
-import MyEvent from "../utils/MyEvent";
-import Component from "../engine/Component";
-import Rect from "../engine/Rect";
-import Renderer, { RendererSpace } from "../engine/Renderer";
-import AnchorPoint from "../engine/AnchorPoint";
+import Rect from "../Rect";
+import Renderer from "../rendering/Renderer";
 
 const DRAW_AABB = false;
 

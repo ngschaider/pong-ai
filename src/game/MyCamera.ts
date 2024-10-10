@@ -1,6 +1,6 @@
-import Camera from "../engine/Camera";
-import GameObject from "../engine/GameObject";
-import Scene from "../engine/Scene";
+import GameObject from "../engine/core/GameObject";
+import Scene from "../engine/core/Scene";
+import Camera from "../engine/rendering/Camera";
 import Vector2 from "../utils/Vector2";
 
 class MyCamera extends GameObject {

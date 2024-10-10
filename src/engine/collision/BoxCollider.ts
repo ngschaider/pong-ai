@@ -1,10 +1,8 @@
-import { vec2 } from "gl-matrix";
-import Vector2 from "../utils/Vector2";
-import AnchorPoint from "../engine/AnchorPoint";
-import Collider from "./Collider";
-import Polygon from "../engine/Polygon";
+import Vector2 from "../../utils/Vector2";
+import AnchorPoint from "../AnchorPoint";
+import Polygon from "../Polygon";
+import Rect from "../Rect";
 import PolygonCollider from "./PolygonCollider";
-import Rect from "../engine/Rect";
 
 class BoxCollider extends PolygonCollider {
 

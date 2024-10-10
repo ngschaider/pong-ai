@@ -1,8 +1,8 @@
-import Vector2 from "../utils/Vector2";
-import AnchorPoint from "../engine/AnchorPoint";
+import Vector2 from "../../utils/Vector2";
+import AnchorPoint from "../AnchorPoint";
+import Polygon from "../Polygon";
+import Rect from "../Rect";
 import Collider from "./Collider";
-import Polygon from "../engine/Polygon";
-import Rect from "../engine/Rect";
 
 abstract class PolygonCollider extends Collider {
 

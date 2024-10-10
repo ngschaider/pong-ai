@@ -1,8 +1,7 @@
-import { notEmpty } from "../utils/funcs";
+import Transform from "../Transform";
 import Engine from "./Engine";
 import GameObject from "./GameObject";
 import Scene from "./Scene";
-import Transform from "./Transform";
 
 export type AbstractComponentConstructor<T extends Component> = abstract new (gameObject: GameObject) => T;
 export type ComponentConstructor<T extends Component> = new (gameObject: GameObject) => T;
