@@ -15,8 +15,8 @@ type CollisionTestResult = {
 class CollisionChecker {
 
     public static checkCollision(bodyA: Collider, bodyB: Collider): Collisions|null {
-        const boxA = bodyA.getWorldAABB();
-        const boxB = bodyB.getWorldAABB();
+        const boxA = bodyA.getBounds();
+        const boxB = bodyB.getBounds();
 
         if(!this.areRectsIntersecting(boxA, boxB)) {
             return null;
@@ -29,7 +29,8 @@ class CollisionChecker {
         }
         if(bodyA instanceof PolygonCollider && bodyB instanceof PolygonCollider) { // Polygon <-> Polygon
             const info = this.polygonPolygon(bodyA.getWorldPolygon(), bodyB.getWorldPolygon());
-            return info ? new Collisions(bodyA, bodyB, info.depth, info.normal, []): null;
+            const contacts = ContactPoints.polygonPolygon(bodyA.getWorldPolygon(), bodyB.getWorldPolygon());
+            return info ? new Collisions(bodyA, bodyB, info.depth, info.normal, contacts): null;
         }
         if((bodyA instanceof CircleCollider && bodyB instanceof PolygonCollider)) { // Circle <-> Polygon
             const info = this.circlePolygon(bodyA.globalPosition, bodyA.globalRadius, bodyB.getWorldPolygon());

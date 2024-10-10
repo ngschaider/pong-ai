@@ -20,7 +20,7 @@ class Debug {
         const camera = this.engine.scene.getActiveCamera();
         if(!camera) return;
 
-        const matrix = camera.getWorldToClipMatrix()
+        const matrix = camera.getWorldToCameraMatrix()
 
         const start = Vector2.zero.applyMatrix(matrix);
         const end = v.applyMatrix(matrix);
@@ -35,7 +35,7 @@ class Debug {
         const camera = this.engine.scene.getActiveCamera();
         if(!camera) return;
 
-        const matrix = camera.getWorldToClipMatrix()
+        const matrix = camera.getWorldToCameraMatrix()
 
         this.g.noFill();
         this.g.stroke(Color.green);

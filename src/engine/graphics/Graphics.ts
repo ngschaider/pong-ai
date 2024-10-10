@@ -18,6 +18,11 @@ interface Graphics {
     image(position: Vector2, sprite: Sprite): void;
     fontSize(size: number): void;
     text(position: Vector2, text: string): void;
+
+    getScreenToClipMatrix(): Matrix3x3;
+    screenToClip(vec: Vector2): Vector2;
+    getClipToScreenMatrix(): Matrix3x3;
+    clipToScreen(vec: Vector2): Vector2;
 }
 
 export default Graphics;

@@ -1,6 +1,7 @@
 import Matrix from "./Matrix";
 import Matrix2x2 from "./Matrix2x2";
 import Matrix3x3 from "./Matrix3x3";
+import NumberUtils from "./NumberUtils";
 import Vector3 from "./Vector3";
 
 class Vector2 {
@@ -85,6 +86,14 @@ class Vector2 {
 
     public distanceSquared(v: Vector2) {
         return v.subtract(this).magnitudeSquared;
+    }
+
+    public equals(v: Vector2): boolean {
+        return this.x === v.x && this.y === v.y;
+    }
+
+    public nearlyEquals(v: Vector2): boolean {
+        return NumberUtils.nearlyEquals(this.x, v.x) && NumberUtils.nearlyEquals(this.y, v.y);
     }
 
     scalarMul(v: Vector2|number): Vector2 {

@@ -65,7 +65,7 @@ class CollidingCircle extends GameObject {
 
         const cr = this.addComponent(CircleRenderer);
         cr.fillColor = RandomHelper.color();
-        cr.stroke = true;
+        cr.doStroke = true;
         cr.strokeColor = Color.white;
         cr.lineWidth = 0.03;
 
@@ -88,7 +88,7 @@ class CollidingBox extends GameObject {
         this.addComponent(BoxCollider);
         const rr = this.addComponent(RectangleRenderer);
         rr.fillColor = RandomHelper.color();
-        rr.stroke = true;
+        rr.doStroke = true;
         rr.strokeColor = Color.white;
         rr.lineWidth = 0.03;
 
@@ -104,7 +104,7 @@ class StaticCircle extends GameObject {
 
         const cr = this.addComponent(CircleRenderer);
         cr.fillColor = new Color(50, 50, 50);
-        cr.stroke = true;
+        cr.doStroke = true;
         cr.strokeColor = new Color(255, 0, 0);
         cr.lineWidth = 0.03;
 
@@ -158,13 +158,13 @@ class ObjectPlacer extends GameObject {
         this.keyboard.keys.get(KeyCode.R)?.onKeyDown.on(() => {
             if(!this.mouse) return;
             const go = this.scene.addGameObject(CollidingBox);
-            go.transform.position = this.mouse.mousePosition;
+            go.transform.position = this.mouse.worldPosition;
         })
 
         this.keyboard.keys.get(KeyCode.F)?.onKeyDown.on(() => {
             if(!this.mouse) return;
             const go = this.scene.addGameObject(CollidingCircle);
-            go.transform.position = this.mouse.mousePosition;
+            go.transform.position = this.mouse.worldPosition;
         })
     }
 

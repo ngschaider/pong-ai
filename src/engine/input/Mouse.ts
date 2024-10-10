@@ -11,7 +11,20 @@ class Mouse extends Component {
     buttonRight: boolean = false;
     button4: boolean = false;
     button5: boolean = false;
-    mousePosition: Vector2 = new Vector2(-1, -1);
+    screenPosition: Vector2 = new Vector2(-1, -1);
+
+    get worldPosition() {
+        const camera = this.scene.getActiveCamera();
+        const renderSystem = this.scene.getComponent(RenderSystem);
+        if(!renderSystem) throw new Error("Mouse#worldPosition requires a RenderSystem component in the scene.");
+        if(!camera) throw new Error("Mouse#worldPosition requires an active Camera component in the scene.");
+        
+        const clipPosition = renderSystem.graphics.screenToClip(this.screenPosition);
+        const cameraPosition = camera.clipToCamera(clipPosition);
+        const worldPosition = camera.cameraToWorld(cameraPosition);
+
+        return worldPosition;
+    }
 
     onButtonLeftClicked = new MyEvent();
     onButtonMiddleClicked = new MyEvent();
@@ -32,13 +45,14 @@ class Mouse extends Component {
     private mousemove(e: MouseEvent) {
         const page = new Vector2(e.pageX, e.pageY);
         
-        const renderSystem = this.scene.getComponent(RenderSystem)
+        const renderSystem = this.scene.getComponent(RenderSystem);
         
         if(renderSystem) {
             const screen = page.add(renderSystem.elementPosition);
-            this.mousePosition = renderSystem.screenToWorld(screen);
+            //this.mousePosition = renderSystem.screenToWorld(screen);
+            this.screenPosition = screen;
         } else {
-            this.mousePosition = new Vector2(-1, -1);
+            this.screenPosition = new Vector2(-1, -1);
         }
 
         this.onMousePositionChanged.emit();

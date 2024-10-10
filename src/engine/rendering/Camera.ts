@@ -1,7 +1,9 @@
+import { vec2 } from "gl-matrix";
 import Matrix3x3 from "../../utils/Matrix3x3";
 import Vector2 from "../../utils/Vector2";
 import Component from "../core/Component";
 import GameObject from "../core/GameObject";
+import RenderSystem from "./RenderSystem";
 
 class Camera extends Component {
 
@@ -31,27 +33,53 @@ class Camera extends Component {
         this._isActive = this.scene.getActiveCamera() == null;
     }
 
-    public getWorldToClipMatrix(): Matrix3x3 {
+    public getWorldToCameraMatrix(): Matrix3x3 {
         const transformMatrix = this.transform.getLocalToWorldMatrix();
         const translate = Matrix3x3.translate(this.size.scalarDiv(2));
-        const scaleDown = Matrix3x3.scale(Vector2.one.scalarDiv(this.size));
 
-        // return scaleDown.multiply(translate).multiply(transformMatrix);
-        // return transformMatrix.multiply(scaleDown.multiply(translate));
-        return transformMatrix.multiply(scaleDown).multiply(translate);
+        return transformMatrix.multiply(translate);
     }
 
-    public worldToClip(vec: Vector2): Vector2 {
-        return vec.applyMatrix(this.getWorldToClipMatrix());
+    public worldToCamera(vec: Vector2): Vector2 {
+        return vec.applyMatrix(this.getWorldToCameraMatrix());
     }
 
-    public getClipToWorldMatrix(): Matrix3x3 {
-        return this.getWorldToClipMatrix().invert();
+    public getCameraToWorldMatrix(): Matrix3x3 {
+        return this.getWorldToCameraMatrix().invert();
     }
 
-    public clipToWorld(vec: Vector2): Vector2 {
-        return vec.applyMatrix(this.getClipToWorldMatrix());
+    public cameraToWorld(vec: Vector2): Vector2 {
+        return vec.applyMatrix(this.getCameraToWorldMatrix());
     }
+
+    public getCameraToClipMatrix() {
+        const renderSystem = this.scene.getComponent(RenderSystem);
+        if(!renderSystem) throw new Error("Missing camera");
+
+        // scales from camera (e.g. 20x20) to clip matrix (-1, 1)
+        const scaleDown = Matrix3x3.scale(Vector2.one.scalarDiv(this.size)); 
+
+        const factorX = renderSystem.graphics.aspectRatio > 1 ? renderSystem.graphics.aspectRatio : 1;
+        const factorY = renderSystem.graphics.aspectRatio < 1 ? renderSystem.graphics.aspectRatio : 1;
+
+        // make the scene distorted in the clip matrix as it later gets stretched to display (from -1,1 to 1920,1080)
+        const distort = Matrix3x3.scale(new Vector2(1/factorX, 1/factorY));
+
+        return scaleDown.multiply(distort);
+    }
+
+    public cameraToClip(vec: Vector2) {
+        return vec.applyMatrix(this.getCameraToClipMatrix());
+    }
+
+    public getClipToCameraMatrix() {
+        return this.getCameraToClipMatrix().invert();
+    }
+
+    public clipToCamera(vec: Vector2) {
+        return vec.applyMatrix(this.getClipToCameraMatrix());
+    }
+
 
 
 }

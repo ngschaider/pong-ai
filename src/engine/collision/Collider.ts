@@ -1,9 +1,10 @@
 import Color from "../../utils/Color";
 import MyEvent from "../../utils/MyEvent";
+import Vector2 from "../../utils/Vector2";
 import AnchorPoint from "../AnchorPoint";
 import Graphics from "../graphics/Graphics";
 import Rect from "../Rect";
-import Renderer from "../rendering/Renderer";
+import Renderer, { RendererSpace } from "../rendering/Renderer";
 
 const DRAW_AABB = false;
 
@@ -13,10 +14,16 @@ abstract class Collider extends Renderer {
     onCollisionStart: MyEvent = new MyEvent();
     onCollisionEnd: MyEvent = new MyEvent();
 
-    abstract getLocalAABB(): Rect;
+    /**
+     * @returns local space bounds
+     */
+    abstract getLocalBounds(): Rect;
 
-    getWorldAABB(): Rect {
-        const local = this.getLocalAABB();
+    /**
+     * @returns world space bounds
+     */
+    getBounds(): Rect {
+        const local = this.getLocalBounds();
         
         const min = local.topLeft.applyMatrix(this.transform.getLocalToWorldMatrix());
         const max = local.bottomRight.applyMatrix(this.transform.getLocalToWorldMatrix());
@@ -29,11 +36,11 @@ abstract class Collider extends Renderer {
 
         if(!DRAW_AABB) return;
 
-        const aabb = this.getLocalAABB();
+        const aabb = this.getLocalBounds();
 
-        this.fill = false;
+        this.doFill = false;
         this.lineWidth = 0.01;
-        this.stroke = true;
+        this.doStroke = true;
         this.strokeColor = Color.lime;
 
         graphics.rectangle(aabb.topLeft, aabb.size);

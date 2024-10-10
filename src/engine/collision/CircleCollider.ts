@@ -18,7 +18,7 @@ class CircleCollider extends Collider {
         return this.localPosition.applyMatrix(matrix);
     }
 
-    getLocalAABB(): Rect {
+    getLocalBounds(): Rect {
         return new Rect(this.localPosition, AnchorPoint.CenterCenter, new Vector2(this.localRadius*2, this.localRadius*2));
     }
 }

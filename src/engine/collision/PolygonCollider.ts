@@ -14,7 +14,7 @@ abstract class PolygonCollider extends Collider {
         return new Polygon(local.vertices.map(v => v.applyMatrix(matrix)));
     }
 
-    getLocalAABB(): Rect {
+    getLocalBounds(): Rect {
         const g = this.getLocalPolygon();
 
         const minX = Math.min(...g.vertices.map(v => v.x));

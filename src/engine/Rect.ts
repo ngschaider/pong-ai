@@ -13,6 +13,10 @@ class Rect {
         this.size = size;
     }
 
+    // public applyMatrix(): Rect {
+        
+    // }
+
     public get topLeft(): Vector2 {
         return new Vector2(this.left, this.top);
     }

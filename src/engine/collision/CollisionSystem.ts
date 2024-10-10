@@ -5,22 +5,32 @@ import Graphics from "../graphics/Graphics";
 import Color from "../../utils/Color";
 import { getCombinations } from "../../utils/funcs";
 import Vector2 from "../../utils/Vector2";
-import Renderer from "../rendering/Renderer";
+import Renderer, { RendererSpace } from "../rendering/Renderer";
 import RigidBody from "../RigidBody";
+import GameObject from "../core/GameObject";
 
 class CollisionSystem extends Renderer {
 
     private currentCollisions: Collisions[] = [];
 
+    constructor(gameObject: GameObject) {
+        super(gameObject);
+
+        this.doFill = false;
+        this.strokeColor = Color.lime;
+        this.doStroke = true;
+    }
+
     public render(g: Graphics): void {
-        g.noFill();
-        g.stroke(Color.lime);
+        super.render(g);
 
         for(const collision of this.currentCollisions) {
             for(const contact of collision.contacts) {
                 g.circle(contact, 0.2);
             }
         }
+
+        g.rectangle(Vector2.zero, Vector2.one);
     }
 
     public physicsUpdate(): void {

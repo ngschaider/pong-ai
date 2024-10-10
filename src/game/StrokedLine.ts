@@ -11,7 +11,7 @@ class Line extends GameObject {
         super(scene);
 
         const r = this.addComponent(LineRenderer);
-        r.stroke = true;
+        r.doStroke = true;
         r.strokeColor = Color.white;
     }
 }
