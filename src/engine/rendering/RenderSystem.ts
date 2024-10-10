@@ -5,6 +5,7 @@ import Vector2 from "../../utils/Vector2";
 import Component from "../core/Component";
 import GameObject from "../core/GameObject";
 import Renderer, { RendererSpace } from "./Renderer";
+import WebGlGraphics from "../graphics/WebGlGraphics";
 
 class RenderSystem extends Component {
 
@@ -13,7 +14,7 @@ class RenderSystem extends Component {
     constructor(gameObject: GameObject) {
         super(gameObject);
 
-        this.graphics = new CanvasGraphics(this.canvasEl);
+        this.graphics = new WebGlGraphics(this.canvasEl);
     }
 
     public canvasEl: HTMLCanvasElement = document.getElementById("root") as HTMLCanvasElement;

@@ -154,6 +154,10 @@ class Color {
         this.b = b ?? r;
     }
 
+    public toNormalizedArray(): number[] {
+        return [this.r/255, this.g/255, this.b/255];
+    }
+
 }
 
 export default Color

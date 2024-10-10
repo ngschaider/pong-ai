@@ -29,8 +29,6 @@ class CollisionSystem extends Renderer {
                 g.circle(contact, 0.2);
             }
         }
-
-        g.rectangle(Vector2.zero, Vector2.one);
     }
 
     public physicsUpdate(): void {

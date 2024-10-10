@@ -1,5 +1,6 @@
 import Matrix from "./Matrix";
 import Matrix2x2 from "./Matrix2x2";
+import Matrix4x4 from "./Matrix4x4";
 import Vector2 from "./Vector2";
 
 class Matrix3x3 extends Matrix<Matrix3x3> {
@@ -11,6 +12,23 @@ class Matrix3x3 extends Matrix<Matrix3x3> {
         g: number, h: number, i: number) {
 
         super([a, b, c, d, e, f, g, h, i], 3);
+    }
+
+    getColumnMajorArray(): number[] {
+        return [
+            this.values[0], this.values[3], this.values[6], 
+            this.values[1], this.values[4], this.values[7],
+            this.values[2], this.values[5], this.values[8],
+        ]
+    }
+    
+    toMatrix4x4() {
+        return new Matrix4x4(
+            this.values[0], this.values[1], this.values[2], 0,
+            this.values[3], this.values[4], this.values[5], 0,
+            this.values[6], this.values[7], this.values[8], 0,
+            0, 0, 0, 1
+        );
     }
 
     clone(): Matrix3x3 {
