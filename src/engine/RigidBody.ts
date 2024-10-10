@@ -1,7 +1,7 @@
-import Collision from "../utils/Collision";
+import Collisions from "../collision/Collisions";
 import Vector2 from "../utils/Vector2";
 import Vector3 from "../utils/Vector3";
-import Collider from "./Collider";
+import Collider from "../collision/Collider";
 import Component from "./Component";
 import GameObject from "./GameObject";
 
@@ -30,7 +30,7 @@ class RigidBody extends Component {
         collider.onCollision.on(this.onCollision.bind(this));
     }
 
-    onCollision(collision: Collision) {
+    onCollision(collision: Collisions) {
 
     }
 

@@ -1,7 +1,7 @@
-import Collider from "../engine/Collider";
-import Vector2 from "./Vector2"
+import Collider from "./Collider";
+import Vector2 from "../utils/Vector2"
 
-class Collision {
+class Collisions {
 
     bodyA: Collider;
     bodyB: Collider;
@@ -21,4 +21,4 @@ class Collision {
 
 }
 
-export default Collision;
+export default Collisions;

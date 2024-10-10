@@ -1,5 +1,5 @@
-import BoxCollider from "../engine/BoxCollider";
-import CircleCollider from "../engine/CircleCollider";
+import BoxCollider from "../collision/BoxCollider";
+import CircleCollider from "../collision/CircleCollider";
 import CircleRenderer from "../engine/CircleRenderer";
 import Engine from "../engine/Engine";
 import GameObject from "../engine/GameObject";

@@ -1,4 +1,4 @@
-import BoxCollider from "../engine/BoxCollider";
+import BoxCollider from "../collision/BoxCollider";
 import GameObject from "../engine/GameObject";
 import RectangleRenderer from "../engine/RectangleRenderer";
 import RigidBody from "../engine/RigidBody";

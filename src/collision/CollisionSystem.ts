@@ -1,16 +1,16 @@
 import { getCombinations } from "../utils/funcs";
 import Collider from "./Collider";
-import Collision from "../utils/Collision";
+import Collisions from "./Collisions";
 import Vector2 from "../utils/Vector2";
-import RigidBody from "./RigidBody";
+import RigidBody from "../engine/RigidBody";
 import CollisionChecker from "./CollisionChecker";
 import Color from "../utils/Color";
-import Renderer from "./Renderer";
+import Renderer from "../engine/Renderer";
 import Graphics from "../graphics/Graphics";
 
 class CollisionSystem extends Renderer {
 
-    private currentCollisions: Collision[] = [];
+    private currentCollisions: Collisions[] = [];
 
     public render(g: Graphics): void {
         g.noFill();
@@ -68,7 +68,7 @@ class CollisionSystem extends Renderer {
         }
     }
 
-    private resolveCollision(collision: Collision) {
+    private resolveCollision(collision: Collisions) {
         const rbA = collision.bodyA.gameObject.getComponent(RigidBody);
         const rbB = collision.bodyB.gameObject.getComponent(RigidBody);
         if(!rbA || !rbB) return;

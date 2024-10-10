@@ -1,4 +1,4 @@
-import CollisionSystem from "../engine/CollisionSystem";
+import CollisionSystem from "../collision/CollisionSystem";
 import GameObject from "../engine/GameObject";
 import Keyboard from "../engine/Keyboard";
 import Mouse from "../engine/Mouse";

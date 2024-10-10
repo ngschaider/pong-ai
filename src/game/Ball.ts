@@ -1,4 +1,4 @@
-import CircleCollider from "../engine/CircleCollider";
+import CircleCollider from "../collision/CircleCollider";
 import CircleRenderer from "../engine/CircleRenderer";
 import GameObject from "../engine/GameObject";
 import RigidBody from "../engine/RigidBody";

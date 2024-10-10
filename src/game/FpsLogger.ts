@@ -1,4 +1,4 @@
-import Collider from "../engine/Collider";
+import Collider from "../collision/Collider";
 import GameObject from "../engine/GameObject";
 import Scene from "../engine/Scene";
 import TextRenderer from "../engine/TextRenderer";

@@ -1,12 +1,12 @@
 import CircleCollider from "./CircleCollider";
 import Collider from "./Collider";
-import Polygon from "./Polygon";
+import Polygon from "../engine/Polygon";
 import PolygonCollider from "./PolygonCollider";
-import Collision from "../utils/Collision";
+import Collisions from "./Collisions";
 import Vector2 from "../utils/Vector2";
-import RigidBody from "./RigidBody";
-import Rect from "./Rect";
-import ContactPoints from "../collision/ContactPoints";
+import RigidBody from "../engine/RigidBody";
+import Rect from "../engine/Rect";
+import ContactPoints from "./ContactPoints";
 
 type CollisionTestResult = {
     depth: number, 
@@ -15,7 +15,7 @@ type CollisionTestResult = {
 
 class CollisionChecker {
 
-    public static checkCollision(bodyA: Collider, bodyB: Collider): Collision|null {
+    public static checkCollision(bodyA: Collider, bodyB: Collider): Collisions|null {
         const boxA = bodyA.getWorldAABB();
         const boxB = bodyB.getWorldAABB();
 
@@ -26,21 +26,21 @@ class CollisionChecker {
         if(bodyA instanceof CircleCollider && bodyB instanceof CircleCollider) { // Circle <-> Circle
             const info = this.circleCircle(bodyA.globalPosition, bodyA.globalRadius, bodyB.globalPosition, bodyB.globalRadius);
             const contact = ContactPoints.circleCircle(bodyA.globalPosition, bodyA.globalRadius, bodyB.globalPosition);
-            return info ? new Collision(bodyA, bodyB, info.depth, info.normal, [contact]) : null;
+            return info ? new Collisions(bodyA, bodyB, info.depth, info.normal, [contact]) : null;
         }
         if(bodyA instanceof PolygonCollider && bodyB instanceof PolygonCollider) { // Polygon <-> Polygon
             const info = this.polygonPolygon(bodyA.getWorldPolygon(), bodyB.getWorldPolygon());
-            return info ? new Collision(bodyA, bodyB, info.depth, info.normal, []): null;
+            return info ? new Collisions(bodyA, bodyB, info.depth, info.normal, []): null;
         }
         if((bodyA instanceof CircleCollider && bodyB instanceof PolygonCollider)) { // Circle <-> Polygon
             const info = this.circlePolygon(bodyA.globalPosition, bodyA.globalRadius, bodyB.getWorldPolygon());
             const contact = ContactPoints.circlePolygon(bodyA.globalPosition, bodyA.globalRadius, bodyB.getWorldPolygon())
-            return info ? new Collision(bodyA, bodyB, info.depth, info.normal, [contact]): null;
+            return info ? new Collisions(bodyA, bodyB, info.depth, info.normal, [contact]): null;
         }
         if((bodyA instanceof PolygonCollider && bodyB instanceof CircleCollider)) { // Polygon <-> Circle
             const info = this.circlePolygon(bodyB.globalPosition, bodyB.globalRadius, bodyA.getWorldPolygon());
             const contact = ContactPoints.circlePolygon(bodyB.globalPosition, bodyB.globalRadius, bodyA.getWorldPolygon())
-            return info ? new Collision(bodyB, bodyA, info.depth, info.normal, [contact]): null;
+            return info ? new Collisions(bodyB, bodyA, info.depth, info.normal, [contact]): null;
         }
 
         throw new Error("Unsupported collision between bodies");

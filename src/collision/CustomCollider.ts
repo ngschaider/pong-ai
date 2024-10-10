@@ -1,5 +1,5 @@
 import Vector2 from "../utils/Vector2";
-import Polygon from "./Polygon";
+import Polygon from "../engine/Polygon";
 import PolygonCollider from "./PolygonCollider";
 
 class CustomCollider extends PolygonCollider {
