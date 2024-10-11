@@ -3,6 +3,7 @@ import Debug from "./engine/Debug";
 import WebGlGraphics from "./engine/graphics/WebGlGraphics";
 import PhysicsTestScene from "./game/PhysicsTestScene";
 import Color from "./utils/Color";
+import Matrix3x3 from "./utils/Matrix3x3";
 import Matrix4x4 from "./utils/Matrix4x4";
 import Vector2 from "./utils/Vector2";
 
@@ -19,13 +20,14 @@ import Vector2 from "./utils/Vector2";
 
 const g = new WebGlGraphics(document.getElementById("root") as HTMLCanvasElement);
 
-g.fill(Color.red);
-g.stroke(Color.blue);
-g.rectangle(new Vector2(-0.5, -0.5), new Vector2(1, 1));
+// g.fill(Color.red);
+// g.stroke(Color.blue);
+// g.rectangle(new Vector2(-0.5, -0.5), new Vector2(1, 1));
 
-g.fill(Color.black);
-g.stroke(Color.blue);
-g.line(new Vector2(-0.5, -0.5), new Vector2(0.5, 0.5));
+// g.setTransformationMatrix(Matrix3x3.rotate(0.1))
+// g.fill(Color.black);
+// g.stroke(Color.blue);
+// g.line(new Vector2(-0.5, -0.5), new Vector2(0.5, 0.5));
 
 // const createShader = (gl: WebGLRenderingContext, type: GLenum, source: string): WebGLShader => {
 //     const shader = gl.createShader(type);

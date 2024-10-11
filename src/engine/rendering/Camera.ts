@@ -4,6 +4,7 @@ import Vector2 from "../../utils/Vector2";
 import Component from "../core/Component";
 import GameObject from "../core/GameObject";
 import RenderSystem from "./RenderSystem";
+import Vector3 from "../../utils/Vector3";
 
 class Camera extends Component {
 
@@ -35,12 +36,12 @@ class Camera extends Component {
 
     public getWorldToCameraMatrix(): Matrix3x3 {
         const transformMatrix = this.transform.getLocalToWorldMatrix();
-        const translate = Matrix3x3.translate(this.size.scalarDiv(2));
+        const translate = Matrix3x3.translate(this.size.div(2));
 
         return transformMatrix.multiply(translate);
     }
 
-    public worldToCamera(vec: Vector2): Vector2 {
+    public worldToCamera(vec: Vector3): Vector3 {
         return vec.applyMatrix(this.getWorldToCameraMatrix());
     }
 
@@ -48,7 +49,7 @@ class Camera extends Component {
         return this.getWorldToCameraMatrix().invert();
     }
 
-    public cameraToWorld(vec: Vector2): Vector2 {
+    public cameraToWorld(vec: Vector3): Vector3 {
         return vec.applyMatrix(this.getCameraToWorldMatrix());
     }
 
@@ -57,7 +58,7 @@ class Camera extends Component {
         if(!renderSystem) throw new Error("Missing camera");
 
         // scales from camera (e.g. 20x20) to clip matrix (-1, 1)
-        const scaleDown = Matrix3x3.scale(Vector2.one.scalarDiv(this.size)); 
+        const scaleDown = Matrix3x3.scale(Vector2.one.div(this.size)); 
 
         const factorX = renderSystem.graphics.aspectRatio > 1 ? renderSystem.graphics.aspectRatio : 1;
         const factorY = renderSystem.graphics.aspectRatio < 1 ? renderSystem.graphics.aspectRatio : 1;
@@ -68,7 +69,7 @@ class Camera extends Component {
         return scaleDown.multiply(distort);
     }
 
-    public cameraToClip(vec: Vector2) {
+    public cameraToClip(vec: Vector3) {
         return vec.applyMatrix(this.getCameraToClipMatrix());
     }
 
@@ -76,11 +77,9 @@ class Camera extends Component {
         return this.getCameraToClipMatrix().invert();
     }
 
-    public clipToCamera(vec: Vector2) {
+    public clipToCamera(vec: Vector3) {
         return vec.applyMatrix(this.getClipToCameraMatrix());
     }
-
-
 
 }
 

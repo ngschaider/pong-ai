@@ -28,7 +28,7 @@ abstract class Collider extends Renderer {
         const min = local.topLeft.applyMatrix(this.transform.getLocalToWorldMatrix());
         const max = local.bottomRight.applyMatrix(this.transform.getLocalToWorldMatrix());
 
-        return new Rect(min, AnchorPoint.TopLeft, max.subtract(min));
+        return new Rect(min, AnchorPoint.TopLeft, max.sub(min));
     }
 
     public render(graphics: Graphics): void {

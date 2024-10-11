@@ -59,7 +59,7 @@ class CollisionChecker {
         const dist = center1.distance(center2);
         const radii = radius1 + radius2;
 
-        const normal = dist === 0 ? new Vector2(0, -1) : center2.subtract(center1);
+        const normal = dist === 0 ? new Vector2(0, -1) : center2.sub(center1);
 
         if(dist < radii) {
             return {
@@ -109,7 +109,7 @@ class CollisionChecker {
         const centerA = polygonA.getArithmeticMean();
         const centerB = polygonB.getArithmeticMean();
 
-        const dir = centerB.subtract(centerA);
+        const dir = centerB.sub(centerA);
 
         if(dir.dot(resolutionNormal) < 0) {
             resolutionNormal = resolutionNormal.scalarMul(-1);
@@ -130,7 +130,7 @@ class CollisionChecker {
         const axes: Vector2[] = polygon.getEdges().map(edge => edge.normal().normalize());
 
         const cp = polygon.getClosestVertex(circleCenter);
-        axes.push(cp.subtract(circleCenter).normalize());
+        axes.push(cp.sub(circleCenter).normalize());
 
         // use the normal vectors as a axis, project all vertices and see if there is a gap
         let i = 0;
@@ -155,7 +155,7 @@ class CollisionChecker {
             }
         }
 
-        const dir = polygon.getArithmeticMean().subtract(circleCenter);
+        const dir = polygon.getArithmeticMean().sub(circleCenter);
 
         if(dir.dot(resolutionNormal) < 0) {
             resolutionNormal = resolutionNormal.scalarMul(-1);
@@ -168,7 +168,7 @@ class CollisionChecker {
     }
 
     private static projectCircle(circleCenter: Vector2, circleRadius: number, axis: Vector2): {min: number, max: number} {
-        const p1 = circleCenter.subtract(axis.scalarMul(circleRadius))
+        const p1 = circleCenter.sub(axis.scalarMul(circleRadius))
         const p2 = circleCenter.add(axis.scalarMul(circleRadius))
         
         const min = p1.dot(axis);

@@ -1,5 +1,8 @@
-import Matrix from "./Matrix";
+import Matrix3x3 from "./Matrix3x3";
+import Matrix4x4 from "./Matrix4x4";
+import Quaternion from "./Quaternion";
 import Vector2 from "./Vector2";
+import Vector4 from "./Vector4";
 
 class Vector3 {
 
@@ -69,19 +72,19 @@ class Vector3 {
         return new Vector2(this.z, this.z);
     }
 
-    get magnitude() {
-        return Math.abs(Math.sqrt(this.x**2 + this.y**2 + this.z**2));
+    get magnitudeSquared() {
+        return this.x**2 + this.y**2 + this.z**2;
     }
 
-    get angle() {
-        return Math.atan2(this.y, this.x);
+    get magnitude() {
+        return Math.sqrt(this.magnitudeSquared);
     }
 
     add(v: Vector3): Vector3 {
         return new Vector3(this.x + v.x, this.y + v.y, this.z + v.z);
     }
 
-    subtract(v: Vector3|Vector2): Vector3 {
+    sub(v: Vector3|Vector2): Vector3 {
         if(v instanceof Vector2) {
             v = v.toVector3();
         }
@@ -89,7 +92,7 @@ class Vector3 {
         return new Vector3(this.x - v.x, this.y - v.y, this.z - v.z);
     }
 
-    scalarMul(v: Vector3|number): Vector3 {
+    mul(v: Vector3|number): Vector3 {
         if(typeof v === "number") {
             return new Vector3(this.x * v, this.y * v, this.z * v);
         } else if(v instanceof Vector3) {
@@ -99,26 +102,58 @@ class Vector3 {
         }
     }
 
-    scalarDiv(v: Vector3|number): Vector3 {
-        if(typeof v === "number") {
-            return new Vector3(this.x / v, this.y / v, this.z * v);
-        } else if(v instanceof Vector3) {
-            return new Vector3(this.x / v.x, this.y / v.y, this.z * v.z);
-        } else {
-            throw new Error("Invalid type encountered: " + typeof v);
-        }
+    div(v: number): Vector3 {
+        return new Vector3(this.x / v, this.y / v, this.z / v);
     }
 
-    public applyMatrix(m: Matrix<any>) {
-        if(m.width !== 3 || m.height !== 3) {
-            throw new Error("Applying a matrix is only implemented for 3x3 matrices.");
-        }
-        
+    rotate(rotation: Quaternion): Vector3 {
+        const positionQuaternion = new Quaternion(this.x, this.y, this.z, 0);
+        const inverseRotation = rotation.invert();
+
+        const newPositionQuaternion = rotation.mul(positionQuaternion).mul(inverseRotation);
+
         return new Vector3(
-            m.getValue(0, 0) * this.x + m.getValue(1, 0) * this.y + m.getValue(2, 0) * this.z,
-            m.getValue(0, 1) * this.x + m.getValue(1, 1) * this.y + m.getValue(2, 1) * this.z,
-            m.getValue(0, 2) * this.x + m.getValue(1, 2) * this.y + m.getValue(2, 2) * this.z
+            newPositionQuaternion.x, 
+            newPositionQuaternion.y, 
+            newPositionQuaternion.z
         );
+    }
+
+    /**
+     * the "cross product"
+     * also called "vector product" or "directed area product"
+     */
+    cross(v: Vector3): Vector3 {
+        return new Vector3(
+            this.y * v.z - this.z * v.y,
+            this.z * v.x - this.x * v.z,
+            this.x * v.y - this.y * v.x
+        );
+    }
+
+    /**
+     * the "dot product"
+     * also called "inner product" or "projection product"
+     */
+    dot(v: Vector3): number {
+        return this.x * v.x 
+            + this.y * v.y
+            + this.z * v.z;
+    }
+
+    public applyMatrix(m: Matrix3x3|Matrix4x4) {
+        if(m instanceof Matrix3x3) {
+            return new Vector3(
+                m.getValue(0, 0) * this.x + m.getValue(1, 0) * this.y + m.getValue(2, 0) * this.z,
+                m.getValue(0, 1) * this.x + m.getValue(1, 1) * this.y + m.getValue(2, 1) * this.z,
+                m.getValue(0, 2) * this.x + m.getValue(1, 2) * this.y + m.getValue(2, 2) * this.z
+            );
+        } else if(m instanceof Matrix4x4) {
+            const v4 = new Vector4(this.x, this.y, this.z, 1).applyMatrix(m);
+            return new Vector3(v4.x, v4.y, v4.z);
+        } else {
+            throw new Error("Encountered unsupported type.");
+        }
     }
 
 }

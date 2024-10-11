@@ -1,7 +1,7 @@
 class NumberUtils {
 
-    public static nearlyEquals(a: number, b: number): boolean {
-        return Math.abs(a - b) < 0.0005;
+    public static nearlyEquals(a: number, b: number, threshold: number): boolean {
+        return Math.abs(a - b) < threshold;
     }
 
 }

@@ -16,7 +16,7 @@ class Polygon {
             const v1 = this.vertices[i];
             const v2 = this.vertices[(i + 1) % this.vertices.length];
 
-            const edge = v2.subtract(v1);
+            const edge = v2.sub(v1);
             edges.push(edge);
         }
 

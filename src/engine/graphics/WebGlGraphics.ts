@@ -3,6 +3,7 @@ import Matrix3x3 from "../../utils/Matrix3x3";
 import Matrix4x4 from "../../utils/Matrix4x4";
 import Sprite from "../../utils/Sprite";
 import Vector2 from "../../utils/Vector2";
+import Vector3 from "../../utils/Vector3";
 import Graphics from "./Graphics";
 
 const VERTEX_SHADER = `
@@ -93,18 +94,18 @@ class WebGlGraphics implements Graphics {
         this.matrixLoc = this.gl.getUniformLocation(program, "u_matrix")!;
 
         this.gl.useProgram(program);
-        this.setTransformationMatrix(Matrix3x3.identity);
+        this.setTransformationMatrix(Matrix4x4.identity);
 
         this.gl.clearColor(0, 0, 0, 0);
         this.gl.clear(this.gl.COLOR_BUFFER_BIT);
     }
 
-    private draw(vertices: Vector2[], primitive: GLenum) {
-        const positionBytes = new Float32Array(vertices.map(v => [v.x, v.y]).flat());
+    private draw(vertices: Vector3[], primitive: GLenum) {
+        const positionBytes = new Float32Array(vertices.map(v => [v.x, v.y, v.z]).flat());
         this.gl.enableVertexAttribArray(this.positionLoc);
         this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.positionBuffer);
         this.gl.bufferData(this.gl.ARRAY_BUFFER, positionBytes, this.gl.STATIC_DRAW);
-        this.gl.vertexAttribPointer(this.positionLoc, 2, this.gl.FLOAT, false, 0, 0);
+        this.gl.vertexAttribPointer(this.positionLoc, 3, this.gl.FLOAT, false, 0, 0);
 
         if(primitive === this.gl.LINES || primitive === this.gl.LINE_STRIP || primitive === this.gl.LINE_LOOP) {
             this.gl.uniform4fv(this.colorLoc, [...this.strokeColor.toNormalizedArray(), 1]);
@@ -131,9 +132,9 @@ class WebGlGraphics implements Graphics {
         return this.size.x / this.size.y;
     }
 
-    setTransformationMatrix(matrix: Matrix3x3): void {
-        const m4x4 = matrix.toMatrix4x4().getColumnMajorArray();
-        this.gl.uniformMatrix4fv(this.matrixLoc, false, m4x4);
+    setTransformationMatrix(matrix: Matrix4x4): void {
+        const arr = matrix.getColumnMajorArray();
+        this.gl.uniformMatrix4fv(this.matrixLoc, false, arr);
     }
 
     fill(color: Color): void {
@@ -158,10 +159,10 @@ class WebGlGraphics implements Graphics {
         this.doStroke = false;
     }
 
-    circle(position: Vector2, diameter: number): void {
+    circle(position: Vector3, diameter: number): void {
     }
 
-    rectangle(position: Vector2, size: Vector2): void {
+    rectangle(position: Vector3, size: Vector2): void {
         if(this.doFill) {
             this.fillRectangle(position, size);
         }
@@ -171,33 +172,33 @@ class WebGlGraphics implements Graphics {
         }
     }
 
-    private strokeRectangle(position: Vector2, size: Vector2): void {
+    private strokeRectangle(position: Vector3, size: Vector2): void {
         this.draw([
             position,
-            position.add(new Vector2(size.x, 0)),
-            position.add(new Vector2(size.x, 0)),
-            position.add(new Vector2(size.x, size.y)),
-            position.add(new Vector2(size.x, size.y)),
-            position.add(new Vector2(0, size.y)),
-            position.add(new Vector2(0, size.y)),
+            position.add(new Vector3(size.x, 0, 0)),
+            position.add(new Vector3(size.x, 0, 0)),
+            position.add(new Vector3(size.x, size.y, 0)),
+            position.add(new Vector3(size.x, size.y, 0)),
+            position.add(new Vector3(0, size.y, 0)),
+            position.add(new Vector3(0, size.y, 0)),
             position,
         ], this.gl.LINES);
     }
 
-    private fillRectangle(position: Vector2, size: Vector2): void {
+    private fillRectangle(position: Vector3, size: Vector2): void {
         this.draw([
             position,
-            position.add(new Vector2(size.x, 0)),
-            position.add(new Vector2(0, size.y)),
-            position.add(new Vector2(size.x, size.y)),
+            position.add(new Vector3(size.x, 0, 0)),
+            position.add(new Vector3(0, size.y, 0)),
+            position.add(new Vector3(size.x, size.y, 0)),
         ], this.gl.TRIANGLE_STRIP);
     }
 
-    line(start: Vector2, end: Vector2): void {
+    line(start: Vector3, end: Vector3): void {
         this.draw([start, end], this.gl.LINES);
     }
 
-    image(position: Vector2, sprite: Sprite): void {
+    image(position: Vector3, sprite: Sprite): void {
     }
 
     fontSize(size: number): void {
@@ -206,20 +207,20 @@ class WebGlGraphics implements Graphics {
     text(position: Vector2, text: string): void {
     }
 
-    getScreenToClipMatrix(): Matrix3x3 {
-        return Matrix3x3.identity;
+    getScreenToClipMatrix(): Matrix4x4 {
+        return Matrix4x4.identity;
     }
 
-    screenToClip(vec: Vector2): Vector2 {
-        return Vector2.zero;
+    screenToClip(vec: Vector3): Vector3 {
+        return Vector3.zero;
     }
 
-    getClipToScreenMatrix(): Matrix3x3 {
-        return Matrix3x3.identity;
+    getClipToScreenMatrix(): Matrix4x4 {
+        return Matrix4x4.identity;
     }
 
-    clipToScreen(vec: Vector2): Vector2 {
-        return Vector2.zero;
+    clipToScreen(vec: Vector3): Vector3 {
+        return Vector3.zero;
     }
 
 }

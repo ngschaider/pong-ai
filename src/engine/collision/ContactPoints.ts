@@ -5,8 +5,8 @@ import Polygon from "../Polygon";
 class ContactPoints {
 
     private static pointLineDistance(p: Vector2, a: Vector2, b: Vector2): Vector2 {
-        const ab: Vector2 = b.subtract(a);
-        const ap: Vector2 = p.subtract(a);
+        const ab: Vector2 = b.sub(a);
+        const ap: Vector2 = p.sub(a);
 
         const proj: number = ap.dot(ab);
         const abLenSq: number = ab.magnitudeSquared;
@@ -34,7 +34,7 @@ class ContactPoints {
                 const vb = polygonB.vertices[(i + 1) % polygonB.vertices.length];
     
                 const cp = this.pointLineDistance(point, va, vb);
-                const distSq = point.subtract(cp).magnitudeSquared;
+                const distSq = point.sub(cp).magnitudeSquared;
     
                 if(NumberUtils.nearlyEquals(distSq, minDistSq)) {
                     if(!cp.nearlyEquals(contact1)) {
@@ -55,7 +55,7 @@ class ContactPoints {
                 const vb = polygonA.vertices[(i + 1) % polygonA.vertices.length];
     
                 const cp = this.pointLineDistance(point, va, vb);
-                const distSq = point.subtract(cp).magnitudeSquared;
+                const distSq = point.sub(cp).magnitudeSquared;
     
                 if(NumberUtils.nearlyEquals(distSq, minDistSq)) {
                     if(!cp.nearlyEquals(contact1)) {
@@ -82,7 +82,7 @@ class ContactPoints {
     }
 
     public static circleCircle(centerA: Vector2, radiusA: number, centerB: Vector2): Vector2 {
-        const dir = centerB.subtract(centerA).normalize();
+        const dir = centerB.sub(centerA).normalize();
 
         return centerA.add(dir.scalarMul(radiusA));
     }

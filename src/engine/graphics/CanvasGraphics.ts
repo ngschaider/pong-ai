@@ -1,7 +1,9 @@
 import Color from "../../utils/Color";
 import Matrix3x3 from "../../utils/Matrix3x3";
+import Matrix4x4 from "../../utils/Matrix4x4";
 import Sprite from "../../utils/Sprite";
 import Vector2 from "../../utils/Vector2";
+import Vector3 from "../../utils/Vector3";
 import Graphics from "./Graphics";
 
 class CanvasGraphics implements Graphics {
@@ -24,7 +26,7 @@ class CanvasGraphics implements Graphics {
         this.resize();
     }
 
-    getScreenToClipMatrix(): Matrix3x3 {
+    getScreenToClipMatrix(): Matrix4x4 {
         return this.getClipToScreenMatrix().invert();
     }
 
@@ -32,11 +34,11 @@ class CanvasGraphics implements Graphics {
         return vec.applyMatrix(this.getScreenToClipMatrix());
     }
 
-    getClipToScreenMatrix(): Matrix3x3 {
-        return Matrix3x3.scale(this.size);
+    getClipToScreenMatrix(): Matrix4x4 {
+        return Matrix4x4.scale(new Vector3(this.size.x, this.size.y, 1));
     }
 
-    clipToScreen(vec: Vector2): Vector2 {
+    clipToScreen(vec: Vector3): Vector3 {
         return vec.applyMatrix(this.getClipToScreenMatrix());
     }
 
@@ -53,7 +55,7 @@ class CanvasGraphics implements Graphics {
         return this.size.x / this.size.y;
     }
 
-    public setTransformationMatrix(matrix: Matrix3x3): void {
+    public setTransformationMatrix(matrix: Matrix4x4): void {
         // the canvas API does not transform from clip space to screen space automatically,
         // this is why we apply the transform here
         matrix = this.getClipToScreenMatrix().multiply(matrix);
@@ -62,9 +64,9 @@ class CanvasGraphics implements Graphics {
             a: matrix.values[0],
             c: matrix.values[1],
             e: matrix.values[2],
-            b: matrix.values[3],
-            d: matrix.values[4],
-            f: matrix.values[5],
+            b: matrix.values[4],
+            d: matrix.values[5],
+            f: matrix.values[6],
         });
     }
 

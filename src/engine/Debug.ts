@@ -1,5 +1,6 @@
 import Color from "../utils/Color";
 import Vector2 from "../utils/Vector2";
+import Vector3 from "../utils/Vector3";
 import Engine from "./core/Engine";
 import Graphics from "./graphics/Graphics";
 import RenderSystem from "./rendering/RenderSystem";
@@ -16,13 +17,13 @@ class Debug {
         this.engine = engine;
     }
 
-    public axis(v: Vector2) {
+    public axis(v: Vector3) {
         const camera = this.engine.scene.getActiveCamera();
         if(!camera) return;
 
         const matrix = camera.getWorldToCameraMatrix()
 
-        const start = Vector2.zero.applyMatrix(matrix);
+        const start = Vector3.zero.applyMatrix(matrix);
         const end = v.applyMatrix(matrix);
 
         this.g.fill(Color.green);
@@ -31,7 +32,7 @@ class Debug {
     }
 
     
-    public circle(position: Vector2, radius: number) {
+    public circle(position: Vector3, radius: number) {
         const camera = this.engine.scene.getActiveCamera();
         if(!camera) return;
 

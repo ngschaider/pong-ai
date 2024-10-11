@@ -25,7 +25,7 @@ abstract class PolygonCollider extends Collider {
         const min = new Vector2(minX, minY);
         const max = new Vector2(maxX, maxY);
 
-        return new Rect(min, AnchorPoint.TopLeft, max.subtract(min));
+        return new Rect(min, AnchorPoint.TopLeft, max.sub(min));
     }
 
 }

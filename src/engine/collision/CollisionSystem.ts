@@ -81,9 +81,9 @@ class CollisionSystem extends Renderer {
         const rbB = collision.bodyB.gameObject.getComponent(RigidBody);
         if(!rbA || !rbB) return;
 
-        const relativeVelocity: Vector2 = rbB.velocity.subtract(rbA.velocity);
+        const relativeVelocity: Vector2 = rbB.velocity.sub(rbA.velocity);
 
-        if(rbB.velocity.subtract(rbA.velocity).dot(collision.normal) > 0) {
+        if(rbB.velocity.sub(rbA.velocity).dot(collision.normal) > 0) {
             return;
         }
 
@@ -96,7 +96,7 @@ class CollisionSystem extends Renderer {
         if(rbA.mass != Infinity) {
             const factor = rbB.mass === Infinity ? 1 : 2;
             rbA.transform.move(collision.normal.scalarMul(-collision.depth / factor));
-            const newV = rbA.velocity.subtract(collision.normal.scalarMul(j/rbA.mass))
+            const newV = rbA.velocity.sub(collision.normal.scalarMul(j/rbA.mass))
             rbA.velocity = newV;
         }
 
