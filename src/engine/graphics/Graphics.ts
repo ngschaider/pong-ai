@@ -20,6 +20,7 @@ interface Graphics {
     image(position: Vector3, sprite: Sprite): void;
     fontSize(size: number): void;
     text(position: Vector3, text: string): void;
+    clear(): void;
 
     getScreenToClipMatrix(): Matrix4x4;
     screenToClip(vec: Vector2): Vector2;

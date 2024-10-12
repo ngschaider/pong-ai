@@ -32,6 +32,8 @@ class RenderSystem extends Component {
             return 0;
         });
 
+        this.graphics.clear();
+
         for(const renderer of renderers) {
             renderer.render(this.graphics);
         }

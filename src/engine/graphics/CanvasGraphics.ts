@@ -150,6 +150,10 @@ class CanvasGraphics implements Graphics {
         this.ctx.fillText(text, position.x, position.y);
     }
 
+    clear() {
+        
+    }
+
 }
 
 export default CanvasGraphics;

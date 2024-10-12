@@ -63,7 +63,7 @@ class Camera extends Component {
         if(!renderSystem) throw new Error("Missing camera");
 
         // scales from camera (e.g. 20x20) to clip matrix (-1, 1)
-        const scaleDown = Matrix4x4.scale(new Vector3(1/this.size.x, 1/this.size.y, 1)); 
+        const scaleDown = Matrix4x4.scale(new Vector3(2/this.size.x, 2/this.size.y, 1)); 
         
         const factorX = renderSystem.graphics.aspectRatio > 1 ? renderSystem.graphics.aspectRatio : 1;
         const factorY = renderSystem.graphics.aspectRatio < 1 ? renderSystem.graphics.aspectRatio : 1;

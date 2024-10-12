@@ -19,8 +19,8 @@ class Vector2 {
     }
 
     public static fromPolars(magnitude: number, angle: number): Vector2 {
-        const x = magnitude * Math.cos(angle);        
-        const y = magnitude * Math.sin(angle);
+        const x = magnitude * Math.cos(angle*Math.PI/180);
+        const y = magnitude * Math.sin(angle*Math.PI/180);
         return new Vector2(x, y);
     }
 
@@ -40,15 +40,15 @@ class Vector2 {
         return this.x**2 + this.y**2;
     }
 
-    get angle() {
-        return Math.atan2(this.y, this.x);
+    get angle(): number {
+        return Math.atan2(this.y, this.x) * 180/Math.PI;
     }
 
-    normal() {
+    normal(): Vector2 {
         return new Vector2(-this.y, this.x);
     }
 
-    normalize() {
+    normalize(): Vector2 {
         return this.div(this.magnitude);
     }
 

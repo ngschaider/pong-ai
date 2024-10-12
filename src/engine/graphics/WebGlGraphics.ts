@@ -96,8 +96,7 @@ class WebGlGraphics implements Graphics {
         this.gl.useProgram(program);
         this.setTransformationMatrix(Matrix4x4.identity);
 
-        this.gl.clearColor(0, 0, 0, 0);
-        this.gl.clear(this.gl.COLOR_BUFFER_BIT);
+        this.clear();
     }
 
     private draw(vertices: Vector3[], primitive: GLenum) {
@@ -122,6 +121,11 @@ class WebGlGraphics implements Graphics {
         this.gl.canvas.width = this.el.clientWidth;
         this.gl.canvas.height = this.el.clientHeight;
         this.gl.viewport(0, 0, this.gl.canvas.width, this.gl.canvas.height);
+    }
+
+    public clear() {
+        this.gl.clearColor(0, 0, 0, 0);
+        this.gl.clear(this.gl.COLOR_BUFFER_BIT);
     }
 
     get size(): Vector2 {
@@ -159,7 +163,25 @@ class WebGlGraphics implements Graphics {
         this.doStroke = false;
     }
 
-    circle(position: Vector3, diameter: number): void {
+    circle(position: Vector3, radius: number): void {
+        const outsideVertices: Vector3[] = [];
+        const num = 100;
+        for(let i = 0; i < num; i++) {
+            const a = Vector2.fromPolars(radius, 360*i/num);
+            outsideVertices.push(a.toVector3(0));
+        }
+
+        const vertices: Vector3[] = [];
+        for(let i = 0; i < num; i++) {
+            const va = outsideVertices[i];
+            const vb = outsideVertices[(i + 1) % outsideVertices.length];
+
+            vertices.push(vb.add(position));
+            vertices.push(va.add(position));
+            vertices.push(Vector3.zero.add(position));
+        }
+
+        this.draw(vertices, this.gl.TRIANGLES);
     }
 
     rectangle(position: Vector3, size: Vector2): void {

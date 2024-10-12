@@ -20,12 +20,12 @@ class RectangleRenderer extends Renderer {
         if(!c) throw new Error("Renderer requires an active camera in the scene.");
 
 
-        const local = rect.bottomLeft.toVector3(0);
-        const world = this.transform.localToWorld(local);
-        const camera = c.worldToCamera(world);
-        const clip = c.cameraToClip(camera);
+        // const local = rect.bottomLeft.toVector3(0);
+        // const world = this.transform.localToWorld(local);
+        // const camera = c.worldToCamera(world);
+        // const clip = c.cameraToClip(camera);
 
-        console.log(camera);
+        // console.log(clip);
     }
 
 }

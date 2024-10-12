@@ -157,28 +157,28 @@ class Matrix4x4 {
      * TODO: optimize this with analytically simplified calculation tailored to 4x4 matrices
      */
     public adj(): Matrix4x4 {
-        const getM = (x: number, y: number) => {
-            const values: number[] = [];
-            for(let yi = 0; yi < this.height; yi++) {
-                if(yi === y) continue;
-                for(let xi = 0; xi < this.width; xi++) {
-                    if(xi === x) continue;
-                    values.push(this.getValue(xi, yi));
-                }
-            }
-
-            return new Matrix3x3(values);
-        }
-
         const values: number[] = [];
-        for(let yi = 0; yi < this.height; yi++) {
-            for(let xi = 0; xi < this.width; xi++) {
-                const sign = (-1)**((yi+1)*(xi+1));
-                values.push(sign * getM(xi, yi).det());
+        for(let y = 0; y < this.height; y++) {
+            for(let x = 0; x < this.width; x++) {
+                values.push(this.cofactor(x, y));
             }
         }
 
         return new Matrix4x4(values);
+    }
+
+    public cofactor(x: number, y: number): number {
+        const values: number[] = [];
+        for(let yi = 0; yi < this.height; yi++) {
+            if(yi === y) continue;
+            for(let xi = 0; xi < this.width; xi++) {
+                if(xi === x) continue;
+                values.push(this.getValue(xi, yi));
+            }
+        }
+
+        const M = new Matrix3x3(values).det();
+        return (-1) ** (x + y) * M;
     }
 
     public invert(): Matrix4x4 {

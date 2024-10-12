@@ -59,7 +59,7 @@ class CollidingCircle extends GameObject {
         const rb = this.addComponent(RigidBody);
         rb.mass = 10;
         // rb.mass = Infinity;
-        rb.acceleration = new Vector3(0, 9.807, 0);
+        rb.acceleration = new Vector3(0, -9.807, 0);
 
         this.addComponent(CircleCollider2D);
 
@@ -83,7 +83,7 @@ class CollidingBox extends GameObject {
         const rb = this.addComponent(RigidBody);
         rb.mass = 10;
         // rb.mass = Infinity;
-        rb.acceleration = new Vector3(0, 9.807, 0);
+        rb.acceleration = new Vector3(0, -9.807, 0);
 
         this.addComponent(RectangleCollider2D);
         const rr = this.addComponent(RectangleRenderer);
