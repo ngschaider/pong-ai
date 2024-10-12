@@ -3,9 +3,10 @@ import Scene from "../engine/core/Scene";
 import LineRenderer from "../engine/rendering/LineRenderer";
 import Color from "../utils/Color";
 import Vector2 from "../utils/Vector2";
+import Vector3 from "../utils/Vector3";
 
 
-class Line extends GameObject {
+class Line2D extends GameObject {
 
     constructor(scene: Scene) {
         super(scene);
@@ -16,7 +17,7 @@ class Line extends GameObject {
     }
 }
 
-class StrokedLine extends GameObject {
+class StrokedLine2D extends GameObject {
 
     public numSegments: number = 20;
     public space: number = 1;
@@ -24,14 +25,14 @@ class StrokedLine extends GameObject {
     constructor(scene: Scene) {
         super(scene);
 
-        this.transform.position = new Vector2(0, -10);
+        this.transform.position = new Vector3(0, -10, 0);
 
         for(let i = 0; i < this.numSegments; i++) {
-            const line = this.addChild(Line);
-            line.transform.position = new Vector2(0, (this.space + 1) * i);
+            const line = this.addChild(Line2D);
+            line.transform.position = new Vector3(0, (this.space + 1) * i, 0);
         }
     }
 
 }
 
-export default StrokedLine;
+export default StrokedLine2D;

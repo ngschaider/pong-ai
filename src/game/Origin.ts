@@ -3,6 +3,7 @@ import Scene from "../engine/core/Scene";
 import CircleRenderer from "../engine/rendering/CircleRenderer";
 import Color from "../utils/Color";
 import Vector2 from "../utils/Vector2";
+import Vector3 from "../utils/Vector3";
 
 class Origin extends GameObject {
     constructor(scene: Scene) {
@@ -12,7 +13,7 @@ class Origin extends GameObject {
         c.fillColor = Color.blue;
 
 
-        this.transform.scale = new Vector2(0.5, 0.5);
+        this.transform.scale = new Vector3(0.5, 0.5, 1);
     }
 }
 

@@ -1,6 +1,6 @@
-import Collider from "./Collider";
-import Collisions from "./Collisions";
-import CollisionChecker from "./CollisionChecker";
+import Collider2D from "./Collider2D";
+import Collision2D from "./Collision2D";
+import CollisionChecker2D from "./CollisionChecker2D";
 import Graphics from "../graphics/Graphics";
 import Color from "../../utils/Color";
 import { getCombinations } from "../../utils/funcs";
@@ -8,10 +8,11 @@ import Vector2 from "../../utils/Vector2";
 import Renderer, { RendererSpace } from "../rendering/Renderer";
 import RigidBody from "../RigidBody";
 import GameObject from "../core/GameObject";
+import Vector3 from "../../utils/Vector3";
 
-class CollisionSystem extends Renderer {
+class CollisionSystem2D extends Renderer {
 
-    private currentCollisions: Collisions[] = [];
+    private currentCollisions: Collision2D[] = [];
 
     constructor(gameObject: GameObject) {
         super(gameObject);
@@ -26,7 +27,7 @@ class CollisionSystem extends Renderer {
 
         for(const collision of this.currentCollisions) {
             for(const contact of collision.contacts) {
-                g.circle(contact, 0.2);
+                g.circle(new Vector3(contact.x, contact.y, 0), 0.2);
             }
         }
     }
@@ -40,7 +41,7 @@ class CollisionSystem extends Renderer {
     }
 
     private detectCollisions() {
-        const colliders = this.scene.getAllComponents(Collider);
+        const colliders = this.scene.getAllComponents(Collider2D);
         const combinations = getCombinations(colliders);
 
         for(const [bodyA, bodyB] of combinations) {
@@ -53,7 +54,7 @@ class CollisionSystem extends Renderer {
             });
             this.currentCollisions = this.currentCollisions.filter(c => c !== existingCollision);
 
-            const c = CollisionChecker.checkCollision(bodyA, bodyB);
+            const c = CollisionChecker2D.checkCollision(bodyA, bodyB);
 
             if(c !== null) {
                 if(!existingCollision) {
@@ -76,14 +77,14 @@ class CollisionSystem extends Renderer {
         }
     }
 
-    private resolveCollision(collision: Collisions) {
+    private resolveCollision(collision: Collision2D) {
         const rbA = collision.bodyA.gameObject.getComponent(RigidBody);
         const rbB = collision.bodyB.gameObject.getComponent(RigidBody);
         if(!rbA || !rbB) return;
 
-        const relativeVelocity: Vector2 = rbB.velocity.sub(rbA.velocity);
+        const relativeVelocity: Vector2 = rbB.velocity.sub(rbA.velocity).xy;
 
-        if(rbB.velocity.sub(rbA.velocity).dot(collision.normal) > 0) {
+        if(relativeVelocity.dot(collision.normal) > 0) {
             return;
         }
 
@@ -95,18 +96,18 @@ class CollisionSystem extends Renderer {
 
         if(rbA.mass != Infinity) {
             const factor = rbB.mass === Infinity ? 1 : 2;
-            rbA.transform.move(collision.normal.scalarMul(-collision.depth / factor));
-            const newV = rbA.velocity.sub(collision.normal.scalarMul(j/rbA.mass))
+            rbA.transform.move(collision.normal.mul(-collision.depth / factor).toVector3());
+            const newV = rbA.velocity.sub(collision.normal.mul(j/rbA.mass))
             rbA.velocity = newV;
         }
 
         if(rbB.mass != Infinity) {
             const factor = rbA.mass === Infinity ? 1 : 2;
-            rbB.transform.move(collision.normal.scalarMul(collision.depth / factor));
-            rbB.velocity = rbB.velocity.add(collision.normal.scalarMul(j/rbB.mass));
+            rbB.transform.move(collision.normal.mul(collision.depth / factor).toVector3());
+            rbB.velocity = rbB.velocity.add(collision.normal.mul(j/rbB.mass).toVector3());
         }
     }
 
 }
 
-export default CollisionSystem;
+export default CollisionSystem2D;

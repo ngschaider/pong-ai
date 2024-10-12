@@ -1,17 +1,17 @@
 import Vector2 from "../../utils/Vector2";
-import Collider from "./Collider";
+import Collider2D from "./Collider2D";
 
-class Collisions {
+class Collision2D {
 
-    bodyA: Collider;
-    bodyB: Collider;
+    bodyA: Collider2D;
+    bodyB: Collider2D;
 
     depth: number;
     normal: Vector2;
 
     contacts: Vector2[];
 
-    constructor(bodyA: Collider, bodyB: Collider, depth: number, normal: Vector2, contacts: Vector2[]) {
+    constructor(bodyA: Collider2D, bodyB: Collider2D, depth: number, normal: Vector2, contacts: Vector2[]) {
         this.bodyA = bodyA;
         this.bodyB = bodyB;
         this.depth = depth;
@@ -21,4 +21,4 @@ class Collisions {
 
 }
 
-export default Collisions;
+export default Collision2D;

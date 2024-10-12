@@ -17,7 +17,7 @@ class SpriteRenderer extends Renderer {
 
         const rect = new Rect(Vector2.zero, this.anchorPoint, this.sprite.size);
 
-        graphics.image(rect.topLeft, this.sprite);
+        graphics.image(rect.topLeft.toVector3(0), this.sprite);
     }
 
 }

@@ -1,9 +1,9 @@
-import Collider from "./Collider";
+import Collider2D from "./Collider2D";
 import Vector2 from "../../utils/Vector2";
 import AnchorPoint from "../AnchorPoint";
 import Rect from "../Rect";
 
-class CircleCollider extends Collider {
+class CircleCollider2D extends Collider2D {
 
     localPosition: Vector2 = Vector2.zero;
     localRadius: number = 0.5;
@@ -23,4 +23,4 @@ class CircleCollider extends Collider {
     }
 }
 
-export default CircleCollider;
+export default CircleCollider2D;

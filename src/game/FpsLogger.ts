@@ -1,4 +1,4 @@
-import Collider from "../engine/collision/Collider";
+import Collider2D from "../engine/collision/Collider2D";
 import GameObject from "../engine/core/GameObject";
 import Scene from "../engine/core/Scene";
 import TextRenderer from "../engine/rendering/TextRenderer";
@@ -37,7 +37,7 @@ class FpsLogger extends GameObject {
         this.lastUpdate = now;
 
 
-        this.colliderCount.text = "Collider Count: " + this.scene.getAllComponents(Collider).length;
+        this.colliderCount.text = "Collider Count: " + this.scene.getAllComponents(Collider2D).length;
     }
 
     physicsUpdate(): void {

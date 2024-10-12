@@ -67,11 +67,11 @@ class Rect {
 
     public get verticalCenter(): number {
         if([AnchorPoint.TopLeft, AnchorPoint.TopCenter, AnchorPoint.TopRight].includes(this.anchorPoint)) {
-            return this.position.y;
+            return this.position.y - this.size.y/2;
         } else if([AnchorPoint.LeftCenter, AnchorPoint.CenterCenter, AnchorPoint.RightCenter].includes(this.anchorPoint)) {
-            return this.position.y + this.size.y/2;
+            return this.position.y;
         } else if([AnchorPoint.BottomLeft, AnchorPoint.BottomCenter, AnchorPoint.BottomRight].includes(this.anchorPoint)) {
-            return this.position.y + this.size.y;
+            return this.position.y + this.size.y/2;
         } else {
             throw new Error("Unsupported AnchorPoint encountered.")
         }
@@ -81,9 +81,9 @@ class Rect {
         if([AnchorPoint.TopLeft, AnchorPoint.TopCenter, AnchorPoint.TopRight].includes(this.anchorPoint)) {
             return this.position.y;
         } else if([AnchorPoint.LeftCenter, AnchorPoint.CenterCenter, AnchorPoint.RightCenter].includes(this.anchorPoint)) {
-            return this.position.y - this.size.y/2;
+            return this.position.y + this.size.y/2;
         } else if([AnchorPoint.BottomLeft, AnchorPoint.BottomCenter, AnchorPoint.BottomRight].includes(this.anchorPoint)) {
-            return this.position.y - this.size.y;
+            return this.position.y + this.size.y;
         } else {
             throw new Error("Unsupported AnchorPoint encountered.")
         }
@@ -91,9 +91,9 @@ class Rect {
 
     public get bottom(): number {
         if([AnchorPoint.TopLeft, AnchorPoint.TopCenter, AnchorPoint.TopRight].includes(this.anchorPoint)) {
-            return this.position.y + this.size.y;
+            return this.position.y - this.size.y;
         } else if([AnchorPoint.LeftCenter, AnchorPoint.CenterCenter, AnchorPoint.RightCenter].includes(this.anchorPoint)) {
-            return this.position.y + this.size.y/2;
+            return this.position.y - this.size.y/2;
         } else if([AnchorPoint.BottomLeft, AnchorPoint.BottomCenter, AnchorPoint.BottomRight].includes(this.anchorPoint)) {
             return this.position.y;
         } else {

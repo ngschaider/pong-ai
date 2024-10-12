@@ -19,12 +19,12 @@ interface Graphics {
     line(start: Vector3, end: Vector3): void;
     image(position: Vector3, sprite: Sprite): void;
     fontSize(size: number): void;
-    text(position: Vector2, text: string): void;
+    text(position: Vector3, text: string): void;
 
     getScreenToClipMatrix(): Matrix4x4;
-    screenToClip(vec: Vector3): Vector3;
+    screenToClip(vec: Vector2): Vector2;
     getClipToScreenMatrix(): Matrix4x4;
-    clipToScreen(vec: Vector3): Vector3;
+    clipToScreen(vec: Vector2): Vector2;
 }
 
 export default Graphics;

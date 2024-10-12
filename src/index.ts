@@ -1,24 +1,48 @@
 import Engine from "./engine/core/Engine";
+import GameObject from "./engine/core/GameObject";
 import Debug from "./engine/Debug";
+import CanvasGraphics from "./engine/graphics/CanvasGraphics";
 import WebGlGraphics from "./engine/graphics/WebGlGraphics";
+import Camera from "./engine/rendering/Camera";
+import RectangleRenderer from "./engine/rendering/RectangleRenderer";
+import RenderSystem from "./engine/rendering/RenderSystem";
 import PhysicsTestScene from "./game/PhysicsTestScene";
 import Color from "./utils/Color";
 import Matrix3x3 from "./utils/Matrix3x3";
 import Matrix4x4 from "./utils/Matrix4x4";
 import Vector2 from "./utils/Vector2";
+import Vector3 from "./utils/Vector3";
+
+const engine = new Engine();
+
+// engine.switchScene(PongScene);
+engine.switchScene(PhysicsTestScene);
+// engine.switchScene(SimpleTestScene);
+
+export const debug = new Debug(engine);
+
+engine.start();
+
+
+//const g = new CanvasGraphics(document.getElementById("root") as HTMLCanvasElement);
+//g.setTransformationMatrix(Matrix4x4.identity);
+//g.rectangle(new Vector3(100, 100, 0), new Vector2(1, 1));
+
 
 // const engine = new Engine();
 
-// // engine.switchScene(PongScene);
-// engine.switchScene(PhysicsTestScene);
-// // engine.switchScene(SimpleTestScene);
+// engine.scene.addGameObject(GameObject).addComponent(RenderSystem);
+// const c = engine.scene.addGameObject(GameObject).addComponent(Camera);
+// c.gameObject.transform.position = new Vector3(0, 0, 10);
 
-// export const debug = new Debug(engine);
+// const r = engine.scene.addGameObject(GameObject);
+// const rr = r.addComponent(RectangleRenderer);
+// r.transform.scale = new Vector3(10, 10, 1);
+// r.transform.position = new Vector3(0, 0, 0);
+// rr.fillColor = Color.black;
 
 // engine.start();
 
-
-const g = new WebGlGraphics(document.getElementById("root") as HTMLCanvasElement);
 
 // g.fill(Color.red);
 // g.stroke(Color.blue);

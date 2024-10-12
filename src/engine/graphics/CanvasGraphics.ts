@@ -38,7 +38,7 @@ class CanvasGraphics implements Graphics {
         return Matrix4x4.scale(new Vector3(this.size.x, this.size.y, 1));
     }
 
-    clipToScreen(vec: Vector3): Vector3 {
+    clipToScreen(vec: Vector2): Vector2 {
         return vec.applyMatrix(this.getClipToScreenMatrix());
     }
 
@@ -58,7 +58,7 @@ class CanvasGraphics implements Graphics {
     public setTransformationMatrix(matrix: Matrix4x4): void {
         // the canvas API does not transform from clip space to screen space automatically,
         // this is why we apply the transform here
-        matrix = this.getClipToScreenMatrix().multiply(matrix);
+        matrix = this.getClipToScreenMatrix().mul(matrix);
 
         this.ctx.setTransform({
             a: matrix.values[0],
@@ -92,7 +92,7 @@ class CanvasGraphics implements Graphics {
         this.doStroke = false;
     }
 
-    public circle(position: Vector2, diameter: number): void {
+    public circle(position: Vector3, diameter: number): void {
         this.ctx.beginPath();
 
         this.ctx.ellipse(position.x, position.y, diameter/2, diameter/2, 0, 0, 2*Math.PI);
@@ -111,7 +111,7 @@ class CanvasGraphics implements Graphics {
         this.ctx.closePath();
     }
 
-    public rectangle(position: Vector2, size: Vector2): void {
+    public rectangle(position: Vector3, size: Vector2): void {
         this.ctx.beginPath();
 
         this.ctx.rect(position.x, position.y, size.x, size.y);
@@ -130,7 +130,7 @@ class CanvasGraphics implements Graphics {
         this.ctx.closePath();
     }
 
-    public line(start: Vector2, end: Vector2): void {
+    public line(start: Vector3, end: Vector3): void {
         this.ctx.beginPath();
         this.ctx.moveTo(start.x, start.y);
         this.ctx.lineTo(end.x, end.y);
@@ -138,7 +138,7 @@ class CanvasGraphics implements Graphics {
         this.ctx.closePath();
     }
 
-    public image(position: Vector2, sprite: Sprite): void {
+    public image(position: Vector3, sprite: Sprite): void {
         this.ctx.drawImage(sprite.bitmap, position.x, position.y);
     }
 
@@ -146,7 +146,7 @@ class CanvasGraphics implements Graphics {
         this.ctx.font = size + "px Arial";
     }
 
-    public text(position: Vector2, text: string): void {
+    public text(position: Vector3, text: string): void {
         this.ctx.fillText(text, position.x, position.y);
     }
 

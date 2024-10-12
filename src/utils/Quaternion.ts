@@ -77,7 +77,7 @@ class Quaternion {
     }
 
     public mul(q: Quaternion): Quaternion {
-        const vector = q.vector.mul(this.w); + this.vector.mul(q.w);
+        const vector = q.vector.mul(this.w).add(this.vector.mul(q.w));
         const scalar = this.w * q.w - this.vector.dot(q.vector);
 
         return new Quaternion(vector.x, vector.y, vector.z, scalar);

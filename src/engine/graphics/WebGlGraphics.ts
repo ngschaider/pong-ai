@@ -167,7 +167,6 @@ class WebGlGraphics implements Graphics {
             this.fillRectangle(position, size);
         }
         if(this.doStroke) {
-            console.log(this.doStroke);
             this.strokeRectangle(position, size);
         }
     }
@@ -204,23 +203,23 @@ class WebGlGraphics implements Graphics {
     fontSize(size: number): void {
     }
 
-    text(position: Vector2, text: string): void {
+    text(position: Vector3, text: string): void {
     }
 
     getScreenToClipMatrix(): Matrix4x4 {
         return Matrix4x4.identity;
     }
 
-    screenToClip(vec: Vector3): Vector3 {
-        return Vector3.zero;
+    screenToClip(vec: Vector2): Vector2 {
+        return Vector2.zero;
     }
 
     getClipToScreenMatrix(): Matrix4x4 {
         return Matrix4x4.identity;
     }
 
-    clipToScreen(vec: Vector3): Vector3 {
-        return Vector3.zero;
+    clipToScreen(vec: Vector2): Vector2 {
+        return Vector2.zero;
     }
 
 }

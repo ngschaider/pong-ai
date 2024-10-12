@@ -4,20 +4,51 @@ import Vector2 from "./Vector2";
 
 class Matrix3x3 {
 
-    public static readonly identity: Matrix3x3 = new Matrix3x3(1, 0, 0, 0, 1, 0, 0, 0, 1);
+    public static readonly identity: Matrix3x3 = new Matrix3x3([1, 0, 0, 0, 1, 0, 0, 0, 1]);
+
+    public static translate(position: Vector2): Matrix3x3 {
+        return new Matrix3x3([
+            1, 0, position.x, 
+            0, 1, position.y, 
+            0, 0, 1
+        ]);
+    }
+
+    public static rotate(rotation: number): Matrix3x3 {
+        return new Matrix3x3([
+            Math.cos(rotation/180*Math.PI), -Math.sin(rotation/180*Math.PI), 0, 
+            Math.sin(rotation/180*Math.PI), Math.cos(rotation/180*Math.PI), 0, 
+            0, 0, 1
+        ]);
+    }
+
+    public static scale(scale: Vector2): Matrix3x3 {
+        return new Matrix3x3([
+            scale.x, 0, 0, 
+            0, scale.y, 0,
+            0, 0, 1
+        ]);
+    }
+
+    public static TRS(position: Vector2, rotation: number, scaling: Vector2): Matrix3x3 {
+        const translate = this.translate(position)
+        const rotate = this.rotate(rotation);
+        const scale = this.scale(scaling);
+
+        return translate.mul(rotate).mul(scale);
+    }
 
 
+    public readonly values: number[];
 
-    private values: number[];
+    public readonly width: number = 3;
+    public readonly height: number = 3;
 
-    private width: number = 3;
-    private height: number = 3;
-
-    constructor(a: number, b: number, c: number, 
-        d: number, e: number, f: number, 
-        g: number, h: number, i: number) {
-
-        this.values = [a, b, c, d, e, f, g, h, i];
+    constructor(values: number[]) {
+        if(values.length != this.width * this.height) {
+            throw new Error("Wrong amount of values supplied.");
+        }
+        this.values = values;
     }
 
     getColumnMajorArray(): number[] {
@@ -29,20 +60,20 @@ class Matrix3x3 {
     }
     
     toMatrix4x4() {
-        return new Matrix4x4(
+        return new Matrix4x4([
             this.values[0], this.values[1], this.values[2], 0,
             this.values[3], this.values[4], this.values[5], 0,
             this.values[6], this.values[7], this.values[8], 0,
             0, 0, 0, 1
-        );
+        ]);
     }
 
     clone(): Matrix3x3 {
-        return new Matrix3x3(
+        return new Matrix3x3([
             this.values[0], this.values[1], this.values[2], 
             this.values[3], this.values[4], this.values[5], 
             this.values[6], this.values[7], this.values[8], 
-        );
+        ]);
     }
 
     transpose(): Matrix3x3 {
@@ -71,11 +102,11 @@ class Matrix3x3 {
 
     det(): number {
         return this.getValue(0, 0) * this.getValue(1, 1) * this.getValue(2, 2)
-                + this.getValue(1, 0) * this.getValue(2, 1) * this.getValue(0, 2)
-                + this.getValue(2, 0) * this.getValue(0, 1) * this.getValue(1, 2)
-                - this.getValue(2, 0) * this.getValue(1, 1) * this.getValue(0, 2)
-                - this.getValue(0, 0) * this.getValue(2, 1) * this.getValue(1, 2)
-                - this.getValue(1, 0) * this.getValue(0, 1) * this.getValue(2, 2);
+            + this.getValue(1, 0) * this.getValue(2, 1) * this.getValue(0, 2)
+            + this.getValue(2, 0) * this.getValue(0, 1) * this.getValue(1, 2)
+            - this.getValue(2, 0) * this.getValue(1, 1) * this.getValue(0, 2)
+            - this.getValue(0, 0) * this.getValue(2, 1) * this.getValue(1, 2)
+            - this.getValue(1, 0) * this.getValue(0, 1) * this.getValue(2, 2);
     }
 
     adj(): Matrix3x3 {
@@ -88,82 +119,51 @@ class Matrix3x3 {
         const g = this.getValue(0, 2);
         const h = this.getValue(1, 2);
         const i = this.getValue(2, 2);
-        return new Matrix3x3(e*i-f*h, c*h-b*i, b*f-c*e, f*g-d*i, a*i-c*g, c*d-a*f, d*h-e*g, b*g-a*h, a*e-b*d);
+        return new Matrix3x3([
+            e*i-f*h, c*h-b*i, b*f-c*e, 
+            f*g-d*i, a*i-c*g, c*d-a*f, 
+            d*h-e*g, b*g-a*h, a*e-b*d
+        ]);
     }
 
-    scalarMul(other: number): Matrix3x3 {
-        const m = this.clone()
-        m.values = this.values.map(v => v * other);
-
-        return m;
-    }
-
-    scalarDiv(other: number): Matrix3x3 {
-        const m = this.clone()
-        m.values = this.values.map(v => v / other);
-
-        return m;
+    div(other: number): Matrix3x3 {
+        const values = this.values.map(v => v / other);
+        return new Matrix3x3(values);
     }
 
     invert(): Matrix3x3 {
-        return this.adj().scalarDiv(this.det());
+        return this.adj().div(this.det());
     }
 
-    multiply(other: Matrix3x3): Matrix3x3 {
-        if(this.width !== other.height) {
-            throw new Error("Width of left matrix must equal to height of right matrix.");
-        }
-
-        const helper = (x: number, y: number): number => {
-            let ret = 0;
-            for(let i = 0; i < this.width; i++) {
-                ret += this.getValue(i, y) * other.getValue(x, i);
+    mul(other: Matrix3x3|number): Matrix3x3 {
+        if(typeof other === "number") {
+            const values = this.values.map(v => v * other);
+            return new Matrix3x3(values)
+        } else {
+            const helper = (x: number, y: number): number => {
+                let ret = 0;
+                for(let i = 0; i < this.width; i++) {
+                    ret += this.getValue(i, y) * other.getValue(x, i);
+                }
+                return ret;
             }
-            return ret;
-        }
-
-        const values = [];
-        for(let y = 0; y < this.height; y++) {
-            for(let x = 0; x < other.width; x++) {
-                values.push(helper(x, y));
+    
+            const values = [];
+            for(let y = 0; y < this.height; y++) {
+                for(let x = 0; x < other.width; x++) {
+                    values.push(helper(x, y));
+                }
             }
-        }
 
-        const m = this.clone();
-        m.values = values;
-        return m;
+            return new Matrix3x3(values);
+        }
     }
 
     toMatrix2x2(): Matrix2x2 {
-        return new Matrix2x2(this.values[0], this.values[1], this.values[3], this.values[4]);
-    }
-
-    public static translate(position: Vector2): Matrix3x3 {
-        return new Matrix3x3(1, 0, position.x, 0, 1, position.y, 0, 0, 1);
-    }
-
-    public static rotate(rotation: number): Matrix3x3 {
-        return new Matrix3x3(
-            Math.cos(rotation/180*Math.PI), -Math.sin(rotation/180*Math.PI), 0, 
-            Math.sin(rotation/180*Math.PI), Math.cos(rotation/180*Math.PI), 0, 
-            0, 0, 1
-        );
-    }
-
-    public static scale(scale: Vector2): Matrix3x3 {
-        return new Matrix3x3(
-            scale.x, 0, 0, 
-            0, scale.y, 0,
-            0, 0, 1
-        );
-    }
-
-    public static TRS(position: Vector2, rotation: number, scaling: Vector2): Matrix3x3 {
-        const translate = this.translate(position)
-        const rotate = this.rotate(rotation);
-        const scale = this.scale(scaling);
-
-        return translate.multiply(rotate).multiply(scale);
+        return new Matrix2x2([
+            this.values[0], this.values[1], 
+            this.values[3], this.values[4]
+        ]);
     }
 
 }

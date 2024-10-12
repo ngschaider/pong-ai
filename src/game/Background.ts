@@ -3,6 +3,7 @@ import Scene from "../engine/core/Scene";
 import Vector2 from "../utils/Vector2";
 import GameObject from "../engine/core/GameObject";
 import RectangleRenderer from "../engine/rendering/RectangleRenderer";
+import Vector3 from "../utils/Vector3";
 
 class Background extends GameObject {
 
@@ -22,11 +23,11 @@ class Background extends GameObject {
         if(!camera) return;
 
 
-        this.transform.position = new Vector2(camera.transform.position.x, camera.transform.position.y);
+        this.transform.position = new Vector3(camera.transform.position.x, camera.transform.position.y, 0);
         this.transform.renderOrder = -10;
         this.transform.position = this.transform.position;
         this.transform.rotation = camera.transform.rotation;
-        this.transform.scale = camera.size;
+        this.transform.scale = camera.size.toVector3(1);
     }
     
 }

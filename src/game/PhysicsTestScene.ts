@@ -1,6 +1,6 @@
 import RigidBody from "../engine/RigidBody";
-import BoxCollider from "../engine/collision/BoxCollider";
-import CircleCollider from "../engine/collision/CircleCollider";
+import RectangleCollider2D from "../engine/collision/RectangleCollider2D";
+import CircleCollider2D from "../engine/collision/CircleCollider2D";
 import Engine from "../engine/core/Engine";
 import GameObject from "../engine/core/GameObject";
 import Scene from "../engine/core/Scene";
@@ -10,11 +10,11 @@ import CircleRenderer from "../engine/rendering/CircleRenderer";
 import RectangleRenderer from "../engine/rendering/RectangleRenderer";
 import Color from "../utils/Color";
 import RandomHelper from "../utils/RandomHelper";
-import Vector2 from "../utils/Vector2";
 import Background from "./Background";
 import FpsLogger from "./FpsLogger";
 import MyCamera from "./MyCamera";
 import Systems from "./Systems";
+import Vector3 from "../utils/Vector3";
 
 class MyCircle extends GameObject {
 
@@ -25,12 +25,12 @@ class MyCircle extends GameObject {
 
         this.rigidBody = this.addComponent(RigidBody);
         this.rigidBody.mass = 20;
-        this.addComponent(CircleCollider);
+        this.addComponent(CircleCollider2D);
         const c = this.addComponent(CircleRenderer);
         c.fillColor = Color.red;
 
-        this.transform.position = new Vector2(8, -8);
-        this.rigidBody.velocity = new Vector2(0, 0);
+        this.transform.position = new Vector3(8, 8, 0);
+        this.rigidBody.velocity = new Vector3(0, 0, 0);
     }
 
     update(): void {
@@ -45,7 +45,7 @@ class MyCircle extends GameObject {
         if(keyboard.isKeyPressed(KeyCode.W)) y -= 1;
         if(keyboard.isKeyPressed(KeyCode.S)) y += 1;
 
-        this.rigidBody.addForce(new Vector2(x, y).scalarMul(100000));
+        this.rigidBody.addForce(new Vector3(x, y, 0).mul(100000));
     }
 
 }
@@ -59,9 +59,9 @@ class CollidingCircle extends GameObject {
         const rb = this.addComponent(RigidBody);
         rb.mass = 10;
         // rb.mass = Infinity;
-        rb.acceleration = new Vector2(0, 9.807);
+        rb.acceleration = new Vector3(0, 9.807, 0);
 
-        this.addComponent(CircleCollider);
+        this.addComponent(CircleCollider2D);
 
         const cr = this.addComponent(CircleRenderer);
         cr.fillColor = RandomHelper.color();
@@ -70,7 +70,7 @@ class CollidingCircle extends GameObject {
         cr.lineWidth = 0.03;
 
         const radius = RandomHelper.floatRange(0.5641, 1.6925);
-        this.transform.scale = new Vector2(radius, radius);
+        this.transform.scale = new Vector3(radius, radius, 1);
     }
 
 }
@@ -83,16 +83,16 @@ class CollidingBox extends GameObject {
         const rb = this.addComponent(RigidBody);
         rb.mass = 10;
         // rb.mass = Infinity;
-        rb.acceleration = new Vector2(0, 9.807);
+        rb.acceleration = new Vector3(0, 9.807, 0);
 
-        this.addComponent(BoxCollider);
+        this.addComponent(RectangleCollider2D);
         const rr = this.addComponent(RectangleRenderer);
         rr.fillColor = RandomHelper.color();
         rr.doStroke = true;
         rr.strokeColor = Color.white;
         rr.lineWidth = 0.03;
 
-        this.transform.scale = new Vector2(RandomHelper.floatRange(0.5, 1.5), RandomHelper.floatRange(0.5, 1.5));
+        this.transform.scale = new Vector3(RandomHelper.floatRange(0.5, 1.5), RandomHelper.floatRange(0.5, 1.5), 1);
     }
 
 }
@@ -111,9 +111,9 @@ class StaticCircle extends GameObject {
         const rb = this.addComponent(RigidBody);
         rb.mass = Infinity;
 
-        this.addComponent(CircleCollider);
+        this.addComponent(CircleCollider2D);
 
-        this.transform.position = new Vector2(RandomHelper.floatRange(-10, 10), RandomHelper.floatRange(-10, 10));
+        this.transform.position = new Vector3(RandomHelper.floatRange(-10, 10), RandomHelper.floatRange(-10, 10), 0);
     }
 
 }
@@ -123,10 +123,10 @@ class Ground extends GameObject {
     constructor(scene: Scene) {
         super(scene);
 
-        this.transform.scale = new Vector2(20, 1);
-        this.transform.position = new Vector2(0, 9.5);
+        this.transform.scale = new Vector3(20, 1, 1);
+        this.transform.position = new Vector3(0, -9.5, 0);
 
-        const bc = this.addComponent(BoxCollider)
+        const bc = this.addComponent(RectangleCollider2D)
 
         const rb = this.addComponent(RigidBody)
         rb.mass = Infinity
@@ -184,10 +184,10 @@ class PhysicsTestScene extends Scene {
         this.addGameObject(ObjectPlacer);
 
         const fpsLogger = this.addGameObject(FpsLogger);
-        fpsLogger.transform.position = new Vector2(0, 0);
+        fpsLogger.transform.position = new Vector3(0, 0, 0);
 
-        this.addGameObject(StaticCircle).transform.position = new Vector2(6, -4);
-        this.addGameObject(StaticCircle).transform.position = new Vector2(-6, -4);
+        this.addGameObject(StaticCircle).transform.position = new Vector3(6, 4, 0);
+        this.addGameObject(StaticCircle).transform.position = new Vector3(-6, 4, 0);
     }
 
     update(): void {

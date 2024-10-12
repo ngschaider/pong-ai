@@ -1,7 +1,9 @@
 import Matrix2x2 from "./Matrix2x2";
 import Matrix3x3 from "./Matrix3x3";
+import Matrix4x4 from "./Matrix4x4";
 import NumberUtils from "./NumberUtils";
 import Vector3 from "./Vector3";
+import Vector4 from "./Vector4";
 
 class Vector2 {
 
@@ -98,15 +100,21 @@ class Vector2 {
             && NumberUtils.nearlyEquals(this.y, v.y, threshold);
     }
 
-    public toVector3(): Vector3 {
-        return new Vector3(this.x, this.y, 0);
+    public toVector3(z: number = 0): Vector3 {
+        return new Vector3(this.x, this.y, z);
     }
 
-    public applyMatrix(m: Matrix2x2): Vector2 {
-        return new Vector2(
-            m.getValue(0, 0) * this.x + m.getValue(1, 0) * this.y,
-            m.getValue(0, 1) * this.x + m.getValue(1, 1) * this.y,
-        );
+    public applyMatrix(m: Matrix2x2|Matrix3x3|Matrix4x4): Vector2 {
+        if(m instanceof Matrix4x4) {
+            return new Vector4(this.x, this.y, 0, 0).applyMatrix(m).xy;
+        } else if(m instanceof Matrix3x3) {
+            return new Vector3(this.x, this.y, 0).applyMatrix(m).xy;
+        } else {
+            return new Vector2(
+                m.getValue(0, 0) * this.x + m.getValue(1, 0) * this.y,
+                m.getValue(0, 1) * this.x + m.getValue(1, 1) * this.y,
+            );
+        }
     }
 
     // clampX(min: number, max: number): Vector2 {

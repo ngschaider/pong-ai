@@ -1,5 +1,6 @@
 import MyEvent from "../../utils/MyEvent";
 import Vector2 from "../../utils/Vector2";
+import Vector3 from "../../utils/Vector3";
 import Component from "../core/Component";
 import GameObject from "../core/GameObject";
 import RenderSystem from "../rendering/RenderSystem";
@@ -13,7 +14,7 @@ class Mouse extends Component {
     button5: boolean = false;
     screenPosition: Vector2 = new Vector2(-1, -1);
 
-    get worldPosition() {
+    get worldPosition(): Vector3 {
         const camera = this.scene.getActiveCamera();
         const renderSystem = this.scene.getComponent(RenderSystem);
         if(!renderSystem) throw new Error("Mouse#worldPosition requires a RenderSystem component in the scene.");

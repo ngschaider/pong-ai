@@ -1,4 +1,5 @@
 import Vector2 from "../../utils/Vector2";
+import Vector3 from "../../utils/Vector3";
 import GameObject from "../core/GameObject";
 import Graphics from "../graphics/Graphics";
 import Renderer from "./Renderer";
@@ -13,7 +14,7 @@ class LineRenderer extends Renderer {
     public render(graphics: Graphics): void {
         super.render(graphics);
 
-        graphics.line(new Vector2(0, -0.5), new Vector2(0, 0.5));
+        graphics.line(new Vector3(0, -0.5, 0), new Vector3(0, 0.5, 0));
     }
 
 

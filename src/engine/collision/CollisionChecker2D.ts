@@ -1,10 +1,10 @@
-import CircleCollider from "./CircleCollider";
-import Collider from "./Collider";
-import PolygonCollider from "./PolygonCollider";
-import Collisions from "./Collisions";
-import ContactPoints from "./ContactPoints";
+import CircleCollider2D from "./CircleCollider2D";
+import Collider2D from "./Collider2D";
+import PolygonCollider2D from "./PolygonCollider2D";
+import Collision2D from "./Collision2D";
+import ContactPoints2D from "./ContactPoints2D";
 import Vector2 from "../../utils/Vector2";
-import Polygon from "../Polygon";
+import Polygon2D from "../Polygon2D";
 import Rect from "../Rect";
 
 type CollisionTestResult = {
@@ -12,9 +12,9 @@ type CollisionTestResult = {
     normal: Vector2
 } | false;
 
-class CollisionChecker {
+class CollisionChecker2D {
 
-    public static checkCollision(bodyA: Collider, bodyB: Collider): Collisions|null {
+    public static checkCollision(bodyA: Collider2D, bodyB: Collider2D): Collision2D|null {
         const boxA = bodyA.getBounds();
         const boxB = bodyB.getBounds();
 
@@ -22,25 +22,25 @@ class CollisionChecker {
             return null;
         }
 
-        if(bodyA instanceof CircleCollider && bodyB instanceof CircleCollider) { // Circle <-> Circle
+        if(bodyA instanceof CircleCollider2D && bodyB instanceof CircleCollider2D) { // Circle <-> Circle
             const info = this.circleCircle(bodyA.globalPosition, bodyA.globalRadius, bodyB.globalPosition, bodyB.globalRadius);
-            const contact = ContactPoints.circleCircle(bodyA.globalPosition, bodyA.globalRadius, bodyB.globalPosition);
-            return info ? new Collisions(bodyA, bodyB, info.depth, info.normal, [contact]) : null;
+            const contact = ContactPoints2D.circleCircle(bodyA.globalPosition, bodyA.globalRadius, bodyB.globalPosition);
+            return info ? new Collision2D(bodyA, bodyB, info.depth, info.normal, [contact]) : null;
         }
-        if(bodyA instanceof PolygonCollider && bodyB instanceof PolygonCollider) { // Polygon <-> Polygon
+        if(bodyA instanceof PolygonCollider2D && bodyB instanceof PolygonCollider2D) { // Polygon <-> Polygon
             const info = this.polygonPolygon(bodyA.getWorldPolygon(), bodyB.getWorldPolygon());
-            const contacts = ContactPoints.polygonPolygon(bodyA.getWorldPolygon(), bodyB.getWorldPolygon());
-            return info ? new Collisions(bodyA, bodyB, info.depth, info.normal, contacts): null;
+            const contacts = ContactPoints2D.polygonPolygon(bodyA.getWorldPolygon(), bodyB.getWorldPolygon());
+            return info ? new Collision2D(bodyA, bodyB, info.depth, info.normal, contacts): null;
         }
-        if((bodyA instanceof CircleCollider && bodyB instanceof PolygonCollider)) { // Circle <-> Polygon
+        if((bodyA instanceof CircleCollider2D && bodyB instanceof PolygonCollider2D)) { // Circle <-> Polygon
             const info = this.circlePolygon(bodyA.globalPosition, bodyA.globalRadius, bodyB.getWorldPolygon());
-            const contact = ContactPoints.circlePolygon(bodyA.globalPosition, bodyA.globalRadius, bodyB.getWorldPolygon())
-            return info ? new Collisions(bodyA, bodyB, info.depth, info.normal, [contact]): null;
+            const contact = ContactPoints2D.circlePolygon(bodyA.globalPosition, bodyA.globalRadius, bodyB.getWorldPolygon())
+            return info ? new Collision2D(bodyA, bodyB, info.depth, info.normal, [contact]): null;
         }
-        if((bodyA instanceof PolygonCollider && bodyB instanceof CircleCollider)) { // Polygon <-> Circle
+        if((bodyA instanceof PolygonCollider2D && bodyB instanceof CircleCollider2D)) { // Polygon <-> Circle
             const info = this.circlePolygon(bodyB.globalPosition, bodyB.globalRadius, bodyA.getWorldPolygon());
-            const contact = ContactPoints.circlePolygon(bodyB.globalPosition, bodyB.globalRadius, bodyA.getWorldPolygon())
-            return info ? new Collisions(bodyB, bodyA, info.depth, info.normal, [contact]): null;
+            const contact = ContactPoints2D.circlePolygon(bodyB.globalPosition, bodyB.globalRadius, bodyA.getWorldPolygon())
+            return info ? new Collision2D(bodyB, bodyA, info.depth, info.normal, [contact]): null;
         }
 
         throw new Error("Unsupported collision between bodies");
@@ -72,7 +72,7 @@ class CollisionChecker {
     }
 
     // Uses the separated axis thereom (SAT)
-    private static polygonPolygon(polygonA: Polygon, polygonB: Polygon): CollisionTestResult {
+    private static polygonPolygon(polygonA: Polygon2D, polygonB: Polygon2D): CollisionTestResult {
         let resolutionNormal = Vector2.zero;
         let minDepth = Infinity;
 
@@ -112,7 +112,7 @@ class CollisionChecker {
         const dir = centerB.sub(centerA);
 
         if(dir.dot(resolutionNormal) < 0) {
-            resolutionNormal = resolutionNormal.scalarMul(-1);
+            resolutionNormal = resolutionNormal.mul(-1);
         }
 
         return {
@@ -121,7 +121,7 @@ class CollisionChecker {
         };
     }
 
-    private static circlePolygon(circleCenter: Vector2, circleRadius: number, polygon: Polygon): CollisionTestResult {
+    private static circlePolygon(circleCenter: Vector2, circleRadius: number, polygon: Polygon2D): CollisionTestResult {
         let resolutionNormal = Vector2.zero;
         let minDepth = Infinity;
 
@@ -158,7 +158,7 @@ class CollisionChecker {
         const dir = polygon.getArithmeticMean().sub(circleCenter);
 
         if(dir.dot(resolutionNormal) < 0) {
-            resolutionNormal = resolutionNormal.scalarMul(-1);
+            resolutionNormal = resolutionNormal.mul(-1);
         }
 
         return {
@@ -168,8 +168,8 @@ class CollisionChecker {
     }
 
     private static projectCircle(circleCenter: Vector2, circleRadius: number, axis: Vector2): {min: number, max: number} {
-        const p1 = circleCenter.sub(axis.scalarMul(circleRadius))
-        const p2 = circleCenter.add(axis.scalarMul(circleRadius))
+        const p1 = circleCenter.sub(axis.mul(circleRadius))
+        const p2 = circleCenter.add(axis.mul(circleRadius))
         
         const min = p1.dot(axis);
         const max = p2.dot(axis);
@@ -185,4 +185,4 @@ class CollisionChecker {
     }
 }
 
-export default CollisionChecker;
+export default CollisionChecker2D;

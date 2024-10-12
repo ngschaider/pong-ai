@@ -1,17 +1,18 @@
 import Vector2 from "../../utils/Vector2";
+import Vector3 from "../../utils/Vector3";
 import AnchorPoint from "../AnchorPoint";
-import Polygon from "../Polygon";
+import Polygon2D from "../Polygon2D";
 import Rect from "../Rect";
-import Collider from "./Collider";
+import Collider2D from "./Collider2D";
 
-abstract class PolygonCollider extends Collider {
+abstract class PolygonCollider2D extends Collider2D {
 
-    abstract getLocalPolygon(): Polygon;
+    abstract getLocalPolygon(): Polygon2D;
 
-    getWorldPolygon(): Polygon {
+    getWorldPolygon(): Polygon2D {
         const matrix = this.transform.getLocalToWorldMatrix();
         const local = this.getLocalPolygon();
-        return new Polygon(local.vertices.map(v => v.applyMatrix(matrix)));
+        return new Polygon2D(local.vertices.map(v => v.applyMatrix(matrix)));
     }
 
     getLocalBounds(): Rect {
@@ -30,4 +31,4 @@ abstract class PolygonCollider extends Collider {
 
 }
 
-export default PolygonCollider;
+export default PolygonCollider2D;

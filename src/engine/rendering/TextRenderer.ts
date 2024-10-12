@@ -19,7 +19,7 @@ class TextRenderer extends Renderer {
     }
 
     public render(graphics: Graphics): void {
-        graphics.text(this.offset, this.text);
+        graphics.text(this.offset.toVector3(0), this.text);
     }
 
 }

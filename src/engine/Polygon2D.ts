@@ -1,6 +1,6 @@
 import Vector2 from "../utils/Vector2";
 
-class Polygon {
+class Polygon2D {
 
     vertices: Vector2[] = [];
 
@@ -34,7 +34,7 @@ class Polygon {
             sum = sum.add(vertex);
         }
 
-        return sum.scalarDiv(this.vertices.length);
+        return sum.div(this.vertices.length);
     }
 
     getClosestVertex(point: Vector2): Vector2 {
@@ -56,4 +56,4 @@ class Polygon {
 
 }
 
-export default Polygon;
+export default Polygon2D;

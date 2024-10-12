@@ -2,6 +2,7 @@ import Keyboard, { KeyCode } from "../engine/input/Keyboard";
 import Scene from "../engine/core/Scene";
 import Vector2 from "../utils/Vector2";
 import Player from "./Player";
+import Vector3 from "../utils/Vector3";
 
 class ManualPlayer extends Player {
 
@@ -12,7 +13,7 @@ class ManualPlayer extends Player {
 
         this.keyboard = this.scene.getComponent(Keyboard);
 
-        this.transform.position = new Vector2(-9, 0);
+        this.transform.position = new Vector3(-9, 0, 0);
     }
 
     update(): void {
@@ -24,7 +25,7 @@ class ManualPlayer extends Player {
         if(this.keyboard.isKeyPressed(KeyCode.W)) value -= 1;
         if(this.keyboard.isKeyPressed(KeyCode.S)) value += 1;
 
-        this.rigidBody.velocity = new Vector2(0, value).scalarMul(0.4);
+        this.rigidBody.velocity = new Vector3(0, value, 0).mul(0.4);
     }
 
 }

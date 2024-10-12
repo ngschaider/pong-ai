@@ -1,15 +1,16 @@
-import Matrix3x3 from "../utils/Matrix3x3";
-import Vector2 from "../utils/Vector2";
+import Matrix4x4 from "../utils/Matrix4x4";
+import Quaternion from "../utils/Quaternion";
+import Vector3 from "../utils/Vector3";
 import Component from "./core/Component";
 
 class Transform extends Component {
 
     parent: Transform|null = null;
 
-    position: Vector2 = Vector2.zero;
+    position: Vector3 = Vector3.zero;
     renderOrder: number = 0;
-    scale: Vector2 = Vector2.one;
-    rotation: number = 0;
+    scale: Vector3 = Vector3.one;
+    rotation: Quaternion = Quaternion.identity;
 
     public get isRootObject(): boolean {
         return this.parent === null;
@@ -19,18 +20,22 @@ class Transform extends Component {
         return this.scene.gameObjects.map(go => go.transform).filter(tf => tf.parent === this);
     }
 
-    public getLocalToWorldMatrix(): Matrix3x3 {
-        const parent = this.transform.parent?.getLocalToWorldMatrix() ?? Matrix3x3.identity;
-        const trs = Matrix3x3.TRS(this.position, this.rotation, this.scale);
+    public getLocalToWorldMatrix(): Matrix4x4 {
+        const parent = this.transform.parent?.getLocalToWorldMatrix() ?? Matrix4x4.identity;
+        const trs = Matrix4x4.TRS(this.position, this.rotation, this.scale);
         
-        return parent.multiply(trs);
+        return parent.mul(trs);
     }
 
-    public move(delta: Vector2) {
+    public localToWorld(vec: Vector3): Vector3 {
+        return vec.applyMatrix(this.getLocalToWorldMatrix());
+    }
+
+    public move(delta: Vector3) {
         this.transform.position = this.transform.position.add(delta);
     }
 
-    public moveTo(position: Vector2) {
+    public moveTo(position: Vector3) {
         this.transform.position = position;
     }
 

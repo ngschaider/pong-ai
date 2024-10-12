@@ -1,8 +1,8 @@
 import NumberUtils from "../../utils/NumberUtils";
 import Vector2 from "../../utils/Vector2";
-import Polygon from "../Polygon";
+import Polygon2D from "../Polygon2D";
 
-class ContactPoints {
+class ContactPoints2D {
 
     private static pointLineDistance(p: Vector2, a: Vector2, b: Vector2): Vector2 {
         const ab: Vector2 = b.sub(a);
@@ -17,11 +17,11 @@ class ContactPoints {
         } else if(d >= 1) {
             return b;
         } else {
-            return a.add(ab.scalarMul(d));
+            return a.add(ab.mul(d));
         }
     }
 
-    public static polygonPolygon(polygonA: Polygon, polygonB: Polygon): Vector2[] {
+    public static polygonPolygon(polygonA: Polygon2D, polygonB: Polygon2D): Vector2[] {
         let contact1 = Vector2.zero;
         let contact2 = Vector2.zero;
         let contactCount = 0;
@@ -37,7 +37,7 @@ class ContactPoints {
                 const distSq = point.sub(cp).magnitudeSquared;
     
                 if(NumberUtils.nearlyEquals(distSq, minDistSq)) {
-                    if(!cp.nearlyEquals(contact1)) {
+                    if(!cp.equals(contact1)) {
                         contact2 = cp;
                         contactCount = 2;
                     }
@@ -58,7 +58,7 @@ class ContactPoints {
                 const distSq = point.sub(cp).magnitudeSquared;
     
                 if(NumberUtils.nearlyEquals(distSq, minDistSq)) {
-                    if(!cp.nearlyEquals(contact1)) {
+                    if(!cp.equals(contact1)) {
                         contact2 = cp;
                         contactCount = 2;
                     }
@@ -84,10 +84,10 @@ class ContactPoints {
     public static circleCircle(centerA: Vector2, radiusA: number, centerB: Vector2): Vector2 {
         const dir = centerB.sub(centerA).normalize();
 
-        return centerA.add(dir.scalarMul(radiusA));
+        return centerA.add(dir.mul(radiusA));
     }
 
-    public static circlePolygon(circleCenter: Vector2, _circleRadius: number, polygon: Polygon) {
+    public static circlePolygon(circleCenter: Vector2, _circleRadius: number, polygon: Polygon2D) {
         // const polygonCenter = polygon.getArithmeticMean();
 
         let minDistSq: number = Infinity;
@@ -109,4 +109,4 @@ class ContactPoints {
 
 }
 
-export default ContactPoints;
+export default ContactPoints2D;
